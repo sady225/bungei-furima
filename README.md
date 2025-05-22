@@ -1,2 +1,4 @@
 案内
-https://www.openai.fm/#ebc098af-e1e2-4068-8dc8-c0f00af13f61
+
+https://www.openai.fm/#f3990088-e6e7-4276-8098-55636fbd0171
+
