@@ -194,7 +194,7 @@
         
         .cta-button {
             display: inline-block;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            background: linear-gradient(45deg, #ffa074, #ffa074);
             color: white;
             padding: 15px 40px;
             text-decoration: none;
@@ -205,6 +205,8 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             animation: fadeInUp 1s ease-out 0.6s both;
         }
+
+        
         
         .cta-button:hover {
             transform: translateY(-3px);
@@ -384,7 +386,39 @@
             .color-selector {
                 justify-content: center;
             }
+
+              /* タイムスケジュール・参加者募集セクションのモバイル対応 */
+    .section .fade-in[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+    }
+    
+    .card {
+        margin: 0 10px;
+    }
+    
+    .card h3 {
+        font-size: 1.3rem;
+    }
+
         }
+
+
+/* より細かいモバイル対応 */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .card {
+        margin: 0 5px;
+        padding: 20px;
+    }
+    
+    .section {
+        padding: 60px 0;
+    }
+}
         
         /* アニメーション */
         .fade-in {
@@ -470,7 +504,7 @@
     <section class="section" style="padding-top: 40px; padding-bottom: 20px;">
         <div class="container" style="text-align: center;">
             <div class="youtube-video" style="margin-bottom: 20px;">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/zSAcZVPhUno" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="100%" height="315" src="https://www.youtube.com/embed/zSAcZVPhUno" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
         </div>
     </section>
@@ -480,7 +514,7 @@
         <div class="container">
             <h2 class="section-title fade-in">🌸 沖縄文芸フリマとは</h2>
             <div class="fade-in">
-                <p style="font-size: 1.2rem; text-align: center; margin-bottom: 40px;">
+                <p style="font-size: 1.2rem; text-align: left; margin-bottom: 40px;">
                     人の想いや創造力が静かにきらめく文化の場を、沖縄で始めます。<br>
                     子どもから大人までが表現できる新たな試み──それが「沖縄文芸フリマ」です。
                 </p>
@@ -521,7 +555,7 @@
                 <div class="card">
                     <h3>🎨 アート・イラスト</h3>
                     <p>描いたイラスト、色鉛筆で描いた一枚の絵など、視覚的な表現作品も大歓迎。</p>
-                動
+                </div>
                 <div class="card">
                     <h3>🧶 手作り作品</h3>
                     <p>さおり織り、刺し子、編み物など、手芸やハンドメイド作品も出展予定です。</p>
@@ -655,9 +689,9 @@
     <!-- 参加への想い -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title fade-in">🪷 表現することは、世界とつながる第一歩</h2>
+            <h2 class="section-title fade-in">🌼 表現することは、世界とつながる第一歩</h2>
             <div class="fade-in">
-                <p style="font-size: 1.2rem; text-align: center; margin-bottom: 40px;">
+                <p style="font-size: 1.2rem; text-align: left; margin-bottom: 40px;">
                     小さな一冊の本、色鉛筆で描いた一枚の絵、編み物のひと目──<br>
                     すべてが「私がここにいる」という証になります。
                 </p>
