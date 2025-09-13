@@ -5,47 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>沖縄文芸フリマ - 子どもも大人も一緒に楽しむ</title>
     <style>
+        /* --- CSS変数 --- */
+        :root {
+            --color-primary: #2c3e50;
+            --color-secondary: #4ecdc4;
+            --color-accent: #f093fb;
+            --color-link: #4ecdc4;
+            --bg-gradient-default: linear-gradient(135deg, #667eea 0%, #764ba2 50%, var(--color-accent) 100%);
+            --bg-light: rgba(255, 255, 255, 0.9);
+            --bg-semi-transparent: rgba(255, 255, 255, 0.7);
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        body.yamabuki {
+            --bg-gradient-default: linear-gradient(135deg, #facc15 0%, #fb923c 50%, #f59e0b 100%);
+            --color-primary: #2c3e50;
+        }
+        body.mizuiro {
+            --bg-gradient-default: linear-gradient(135deg, #7dd3fc 0%, #22d3ee 50%, #3b82f6 100%);
+            --color-primary: #2c3e50;
+        }
+        body.uguisu {
+            --bg-gradient-default: linear-gradient(135deg, #a3e635 0%, #22c55e 50%, #10b981 100%);
+            --color-primary: #2c3e50;
+        }
+        body.monochrome {
+            --bg-gradient-default: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #374151 100%);
+            --color-primary: #f5f5f5;
+        }
+        body.monochrome .logo span {
+            color: var(--color-primary) !important;
+            -webkit-text-fill-color: var(--color-primary) !important;
+        }
+
         /* --- 基本設定 --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
             line-height: 1.7;
-            color: #2c3e50;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: var(--color-primary);
+            background: var(--bg-gradient-default);
             min-height: 100vh;
             transition: background 0.5s ease;
-            position: relative; /* 子要素のabsolute配置の基準にする */
-            overflow-x: hidden; /* 横スクロールを防ぐ */
+            position: relative;
+            overflow-x: hidden;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
-        /* --- カラーテーマ --- */
-        body.yamabuki { background: linear-gradient(135deg, #facc15 0%, #fb923c 50%, #f59e0b 100%); }
-        body.mizuiro { background: linear-gradient(135deg, #7dd3fc 0%, #22d3ee 50%, #3b82f6 100%); }
-        body.uguisu { background: linear-gradient(135deg, #a3e635 0%, #22c55e 50%, #10b981 100%); }
-        body.monochrome { background: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #374151 100%); }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* --- ヘッダー --- */
         header {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--bg-light);
             backdrop-filter: blur(10px);
             padding: 20px 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             position: sticky;
             top: 0;
             z-index: 100;
         }
-
         .header-content {
             display: flex;
             justify-content: space-between;
@@ -53,53 +85,28 @@
             flex-wrap: wrap;
             gap: 20px;
         }
-
         .logo {
             font-size: 2.5rem;
             font-weight: bold;
-            /* 背景グラデーションを削除し、個別指定に変更 */
-            -webkit-background-clip: text; /* グラデーションを使用しないため不要だが互換性のため残す */
-            -webkit-text-fill-color: transparent; /* グラデーションを使用しないため不要だが互換性のため残す */
-            background-clip: text; /* グラデーションを使用しないため不要だが互換性のため残す */
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex; /* span要素を横並びにする */
+            display: flex;
         }
-        /* ロゴの個別色指定 */
-        .logo__okinawa {
-            color: rgb(87, 187, 187); /* 指定色 */
-            -webkit-text-fill-color: rgb(87, 187, 187); /* -webkit-text-fill-colorが設定されている場合の上書き */
-        }
-        .logo__bungei-frima {
-            color: rgb(233, 105, 162); /* 指定色 */
-            -webkit-text-fill-color: rgb(233, 105, 162); /* -webkit-text-fill-colorが設定されている場合の上書き */
-        }
-
-
-        .subtitle {
-            font-size: 1rem;
-            color: #666;
-            margin-top: -5px;
-        }
-        /* サブタイトルの色指定 */
-        .subtitle--colored {
-            color: rgb(87, 187, 187); /* 指定色 */
-            font-weight: bold; /* 少し強調 */
-        }
-
+        .logo__okinawa { color: rgb(87, 187, 187); }
+        .logo__bungei-frima { color: rgb(233, 105, 162); }
+        .subtitle { font-size: 1rem; color: #666; margin-top: -5px; }
+        .subtitle--colored { color: rgb(87, 187, 187); font-weight: bold; }
         .color-selector { display: flex; gap: 10px; align-items: center; }
         .color-selector label { font-size: 0.9rem; margin-right: 10px; color: #666; }
         .color-btn { width: 32px; height: 32px; border: 2px solid #ddd; border-radius: 50%; cursor: pointer; transition: all 0.3s ease; position: relative; }
         .color-btn:hover { transform: scale(1.1); border-color: #333; }
         .color-btn.active { border-color: #333; border-width: 4px; }
         .color-btn.active::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); font-size: 12px; }
-        .default-color { background: linear-gradient(45deg, #667eea, #f093fb); }
+        .default-color { background: linear-gradient(45deg, #667eea, var(--color-accent)); }
         .yamabuki-color { background: linear-gradient(45deg, #facc15, #f59e0b); }
         .mizuiro-color { background: linear-gradient(45deg, #7dd3fc, #3b82f6); }
         .uguisu-color { background: linear-gradient(45deg, #a3e635, #10b981); }
         .mono-color { background: linear-gradient(45deg, #9ca3af, #374151); }
 
         /* --- メインコンテンツ --- */
-        /* ヒーローセクション */
         .hero { color: white; text-align: center; padding: 80px 0; position: relative; overflow: hidden; }
         .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, rgba(255,107,107,0.3), rgba(78,205,196,0.3)); animation: gradient 8s ease infinite; }
         .hero-content { position: relative; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px; }
@@ -111,73 +118,62 @@
         .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
         .instagram-button { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
         .icon-instagram { width: 20px; height: 20px; vertical-align: middle; margin-right: 8px; }
-
-        .flyer-container { width: 100%; max-width: 400px; background-color: rgba(255, 255, 255, 0.8); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; padding: 15px; text-align: center; }
-        .flyer-container__title { margin-bottom: 10px; font-weight: bold; color: #2c3e50; }
+        .flyer-container { width: 100%; max-width: 400px; background-color: var(--bg-light); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; padding: 15px; text-align: center; }
+        .flyer-container__title { margin-bottom: 10px; font-weight: bold; color: var(--color-primary); }
         .flyer-container__image { width: 100%; height: auto; display: block; border-radius: 4px; }
-
-        /* 動画セクション */
         .section-video { padding-top: 40px; padding-bottom: 20px; }
         .youtube-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; margin-bottom: 20px; }
         .youtube-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .text-center { text-align: center; }
-
-        /* 汎用セクション */
         .section { padding: 80px 0; position: relative; }
-        .section:nth-child(even) { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
-        .section:nth-child(odd) { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(5px); }
+        .section:nth-child(even) { background: var(--bg-light); backdrop-filter: blur(10px); }
+        .section:nth-child(odd) { background: var(--bg-semi-transparent); backdrop-filter: blur(5px); }
         .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; background: linear-gradient(45deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .section-description { font-size: 1.2rem; text-align: left; margin-bottom: 40px; }
-        .note-link { color: #4ecdc4; text-decoration: underline; font-weight: bold; }
+        .note-link { color: var(--color-link); text-decoration: underline; font-weight: bold; }
         .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 40px; }
-
-        .card { background: rgba(255, 255, 255, 0.9); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3); }
+        .card { background: var(--bg-light); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3); }
         .card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
         .card-icon { font-size: 3rem; margin-bottom: 20px; text-align: center; }
-        .card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #2c3e50; }
-
-        /* イベント情報 */
+        .card h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--color-primary); }
         .event-info { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%); padding: 40px; border-radius: 20px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .event-date { font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; color: #2c3e50; }
+        .event-date { font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; color: var(--color-primary); }
         .event-location { font-size: 1.1rem; color: #555; margin-bottom: 20px; }
-
-        /* タイムスケジュール & 参加者募集 */
         .two-column-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; }
         .schedule-card { background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); }
-        .schedule-card__title { font-size: 1.5rem; font-weight: bold; margin-bottom: 30px; text-align: center; color: #2c3e50; }
+        .schedule-card__title { font-size: 1.5rem; font-weight: bold; margin-bottom: 30px; text-align: center; color: var(--color-primary); }
         .schedule-card__list { display: flex; flex-direction: column; gap: 15px; }
         .schedule-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255,255,255,0.7); border-radius: 10px; }
         .schedule-item__icon { font-size: 1.5rem; }
         .schedule-item__details { flex: 1; }
-        .schedule-item__time { font-weight: bold; color: #2c3e50; }
+        .schedule-item__time { font-weight: bold; color: var(--color-primary); }
         .schedule-item__description { color: #666; }
-
         .recruitment-card { background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%); }
-        .recruitment-card__title { font-size: 1.5rem; font-weight: bold; margin-bottom: 30px; text-align: center; color: #2c3e50; }
+        .recruitment-card__title { font-size: 1.5rem; font-weight: bold; margin-bottom: 30px; text-align: center; color: var(--color-primary); }
         .recruitment-card__content { display: flex; flex-direction: column; gap: 25px; }
         .recruitment-section { background: rgba(255,255,255,0.7); padding: 25px; border-radius: 10px; }
-        .recruitment-section__title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: #2c3e50; display: flex; align-items: center; gap: 8px; }
+        .recruitment-section__title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: var(--color-primary); display: flex; align-items: center; gap: 8px; }
         .recruitment-period { display: flex; flex-direction: column; gap: 12px; }
         .recruitment-period__item { display: flex; align-items: center; gap: 12px; }
         .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
         .dot--green { background: #22c55e; }
         .dot--blue { background: #3b82f6; }
-        .period-title { font-weight: 600; color: #2c3e50; }
+        .period-title { font-weight: 600; color: var(--color-primary); }
         .period-date { color: #666; }
         .recruitment-method { display: flex; align-items: center; gap: 12px; padding: 15px; background: #e0f2fe; border-radius: 8px; border-left: 4px solid #3b82f6; }
         .recruitment-method__icon { font-size: 1.5rem; }
-        .recruitment-method__status { font-weight: 600; color: #2c3e50; }
+        .recruitment-method__status { font-weight: 600; color: var(--color-primary); }
         .recruitment-method__link { font-size: 0.9rem; color: #3b82f6; text-decoration: underline; }
 
         /* --- フッター --- */
         footer { background: rgba(44, 62, 80, 0.9); color: white; text-align: center; padding: 40px 0; backdrop-filter: blur(10px); }
         .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px; }
-        .footer-section h3 { margin-bottom: 15px; color: #4ecdc4; }
+        .footer-section h3 { margin-bottom: 15px; color: var(--color-secondary); }
         .contact-info { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 15px; margin-top: 30px; }
         .contact-details { margin-top: 15px; }
         .contact-details p { font-weight: bold; color: white; margin-bottom: 8px; }
         .copyright { margin-top: 30px; opacity: 0.7; }
-        .slideshow-container { width: 100%; max-width: 400px; background-color: rgba(255, 255, 255, 0.8); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; padding: 15px; margin: 20px auto 0; }
+        .slideshow-container { width: 100%; max-width: 400px; background-color: var(--bg-light); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden; padding: 15px; margin: 20px auto 0; }
         .slideshow-image { width: 100%; height: auto; display: block; border-radius: 4px; }
         .social-links { margin-top: 20px; }
         .social-link { display: inline-flex; align-items: center; margin: 0 10px; text-decoration: none; color: white; }
@@ -185,24 +181,19 @@
         .social-link__text { margin-left: 5px; }
 
         /* --- アニメーション --- */
-        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
-        
         .petal {
             position: absolute;
-            top: 0; /* アニメーション開始位置の基準 */
+            top: 0;
             width: 10px;
             height: 10px;
             background: #ffb3ba;
             border-radius: 50%;
             animation: fall linear infinite;
             opacity: 0.7;
-            /* z-index: -1; は削除しました */
         }
-        
-        @keyframes fall { 
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } 
+        @keyframes fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
         @keyframes gradient { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -220,7 +211,6 @@
             .card { margin: 0 10px; }
             .card h3 { font-size: 1.3rem; }
         }
-
         @media (max-width: 480px) {
             .container { padding: 0 15px; }
             .card { margin: 0 5px; padding: 20px; }
@@ -443,15 +433,24 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // スライドショーの画像を初期化
+
+            // すべての初期化関数をまとめたマスター関数
+            function initializeWebsite() {
+                initSlideshow();
+                initScrollObserver();
+                initPetalAnimation();
+                initThemeSwitcher();
+                initSmoothScroll();
+            }
+
+            // スライドショーの初期化
             function initSlideshow() {
                 const images = [
-                    'photo/IMG_0517.jpg',
-                    'photo/IMG_0519.jpg',
-                    'photo/IMG_0520.jpg',
-                    'photo/IMG_0521.jpg',
-                    'photo/IMG_0522.jpg'
+                    './photo/IMG_0517.jpg',
+                    './photo/IMG_0519.jpg',
+                    './photo/IMG_0520.jpg',
+                    './photo/IMG_0521.jpg',
+                    './photo/IMG_0522.jpg'
                 ];
                 let currentIndex = 0;
                 const slideshowImage = document.getElementById('footerSlideshowImage');
@@ -462,82 +461,73 @@
                     slideshowImage.src = images[currentIndex];
                     currentIndex = (currentIndex + 1) % images.length;
                 }
-
-                changeImage(); // 初回実行
+                changeImage();
                 setInterval(changeImage, 3000);
             }
 
             // スクロール時のフェードインアニメーションを初期化
             function initScrollObserver() {
-                const observerOptions = {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -50px 0px'
-                };
-
-                const observer = new IntersectionObserver((entries) => {
+                const observer = new IntersectionObserver((entries, observer) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('visible');
-                            observer.unobserve(entry.target); // 一度表示されたら監視を解除
+                            observer.unobserve(entry.target);
                         }
                     });
-                }, observerOptions);
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-                document.querySelectorAll('.fade-in').forEach(el => {
-                    observer.observe(el);
-                });
+                document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
             }
 
             // 花びらが舞うアニメーションを初期化
             function initPetalAnimation() {
-                function createPetal() {
+                const petalCount = 15;
+                const body = document.body;
+                
+                for (let i = 0; i < petalCount; i++) {
+                    setTimeout(() => {
+                        createPetal(body);
+                        setInterval(() => createPetal(body), 4000);
+                    }, Math.random() * 4000);
+                }
+                
+                function createPetal(parent) {
                     const petal = document.createElement('div');
                     petal.className = 'petal';
                     petal.style.left = `${Math.random() * 100}vw`;
-                    petal.style.animationDuration = `${Math.random() * 3 + 4}s`; // 4〜7秒
+                    petal.style.animationDuration = `${Math.random() * 3 + 4}s`;
                     petal.style.opacity = (Math.random() * 0.5 + 0.3).toString();
-                    document.body.appendChild(petal);
-
-                    setTimeout(() => {
-                        petal.remove();
-                    }, 7000); // animationDurationの最大値より長く設定
+                    parent.appendChild(petal);
+                    setTimeout(() => petal.remove(), 7000);
                 }
-                setInterval(createPetal, 1500);
             }
-            
+
             // カラーテーマ切り替え機能を初期化
             function initThemeSwitcher() {
                 const colorButtons = document.querySelectorAll('.color-btn');
                 const body = document.body;
                 const themeKey = 'okinawa-bungei-theme';
                 const themes = ['yamabuki', 'mizuiro', 'uguisu', 'monochrome'];
-
-                // 保存されたテーマを読み込み適用
+                
                 const savedTheme = localStorage.getItem(themeKey);
-                if (savedTheme && savedTheme !== 'default') {
+                if (savedTheme) {
                     body.classList.add(savedTheme);
                     colorButtons.forEach(btn => btn.classList.remove('active'));
                     const activeBtn = document.querySelector(`[data-theme="${savedTheme}"]`);
                     if (activeBtn) activeBtn.classList.add('active');
                 } else {
-                     document.querySelector('[data-theme="default"]').classList.add('active');
+                    document.querySelector('[data-theme="default"]').classList.add('active');
                 }
-
+                
                 colorButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         const theme = button.dataset.theme;
-
-                        // アクティブなボタンを更新
                         colorButtons.forEach(btn => btn.classList.remove('active'));
                         button.classList.add('active');
-                        
-                        // bodyのテーマクラスを更新
                         body.classList.remove(...themes);
                         if (theme !== 'default') {
                             body.classList.add(theme);
                         }
-                        
-                        // テーマをlocalStorageに保存
                         localStorage.setItem(themeKey, theme);
                     });
                 });
@@ -551,21 +541,14 @@
                         const targetId = this.getAttribute('href');
                         const targetElement = document.querySelector(targetId);
                         if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                         }
                     });
                 });
             }
 
             // 全ての初期化関数を実行
-            initSlideshow();
-            initScrollObserver();
-            initPetalAnimation();
-            initThemeSwitcher();
-            initSmoothScroll();
+            initializeWebsite();
         });
     </script>
 </body>
