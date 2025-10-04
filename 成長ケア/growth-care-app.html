@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成長ケア・総合チェックリスト</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .option-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      transition: all 0.2s;
+      border: 2px solid #d1d5db; /* gray-300 */
+      background-color: white;
+      color: #374151; /* gray-700 */
+      cursor: pointer;
+    }
+    .option-btn:hover {
+        background-color: #f3f4f6; /* gray-100 */
+    }
+    /* Selected styles */
+    .option-btn.o.selected { background-color: #3b82f6; color: white; border-color: #1d4ed8; } /* blue-500, blue-700 */
+    .option-btn.t.selected { background-color: #facc15; color: #1f2937; border-color: #ca8a04; } /* yellow-400, yellow-600 */
+    .option-btn.x.selected { background-color: #ef4444; color: white; border-color: #b91c1c; } /* red-500, red-700 */
+    .option-btn.q.selected { background-color: #9ca3af; color: white; border-color: #4b5563; } /* gray-400, gray-600 */
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    const Icon = ({ name, size = 24, className = '' }) => {
+      useEffect(() => {
+        lucide.createIcons();
+      });
+      return <i data-lucide={name} width={size} height={size} className={className}></i>;
+    };
+
+    const GrowthCareApp = () => {
+      const checklistData = {
+        '1️⃣ 学習レディネス（基盤スキル）': [
+          '見え方・聞こえ方', '視空間把握', '聴覚認知（聞いたことを理解する力）', '視覚認知（見たことを理解する力）',
+          '同時処理／継次処理', '注意力・集中力', '多動性・衝動性', 'ワーキングメモリ・短期記憶',
+          '言葉を理解する力', '認知の偏り'
+        ],
+        '2️⃣ 個人の保護要因（強み）': [
+          '楽観的な知性', '相談できる大人がいる', '打たれ強い／諦めずに頑張れる', '得意なことがある',
+          '自尊感情がある', '将来の夢がある／考えている', '人と仲良くできる', '困りごとを解決できる',
+          '自分への高い期待', '目的を持っている', '健康的で伝統的な信念・基準', 'セルフコントロール力がある'
+        ],
+        '3️⃣ 個人のリスク要因（弱み）': [
+          '強い衝動性', '時間管理ができない', '非行グループと遊ぶ', '嘘をつく', '薬物・アルコールに興味／断れない',
+          '暴力（加害・被害）', 'ストレスに弱い', '反社会的行動・信念', '感情コントロール困難', '罪悪感がない',
+          '仲間外れ・いじめの経験', '誤学習・粗い素行'
+        ],
+        '4️⃣ 多重知能（MI理論：得意の見方）': [
+          '言語・語学的知能', '論理・数学的知能', '視覚・空間的知能', '身体・運動的知能',
+          '音楽・リズム的知能', '対人的知能', '内省的知能', '博物学的知能'
+        ],
+        '5️⃣ 適応機制（心のSOS）': [
+          '攻撃（物・人に当たる）', '昇華（望ましい形に置き換える）', '逃避（現実から目をそらす）',
+          '退行（幼い行動に戻る／依存）', '同一化（憧れの人物の模倣）', '合理化（理由をつけて正当化）'
+        ],
+        '6️⃣ 脳の三層構造（支配している状態）': [
+          ' 爬虫脳（生存本能：安全・安心の不足）', ' 哺乳脳（感情脳：不安・怒り・依存）', ' 人間脳（理性脳：学習・計画・創造）'
+        ],
+        '7️⃣ マズローの欲求段階': [
+          '生理的欲求（睡眠・食欲・体調）', '安全欲求（安心できる環境・人間関係）', '所属と愛の欲求（仲間・つながり）',
+          '承認欲求（認められる・役立つ）', '自己実現欲求（やりたいことの追求）'
+        ],
+        '8️⃣ 心の状態': ['表出、身体化', '感情', '欲求'],
+        '9️⃣ 成長バランスシート（BS：資本）': {
+          ' 経済資本': ['学習・活動に必要な経済的余裕', '基本的な生活用品・食事・衣類', '教育費（教材・進学費用）の準備', '家計への不安の有無'],
+          ' 文化資本': ['本・新聞・学習教材へのアクセス', '芸術・文化・地域行事に触れる機会', '習い事・趣味を通じた学びの経験', '家族・地域に学びを重視する雰囲気'],
+          ' 社会関係資本': ['相談できる大人がいる', '信頼できる友人・仲間', '地域や学校での居場所感', 'キャリア形成に役立つロールモデル']
+        }
+      };
+
+      const [selections, setSelections] = useState({});
+      const [notes, setNotes] = useState({});
+      const [familyComposition, setFamilyComposition] = useState('');
+      const [freeInputs, setFreeInputs] = useState({
+        発達: '', 勉強: '', 人間関係: '', 経済基盤: '', 将来設計: '',
+        icfDisability: '', icfPersonalInfo: '', icfDevelopment: '', icfParticipation: '', icfEnvironment: ''
+      }); 
+      const [savedData, setSavedData] = useState([]);
+      const [activeTab, setActiveTab] = useState('checklist');
+      const [printFamily, setPrintFamily] = useState(true);
+      const fileInputRef = useRef(null);
+
+      useEffect(() => {
+        lucide.createIcons();
+      }, [activeTab, savedData]);
+
+      const handleSelectionChange = (key, value) => {
+        setSelections(prev => ({ ...prev, [key]: prev[key] === value ? null : value }));
+      };
+
+      const handleNoteChange = (category, value) => {
+        setNotes(prev => ({ ...prev, [category]: value }));
+      };
+      
+      const updateFreeInput = (field, value) => {
+        setFreeInputs(prev => ({ ...prev, [field]: value }));
+      };
+
+      const saveData = () => {
+        const timestamp = new Date().toLocaleString('ja-JP');
+        const newData = { id: Date.now(), timestamp, selections: { ...selections }, notes: { ...notes }, familyComposition, freeInputs: { ...freeInputs } };
+        setSavedData(prev => [newData, ...prev]);
+        alert(`データを保存しました: ${timestamp}`);
+      };
+
+      const loadData = (data) => {
+        setSelections(data.selections || {});
+        setNotes(data.notes || {});
+        setFamilyComposition(data.familyComposition || '');
+        setFreeInputs(data.freeInputs || {});
+        setActiveTab('checklist');
+        alert(`データを読み込みました: ${data.timestamp}`);
+      };
+
+      const deleteData = (id) => {
+        if (confirm('このデータを削除しますか？')) {
+          setSavedData(prev => prev.filter(item => item.id !== id));
+        }
+      };
+
+      const exportData = () => {
+        const dataStr = JSON.stringify(savedData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `growth_care_data_${new Date().toISOString().split('T')[0]}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+      };
+
+      const handleImportClick = () => {
+        fileInputRef.current.click();
+      };
+
+      const handleFileImport = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const importedData = JSON.parse(e.target.result);
+            if (Array.isArray(importedData)) {
+              const existingIds = new Set(savedData.map(d => d.id));
+              const newData = importedData.filter(d => !existingIds.has(d.id));
+              setSavedData(prev => [...newData, ...prev].sort((a, b) => (b.id - a.id)));
+              alert(`${newData.length}件のデータをインポートしました。`);
+              setActiveTab('saved');
+            } else {
+              alert('無効なファイル形式です。配列形式のJSONを選択してください。');
+            }
+          } catch (error) {
+            alert('ファイルの読み込みに失敗しました。');
+            console.error("File import error:", error);
+          }
+        };
+        reader.readAsText(file);
+        event.target.value = null;
+      };
+
+      const generatePrintHTML = () => {
+        const getMark = (cat, item, sub) => selections[sub ? `${cat}-${sub}-${item}` : `${cat}-${item}`] || '';
+
+        const cat1_4 = Object.entries(checklistData).slice(0, 4).map(([cat, items]) => `
+          <div class="card">
+            <h3>${cat}</h3>
+            <table>${items.map(item => `<tr><td>${item}</td><td class="mark">${getMark(cat, item)}</td></tr>`).join('')}</table>
+            <h4>備考</h4><div class="note">${notes[cat] || ''}</div>
+          </div>`).join('');
+
+        const cat5_8 = Object.entries(checklistData).slice(4, 8).map(([cat, items]) => `
+          <div class="card">
+            <h3>${cat}</h3>
+            <table>${items.map(item => `<tr><td>${item}</td><td class="mark">${getMark(cat, item)}</td></tr>`).join('')}</table>
+            <h4>備考</h4><div class="note">${notes[cat] || ''}</div>
+          </div>`).join('');
+
+        const cat9_entry = Object.entries(checklistData)[8];
+        const cat9 = `
+          <div class="card-full">
+            <h3>${cat9_entry[0]}</h3>
+            <div class="grid-3-col">${Object.entries(cat9_entry[1]).map(([sub, items]) => `
+              <div>
+                <h4>${sub}</h4>
+                <table>${items.map(item => `<tr><td>${item}</td><td class="mark">${getMark(cat9_entry[0], item, sub)}</td></tr>`).join('')}</table>
+              </div>`).join('')}</div>
+          </div>`;
+
+        const familyHTML = printFamily ? `
+          <div class="card-full">
+            <h3>👨‍👩‍👧‍👦 家族構成</h3>
+            <div class="note">${familyComposition.replace(/\n/g, '<br>')}</div>
+          </div>` : '';
+
+        const freeInputsHTML = `
+          <div class="grid-2-col" style="${printFamily ? 'margin-top: 20px;' : ''}">
+            <div class="card">
+              <h3>🧠 基本情報</h3>
+              ${Object.entries(freeInputs).slice(0,5).map(([key, val]) => `<p><strong>${key}:</strong> ${val}</p>`).join('')}
+            </div>
+            <div class="card">
+              <h3>❤️ ICF項目</h3>
+              ${Object.entries(freeInputs).slice(5,10).map(([key, val]) => `<p><strong>${key}:</strong> ${val}</p>`).join('')}
+            </div>
+          </div>`;
+
+        return `
+          <!DOCTYPE html>
+          <html lang="ja">
+          <head>
+            <title>印刷プレビュー</title>
+            <style>
+              @page { size: A3 landscape; margin: 10mm; }
+              body { font-family: system-ui, sans-serif; color: #111; }
+              .page { page-break-after: always; }
+              h1 { text-align: center; margin-bottom: 1rem; }
+              h3 { font-size: 1.1rem; border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-top: 0; }
+              h4 { font-size: 1rem; margin: 0.5rem 0 0.2rem; }
+              .grid-4-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+              .grid-3-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+              .grid-2-col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+              .card, .card-full { border: 1px solid #ddd; padding: 10px; border-radius: 6px; page-break-inside: avoid; }
+              .card-full { grid-column: 1 / -1; }
+              table { width: 100%; border-collapse: collapse; }
+              td { padding: 4px; border-bottom: 1px solid #eee; vertical-align: top; }
+              td.mark { text-align: center; font-weight: bold; width: 40px; }
+              .note { white-space: pre-wrap; background: #f9f9f9; padding: 8px; border-radius: 4px; min-height: 50px; }
+              p { margin: 0.2rem 0; }
+              strong { text-transform: capitalize; }
+            </style>
+          </head>
+          <body>
+            <div class="page">
+              <h1>成長ケア・総合チェックリスト</h1>
+              <div class="grid-4-col">${cat1_4}</div>
+            </div>
+            <div class="page">
+              <div class="grid-4-col">${cat5_8}</div>
+              <div style="margin-top: 20px;">${cat9}</div>
+            </div>
+            <div class="page">
+              ${familyHTML}
+              ${freeInputsHTML}
+            </div>
+          </body>
+          </html>`;
+      };
+
+      const handlePrint = () => {
+        const printHtml = generatePrintHTML();
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(printHtml);
+        printWindow.document.close();
+        setTimeout(() => { printWindow.print(); }, 250);
+      };
+
+      const renderSelectionItem = (category, item, subcategory = null) => {
+        const key = subcategory ? `${category}-${subcategory}-${item}` : `${category}-${item}`;
+        const currentValue = selections[key];
+        const options = [{val: '○', cls: 'o'}, {val: '△', cls: 't'}, {val: '×', cls: 'x'}, {val: '？', cls: 'q'}];
+        return (
+          <div key={key} className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors">
+            <span className="text-sm text-gray-700 mr-4">{item}</span>
+            <div className="flex items-center space-x-2">
+              {options.map(opt => (
+                <button key={opt.val} onClick={() => handleSelectionChange(key, opt.val)} className={`option-btn ${opt.cls} ${currentValue === opt.val ? 'selected' : ''}`}>
+                  {opt.val}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+      };
+      
+      const renderCategoryCard = (category, items) => {
+        const isBalanceSheet = category.startsWith('9️⃣');
+        return (
+          <div key={category} className="bg-white rounded-xl shadow-lg p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">{category}</h3>
+            {isBalanceSheet ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {Object.entries(items).map(([sub, subItems]) => (
+                  <div key={sub}> 
+                    <h4 className="font-semibold text-gray-700 mb-2">{sub}</h4>
+                    <div className="space-y-1">{subItems.map(item => renderSelectionItem(category, item, sub))}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {items.map(item => renderSelectionItem(category, item))}
+                <div className="mt-4">
+                  <label className="block text-sm font-medium text-gray-600 mb-1">備考</label>
+                  <textarea value={notes[category] || ''} onChange={(e) => handleNoteChange(category, e.target.value)} className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="2" placeholder="備考を記入..." />
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      };
+
+      return (
+        <div className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4`}>
+          <div className="max-w-6xl mx-auto">
+            <input type="file" accept=".json" ref={fileInputRef} onChange={handleFileImport} style={{ display: 'none' }} />
+            <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+              <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">成長ケア・総合チェックリスト</h1>
+              <div className="flex justify-center items-center gap-4 flex-wrap">
+                <button onClick={saveData} className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"><Icon name="save" size={18} /> <span>保存</span></button>
+                <button onClick={handleImportClick} className="flex items-center space-x-2 px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"><Icon name="upload" size={18} /> <span>インポート</span></button>
+                <button onClick={exportData} className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"><Icon name="download" size={18} /> <span>エクスポート</span></button>
+                <div className="flex items-center gap-4 border-l pl-4">
+                  <button onClick={handlePrint} className="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"><Icon name="printer" size={18} /> <span>印刷 / PDF</span></button>
+                  <div className="flex items-center space-x-2">
+                    <input type="checkbox" id="printFamily" checked={printFamily} onChange={(e) => setPrintFamily(e.target.checked)} className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"/>
+                    <label htmlFor="printFamily" className="text-sm text-gray-700 select-none">家族構成を印刷</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg mb-6">
+              <div className="flex border-b flex-wrap">
+                <button onClick={() => setActiveTab('checklist')} className={`flex items-center space-x-2 px-6 py-3 font-medium transition-colors ${activeTab === 'checklist' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}><Icon name="file-text" size={20} /> <span>チェックリスト</span></button>
+                <button onClick={() => setActiveTab('family')} className={`flex items-center space-x-2 px-6 py-3 font-medium transition-colors ${activeTab === 'family' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}><Icon name="users" size={20} /> <span>家族構成</span></button>
+                <button onClick={() => setActiveTab('freeInput')} className={`flex items-center space-x-2 px-6 py-3 font-medium transition-colors ${activeTab === 'freeInput' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}><Icon name="user" size={20} /> <span>自由入力</span></button>
+                <button onClick={() => setActiveTab('saved')} className={`flex items-center space-x-2 px-6 py-3 font-medium transition-colors ${activeTab === 'saved' ? 'border-b-2 border-blue-500 text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}><Icon name="calendar" size={20} /> <span>保存データ ({savedData.length})</span></button>
+              </div>
+            </div>
+
+            <div style={{display: activeTab === 'checklist' ? 'block' : 'none'}} className="space-y-6">
+              {Object.entries(checklistData).map(([category, items]) => renderCategoryCard(category, items))}
+            </div>
+            
+            <div style={{display: activeTab === 'family' ? 'block' : 'none'}}>
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center"><Icon name="users" className="mr-2" size={24} /> 家族構成</h3>
+                <textarea value={familyComposition} onChange={(e) => setFamilyComposition(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="10" placeholder="家族構成について記入してください。（例：父、母、本人、弟）" />
+              </div>
+            </div>
+
+            <div style={{display: activeTab === 'freeInput' ? 'grid' : 'none'}} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center"><Icon name="brain" className="mr-2" size={24} /> 基本情報</h3>
+                  <div className="space-y-4">
+                    {Object.keys(freeInputs).slice(0,5).map(key => <div key={key}><label className="block text-sm font-medium text-gray-700 mb-2">{key}</label><textarea value={freeInputs[key]} onChange={(e) => updateFreeInput(key, e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="3" placeholder={`${key}に関する情報を記入...`}></textarea></div>)}
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl shadow-lg p-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center"><Icon name="heart" className="mr-2" size={24} /> ICF項目</h3>
+                  <div className="space-y-4">
+                    {Object.keys(freeInputs).slice(5,10).map(key => <div key={key}><label className="block text-sm font-medium text-gray-700 mb-2">{key}</label><textarea value={freeInputs[key]} onChange={(e) => updateFreeInput(key, e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" rows="3" placeholder={`${key}に関する情報を記入...`}></textarea></div>)}
+                  </div>
+                </div>
+            </div>
+
+            <div style={{display: activeTab === 'saved' ? 'block' : 'none'}}>
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center"><Icon name="calendar" className="mr-2" size={24} /> 保存されたデータ</h3>
+                {savedData.length === 0 ? <p className="text-gray-500 text-center py-8">保存されたデータがありません</p> : <div className="space-y-4">{savedData.map((data) => <div key={data.id} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"><div className="flex justify-between items-center"><div><h4 className="font-medium text-gray-800">{data.timestamp}</h4></div><div className="flex space-x-2"><button onClick={() => loadData(data)} className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors">読み込み</button><button onClick={() => deleteData(data.id)} className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors">削除</button></div></div></div>)}</div>}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<GrowthCareApp />, document.getElementById('root'));
+  </script>
+</body>
+</html>
