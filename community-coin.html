@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文芸コイン - 沖縄文芸フリマ コミュニティ通貨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(78, 205, 196, 0.3); } 50% { box-shadow: 0 0 40px rgba(78, 205, 196, 0.6); } }
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+        .animate-fade-in { animation: fadeInUp 0.5s ease-out forwards; }
+        .shimmer-bg {
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .coin-icon {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 1.2rem; color: #764ba2;
+            box-shadow: 0 4px 15px rgba(246, 211, 101, 0.4);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4ecdc4, #44a8a0);
+            color: white; border: none; padding: 12px 24px;
+            border-radius: 12px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; font-size: 1rem;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white; border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px; border-radius: 12px; font-weight: 500;
+            cursor: pointer; transition: all 0.3s ease; font-size: 0.9rem;
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.25); }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white; border: none; padding: 10px 20px;
+            border-radius: 12px; font-weight: 500; cursor: pointer;
+            transition: all 0.3s ease; font-size: 0.9rem;
+        }
+        .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
+        input, textarea {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white; padding: 12px 16px; border-radius: 12px;
+            font-size: 1rem; width: 100%; transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        input:focus, textarea:focus {
+            outline: none; border-color: #4ecdc4;
+            box-shadow: 0 0 15px rgba(78, 205, 196, 0.3);
+        }
+        input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.4); }
+        .tab-active {
+            background: rgba(78, 205, 196, 0.3) !important;
+            border-color: #4ecdc4 !important;
+        }
+        .tx-in { border-left: 3px solid #4ecdc4; }
+        .tx-out { border-left: 3px solid #f093fb; }
+        .tx-mint { border-left: 3px solid #f6d365; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useCallback, useRef } = React;
+
+        // ========== ユーティリティ ==========
+        const STORAGE_KEY = 'bungei-coin-data';
+        const TRANSFER_PREFIX = 'BNG-TX-';
+
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+        }
+
+        function generateWalletAddress() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let addr = 'BNG-';
+            for (let i = 0; i < 12; i++) {
+                if (i > 0 && i % 4 === 0) addr += '-';
+                addr += chars[Math.floor(Math.random() * chars.length)];
+            }
+            return addr;
+        }
+
+        function formatDate(ts) {
+            const d = new Date(ts);
+            return `${d.getFullYear()}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getDate().toString().padStart(2,'0')} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+        }
+
+        function encodeTransferCode(sender, amount, memo, id) {
+            const data = JSON.stringify({ s: sender, a: amount, m: memo, id: id, t: Date.now() });
+            return TRANSFER_PREFIX + btoa(unescape(encodeURIComponent(data)));
+        }
+
+        function decodeTransferCode(code) {
+            try {
+                if (!code.startsWith(TRANSFER_PREFIX)) return null;
+                const raw = code.slice(TRANSFER_PREFIX.length);
+                return JSON.parse(decodeURIComponent(escape(atob(raw))));
+            } catch { return null; }
+        }
+
+        function loadData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                return raw ? JSON.parse(raw) : null;
+            } catch { return null; }
+        }
+
+        function saveData(data) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // ========== コインアイコン ==========
+        function CoinIcon({ size = 48, className = '' }) {
+            return (
+                <div className={`inline-flex items-center justify-center rounded-full ${className}`}
+                     style={{
+                         width: size, height: size,
+                         background: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
+                         boxShadow: '0 4px 15px rgba(246, 211, 101, 0.4)',
+                         fontSize: size * 0.4, fontWeight: 900, color: '#764ba2'
+                     }}>
+                    文
+                </div>
+            );
+        }
+
+        // ========== ヘッダー ==========
+        function Header({ wallet, onBack }) {
+            return (
+                <header className="glass sticky top-0 z-50 px-4 py-3">
+                    <div className="max-w-4xl mx-auto flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <a href="index.html" className="text-white/60 hover:text-white transition text-sm"
+                               onClick={onBack}>
+                                ← 文芸フリマ
+                            </a>
+                            <div className="w-px h-6 bg-white/20"></div>
+                            <div className="flex items-center gap-2">
+                                <CoinIcon size={32} />
+                                <div>
+                                    <h1 className="text-white font-bold text-lg leading-tight">文芸コイン</h1>
+                                    <p className="text-white/50 text-xs">BNG - Community Currency</p>
+                                </div>
+                            </div>
+                        </div>
+                        {wallet && (
+                            <div className="text-right hidden sm:block">
+                                <p className="text-white/50 text-xs">ウォレット</p>
+                                <p className="text-white/80 text-xs font-mono">{wallet.address}</p>
+                            </div>
+                        )}
+                    </div>
+                </header>
+            );
+        }
+
+        // ========== ウォレット作成画面 ==========
+        function WalletSetup({ onCreate }) {
+            const [name, setName] = useState('');
+            const [step, setStep] = useState(0);
+
+            const handleCreate = () => {
+                if (!name.trim()) return;
+                const wallet = {
+                    address: generateWalletAddress(),
+                    name: name.trim(),
+                    balance: 0,
+                    createdAt: Date.now(),
+                    transactions: [],
+                    usedTransferCodes: []
+                };
+                onCreate(wallet);
+            };
+
+            return (
+                <div className="min-h-[80vh] flex items-center justify-center px-4">
+                    <div className="glass rounded-3xl p-8 max-w-md w-full animate-fade-in text-center">
+                        {step === 0 ? (
+                            <>
+                                <div className="animate-float mb-6">
+                                    <CoinIcon size={80} className="mx-auto" />
+                                </div>
+                                <h2 className="text-white text-2xl font-bold mb-2">文芸コイン</h2>
+                                <p className="text-white/60 text-sm mb-2">Bungei Coin (BNG)</p>
+                                <div className="glass-dark rounded-2xl p-4 mb-6 text-left">
+                                    <p className="text-white/80 text-sm leading-relaxed">
+                                        沖縄文芸フリマのコミュニティ通貨です。
+                                        イベントでの作品売買や、コミュニティ内での
+                                        感謝・応援の気持ちを送り合うことができます。
+                                    </p>
+                                </div>
+                                <button className="btn-primary w-full text-lg py-4" onClick={() => setStep(1)}>
+                                    ウォレットを作成する
+                                </button>
+                                <button className="btn-secondary w-full mt-3" onClick={() => setStep(2)}>
+                                    既存のデータを復元する
+                                </button>
+                            </>
+                        ) : step === 1 ? (
+                            <>
+                                <CoinIcon size={56} className="mx-auto mb-4" />
+                                <h2 className="text-white text-xl font-bold mb-1">ウォレット作成</h2>
+                                <p className="text-white/50 text-sm mb-6">あなたの名前を入力してください</p>
+                                <input
+                                    type="text" placeholder="名前（ニックネーム可）"
+                                    value={name} onChange={e => setName(e.target.value)}
+                                    className="mb-4 text-center" maxLength={20}
+                                    onKeyDown={e => e.key === 'Enter' && handleCreate()}
+                                />
+                                <button className="btn-primary w-full" onClick={handleCreate}
+                                        disabled={!name.trim()}>
+                                    作成する
+                                </button>
+                                <button className="btn-secondary w-full mt-3" onClick={() => setStep(0)}>
+                                    戻る
+                                </button>
+                            </>
+                        ) : (
+                            <RestoreWallet onCreate={onCreate} onBack={() => setStep(0)} />
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // ========== データ復元 ==========
+        function RestoreWallet({ onCreate, onBack }) {
+            const fileRef = useRef(null);
+            const [error, setError] = useState('');
+
+            const handleImport = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        if (data.address && data.name && typeof data.balance === 'number') {
+                            onCreate(data);
+                        } else {
+                            setError('無効なウォレットデータです');
+                        }
+                    } catch {
+                        setError('ファイルの読み込みに失敗しました');
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            return (
+                <>
+                    <CoinIcon size={56} className="mx-auto mb-4" />
+                    <h2 className="text-white text-xl font-bold mb-1">データ復元</h2>
+                    <p className="text-white/50 text-sm mb-6">
+                        バックアップファイルを選択してください
+                    </p>
+                    {error && (
+                        <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-3 mb-4">
+                            <p className="text-red-300 text-sm">{error}</p>
+                        </div>
+                    )}
+                    <input type="file" accept=".json" ref={fileRef}
+                           onChange={handleImport} className="hidden" />
+                    <button className="btn-primary w-full"
+                            onClick={() => fileRef.current?.click()}>
+                        ファイルを選択
+                    </button>
+                    <button className="btn-secondary w-full mt-3" onClick={onBack}>
+                        戻る
+                    </button>
+                </>
+            );
+        }
+
+        // ========== メインダッシュボード ==========
+        function Dashboard({ wallet, setWallet }) {
+            const [tab, setTab] = useState('home');
+
+            const updateWallet = useCallback((updater) => {
+                setWallet(prev => {
+                    const next = typeof updater === 'function' ? updater(prev) : updater;
+                    saveData(next);
+                    return next;
+                });
+            }, [setWallet]);
+
+            const tabs = [
+                { id: 'home', label: 'ホーム', icon: '🏠' },
+                { id: 'send', label: '送る', icon: '📤' },
+                { id: 'receive', label: '受取', icon: '📥' },
+                { id: 'history', label: '履歴', icon: '📋' },
+                { id: 'settings', label: '設定', icon: '⚙️' },
+            ];
+
+            return (
+                <div className="max-w-4xl mx-auto px-4 pb-24">
+                    {tab === 'home' && <HomeTab wallet={wallet} setTab={setTab} />}
+                    {tab === 'send' && <SendTab wallet={wallet} updateWallet={updateWallet} />}
+                    {tab === 'receive' && <ReceiveTab wallet={wallet} updateWallet={updateWallet} />}
+                    {tab === 'history' && <HistoryTab wallet={wallet} />}
+                    {tab === 'settings' && <SettingsTab wallet={wallet} updateWallet={updateWallet} setWallet={setWallet} />}
+
+                    {/* ボトムナビ */}
+                    <nav className="fixed bottom-0 left-0 right-0 glass border-t border-white/10">
+                        <div className="max-w-4xl mx-auto flex">
+                            {tabs.map(t => (
+                                <button key={t.id}
+                                    className={`flex-1 py-3 flex flex-col items-center gap-1 transition
+                                        ${tab === t.id ? 'text-[#4ecdc4]' : 'text-white/50 hover:text-white/80'}`}
+                                    onClick={() => setTab(t.id)}>
+                                    <span className="text-lg">{t.icon}</span>
+                                    <span className="text-xs font-medium">{t.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </nav>
+                </div>
+            );
+        }
+
+        // ========== ホームタブ ==========
+        function HomeTab({ wallet, setTab }) {
+            const recentTx = wallet.transactions.slice(-3).reverse();
+            return (
+                <div className="py-6 space-y-6 animate-fade-in">
+                    {/* 残高カード */}
+                    <div className="glass rounded-3xl p-6 animate-pulse-glow">
+                        <div className="flex items-center justify-between mb-4">
+                            <div>
+                                <p className="text-white/50 text-sm">総残高</p>
+                                <p className="text-white/40 text-xs font-mono mt-1">{wallet.address}</p>
+                            </div>
+                            <CoinIcon size={42} className="animate-float" />
+                        </div>
+                        <div className="flex items-end gap-2 mb-4">
+                            <span className="text-white text-5xl font-black tracking-tight">
+                                {wallet.balance.toLocaleString()}
+                            </span>
+                            <span className="text-white/60 text-lg font-bold mb-1">BNG</span>
+                        </div>
+                        <div className="flex gap-3">
+                            <button className="btn-primary flex-1 flex items-center justify-center gap-2"
+                                    onClick={() => setTab('send')}>
+                                <span>📤</span> 送る
+                            </button>
+                            <button className="btn-secondary flex-1 flex items-center justify-center gap-2"
+                                    onClick={() => setTab('receive')}>
+                                <span>📥</span> 受け取る
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* ようこそメッセージ */}
+                    <div className="glass-dark rounded-2xl p-5">
+                        <h3 className="text-white font-bold mb-2">ようこそ、{wallet.name}さん</h3>
+                        <p className="text-white/60 text-sm leading-relaxed">
+                            文芸コイン(BNG)は沖縄文芸フリマのコミュニティ通貨です。
+                            作品の売買や、クリエイターへの応援に使えます。
+                        </p>
+                    </div>
+
+                    {/* 最近の取引 */}
+                    <div>
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-white font-bold">最近の取引</h3>
+                            {wallet.transactions.length > 0 && (
+                                <button className="text-[#4ecdc4] text-sm" onClick={() => setTab('history')}>
+                                    すべて見る →
+                                </button>
+                            )}
+                        </div>
+                        {recentTx.length === 0 ? (
+                            <div className="glass-dark rounded-2xl p-6 text-center">
+                                <p className="text-white/40 text-sm">まだ取引がありません</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-2">
+                                {recentTx.map(tx => (
+                                    <TransactionItem key={tx.id} tx={tx} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* 使い方ガイド */}
+                    <div className="glass rounded-2xl p-5">
+                        <h3 className="text-white font-bold mb-3">使い方</h3>
+                        <div className="space-y-3">
+                            {[
+                                { icon: '📤', title: '送る', desc: 'トランスファーコードを生成して相手に共有' },
+                                { icon: '📥', title: '受け取る', desc: 'もらったコードを入力してコインを受け取り' },
+                                { icon: '🏦', title: '発行', desc: '設定画面から管理者がコインを発行可能' },
+                                { icon: '💾', title: 'バックアップ', desc: '設定からデータをエクスポート・復元' },
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-start gap-3">
+                                    <span className="text-2xl">{item.icon}</span>
+                                    <div>
+                                        <p className="text-white font-medium text-sm">{item.title}</p>
+                                        <p className="text-white/50 text-xs">{item.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ========== 送金タブ ==========
+        function SendTab({ wallet, updateWallet }) {
+            const [amount, setAmount] = useState('');
+            const [memo, setMemo] = useState('');
+            const [code, setCode] = useState('');
+            const [error, setError] = useState('');
+
+            const handleSend = () => {
+                setError('');
+                const num = parseInt(amount, 10);
+                if (!num || num <= 0) {
+                    setError('有効な金額を入力してください');
+                    return;
+                }
+                if (num > wallet.balance) {
+                    setError('残高が不足しています');
+                    return;
+                }
+                const txId = generateId();
+                const transferCode = encodeTransferCode(wallet.address, num, memo, txId);
+                const tx = {
+                    id: txId,
+                    type: 'send',
+                    amount: num,
+                    memo: memo || '',
+                    timestamp: Date.now(),
+                    transferCode: transferCode,
+                    status: 'pending'
+                };
+                updateWallet(prev => ({
+                    ...prev,
+                    balance: prev.balance - num,
+                    transactions: [...prev.transactions, tx]
+                }));
+                setCode(transferCode);
+            };
+
+            const handleCopy = () => {
+                navigator.clipboard.writeText(code).catch(() => {});
+            };
+
+            if (code) {
+                return (
+                    <div className="py-6 space-y-6 animate-fade-in">
+                        <div className="glass rounded-3xl p-6 text-center">
+                            <div className="text-4xl mb-4">✅</div>
+                            <h2 className="text-white text-xl font-bold mb-2">トランスファーコード生成完了</h2>
+                            <p className="text-white/60 text-sm mb-4">
+                                以下のコードを受取人に共有してください
+                            </p>
+                            <div className="glass-dark rounded-2xl p-4 mb-4">
+                                <p className="text-white/50 text-xs mb-2">送金額</p>
+                                <p className="text-white text-2xl font-bold">{parseInt(amount).toLocaleString()} BNG</p>
+                                {memo && <p className="text-white/40 text-sm mt-1">メモ: {memo}</p>}
+                            </div>
+                            <div className="glass-dark rounded-2xl p-4 mb-4">
+                                <p className="text-white/50 text-xs mb-2">トランスファーコード</p>
+                                <p className="text-[#4ecdc4] text-xs font-mono break-all select-all leading-relaxed">
+                                    {code}
+                                </p>
+                            </div>
+                            <button className="btn-primary w-full mb-3" onClick={handleCopy}>
+                                コードをコピー
+                            </button>
+                            <button className="btn-secondary w-full" onClick={() => { setCode(''); setAmount(''); setMemo(''); }}>
+                                新しい送金
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="py-6 space-y-6 animate-fade-in">
+                    <div className="glass rounded-3xl p-6">
+                        <h2 className="text-white text-xl font-bold mb-1">コインを送る</h2>
+                        <p className="text-white/50 text-sm mb-6">
+                            トランスファーコードを生成して相手に共有します
+                        </p>
+
+                        <div className="glass-dark rounded-2xl p-4 mb-6 flex items-center justify-between">
+                            <span className="text-white/50 text-sm">利用可能残高</span>
+                            <span className="text-white font-bold">{wallet.balance.toLocaleString()} BNG</span>
+                        </div>
+
+                        {error && (
+                            <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-3 mb-4">
+                                <p className="text-red-300 text-sm">{error}</p>
+                            </div>
+                        )}
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="text-white/60 text-sm block mb-1">送金額 (BNG)</label>
+                                <input type="number" placeholder="0" value={amount}
+                                       onChange={e => setAmount(e.target.value)}
+                                       min="1" max={wallet.balance} />
+                            </div>
+                            <div className="flex gap-2 flex-wrap">
+                                {[10, 50, 100, 500].map(v => (
+                                    <button key={v} className="btn-secondary text-sm py-2 px-4"
+                                            onClick={() => setAmount(String(v))}
+                                            disabled={v > wallet.balance}>
+                                        {v} BNG
+                                    </button>
+                                ))}
+                            </div>
+                            <div>
+                                <label className="text-white/60 text-sm block mb-1">メモ（任意）</label>
+                                <input type="text" placeholder="例: 作品購入代金、応援など"
+                                       value={memo} onChange={e => setMemo(e.target.value)}
+                                       maxLength={50} />
+                            </div>
+                            <button className="btn-primary w-full text-lg py-4" onClick={handleSend}
+                                    disabled={!amount || parseInt(amount) <= 0}>
+                                トランスファーコードを生成
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ========== 受取タブ ==========
+        function ReceiveTab({ wallet, updateWallet }) {
+            const [inputCode, setInputCode] = useState('');
+            const [result, setResult] = useState(null);
+            const [error, setError] = useState('');
+
+            const handleReceive = () => {
+                setError('');
+                setResult(null);
+                const decoded = decodeTransferCode(inputCode.trim());
+                if (!decoded) {
+                    setError('無効なトランスファーコードです');
+                    return;
+                }
+                if (decoded.s === wallet.address) {
+                    setError('自分自身への送金は受け取れません');
+                    return;
+                }
+                if (wallet.usedTransferCodes.includes(decoded.id)) {
+                    setError('このコードは既に使用済みです');
+                    return;
+                }
+                const tx = {
+                    id: generateId(),
+                    type: 'receive',
+                    amount: decoded.a,
+                    memo: decoded.m || '',
+                    from: decoded.s,
+                    timestamp: Date.now(),
+                    originalTxId: decoded.id
+                };
+                updateWallet(prev => ({
+                    ...prev,
+                    balance: prev.balance + decoded.a,
+                    transactions: [...prev.transactions, tx],
+                    usedTransferCodes: [...prev.usedTransferCodes, decoded.id]
+                }));
+                setResult({ amount: decoded.a, memo: decoded.m });
+                setInputCode('');
+            };
+
+            return (
+                <div className="py-6 space-y-6 animate-fade-in">
+                    <div className="glass rounded-3xl p-6">
+                        <h2 className="text-white text-xl font-bold mb-1">コインを受け取る</h2>
+                        <p className="text-white/50 text-sm mb-6">
+                            送金者から受け取ったトランスファーコードを入力してください
+                        </p>
+
+                        {result && (
+                            <div className="bg-green-500/20 border border-green-500/50 rounded-2xl p-4 mb-4 text-center animate-fade-in">
+                                <div className="text-3xl mb-2">🎉</div>
+                                <p className="text-green-300 font-bold text-lg">
+                                    {result.amount.toLocaleString()} BNG を受け取りました！
+                                </p>
+                                {result.memo && (
+                                    <p className="text-green-300/60 text-sm mt-1">メモ: {result.memo}</p>
+                                )}
+                            </div>
+                        )}
+
+                        {error && (
+                            <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-3 mb-4">
+                                <p className="text-red-300 text-sm">{error}</p>
+                            </div>
+                        )}
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="text-white/60 text-sm block mb-1">トランスファーコード</label>
+                                <textarea placeholder="BNG-TX-... から始まるコードを貼り付け"
+                                          value={inputCode}
+                                          onChange={e => setInputCode(e.target.value)}
+                                          rows={4}
+                                          className="resize-none" />
+                            </div>
+                            <button className="btn-primary w-full" onClick={handleReceive}
+                                    disabled={!inputCode.trim()}>
+                                受け取る
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* 自分のウォレットアドレス */}
+                    <div className="glass-dark rounded-2xl p-5 text-center">
+                        <p className="text-white/50 text-sm mb-2">あなたのウォレットアドレス</p>
+                        <p className="text-white font-mono text-sm select-all">{wallet.address}</p>
+                        <p className="text-white/40 text-xs mt-2">{wallet.name}</p>
+                    </div>
+                </div>
+            );
+        }
+
+        // ========== 取引アイテム ==========
+        function TransactionItem({ tx }) {
+            const typeConfig = {
+                send: { label: '送金', color: 'text-pink-300', sign: '-', borderClass: 'tx-out', icon: '📤' },
+                receive: { label: '受取', color: 'text-emerald-300', sign: '+', borderClass: 'tx-in', icon: '📥' },
+                mint: { label: '発行', color: 'text-yellow-300', sign: '+', borderClass: 'tx-mint', icon: '🏦' },
+            };
+            const config = typeConfig[tx.type] || typeConfig.receive;
+            return (
+                <div className={`glass-dark rounded-xl p-4 ${config.borderClass}`}>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <span className="text-xl">{config.icon}</span>
+                            <div>
+                                <p className="text-white text-sm font-medium">{config.label}</p>
+                                <p className="text-white/40 text-xs">{formatDate(tx.timestamp)}</p>
+                                {tx.memo && <p className="text-white/50 text-xs mt-1">{tx.memo}</p>}
+                            </div>
+                        </div>
+                        <p className={`font-bold ${config.color}`}>
+                            {config.sign}{tx.amount.toLocaleString()} BNG
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        // ========== 取引履歴タブ ==========
+        function HistoryTab({ wallet }) {
+            const sorted = [...wallet.transactions].reverse();
+            const totalIn = wallet.transactions.filter(t => t.type !== 'send').reduce((s, t) => s + t.amount, 0);
+            const totalOut = wallet.transactions.filter(t => t.type === 'send').reduce((s, t) => s + t.amount, 0);
+
+            return (
+                <div className="py-6 space-y-6 animate-fade-in">
+                    <div className="glass rounded-3xl p-6">
+                        <h2 className="text-white text-xl font-bold mb-4">取引履歴</h2>
+
+                        <div className="grid grid-cols-3 gap-3 mb-6">
+                            <div className="glass-dark rounded-xl p-3 text-center">
+                                <p className="text-white/40 text-xs mb-1">総受取</p>
+                                <p className="text-emerald-300 font-bold">{totalIn.toLocaleString()}</p>
+                            </div>
+                            <div className="glass-dark rounded-xl p-3 text-center">
+                                <p className="text-white/40 text-xs mb-1">総送金</p>
+                                <p className="text-pink-300 font-bold">{totalOut.toLocaleString()}</p>
+                            </div>
+                            <div className="glass-dark rounded-xl p-3 text-center">
+                                <p className="text-white/40 text-xs mb-1">取引数</p>
+                                <p className="text-white font-bold">{wallet.transactions.length}</p>
+                            </div>
+                        </div>
+
+                        {sorted.length === 0 ? (
+                            <div className="text-center py-8">
+                                <p className="text-white/40">取引履歴がありません</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-2">
+                                {sorted.map(tx => (
+                                    <TransactionItem key={tx.id} tx={tx} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // ========== 設定タブ ==========
+        function SettingsTab({ wallet, updateWallet, setWallet }) {
+            const [mintAmount, setMintAmount] = useState('');
+            const [mintMemo, setMintMemo] = useState('');
+            const [showMint, setShowMint] = useState(false);
+            const [showReset, setShowReset] = useState(false);
+
+            const handleMint = () => {
+                const num = parseInt(mintAmount, 10);
+                if (!num || num <= 0) return;
+                const tx = {
+                    id: generateId(),
+                    type: 'mint',
+                    amount: num,
+                    memo: mintMemo || '新規発行',
+                    timestamp: Date.now()
+                };
+                updateWallet(prev => ({
+                    ...prev,
+                    balance: prev.balance + num,
+                    transactions: [...prev.transactions, tx]
+                }));
+                setMintAmount('');
+                setMintMemo('');
+                setShowMint(false);
+            };
+
+            const handleExport = () => {
+                const blob = new Blob([JSON.stringify(wallet, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `bungei-coin-${wallet.name}-${new Date().toISOString().slice(0,10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+
+            const handleReset = () => {
+                localStorage.removeItem(STORAGE_KEY);
+                setWallet(null);
+            };
+
+            return (
+                <div className="py-6 space-y-4 animate-fade-in">
+                    <div className="glass rounded-3xl p-6">
+                        <h2 className="text-white text-xl font-bold mb-4">設定</h2>
+
+                        {/* ウォレット情報 */}
+                        <div className="glass-dark rounded-2xl p-4 mb-4">
+                            <p className="text-white/40 text-xs mb-1">ウォレット名</p>
+                            <p className="text-white font-bold">{wallet.name}</p>
+                            <p className="text-white/40 text-xs mt-3 mb-1">アドレス</p>
+                            <p className="text-white font-mono text-sm select-all">{wallet.address}</p>
+                            <p className="text-white/40 text-xs mt-3 mb-1">作成日</p>
+                            <p className="text-white text-sm">{formatDate(wallet.createdAt)}</p>
+                            <p className="text-white/40 text-xs mt-3 mb-1">残高</p>
+                            <p className="text-white font-bold text-lg">{wallet.balance.toLocaleString()} BNG</p>
+                        </div>
+                    </div>
+
+                    {/* コイン発行（管理者機能） */}
+                    <div className="glass rounded-3xl p-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-white font-bold">コイン発行（管理者）</h3>
+                            <button className="btn-secondary text-sm"
+                                    onClick={() => setShowMint(!showMint)}>
+                                {showMint ? '閉じる' : '開く'}
+                            </button>
+                        </div>
+                        {showMint && (
+                            <div className="space-y-3 animate-fade-in">
+                                <p className="text-white/50 text-sm">
+                                    新しいコインを発行してウォレットに追加します。
+                                    イベント主催者・管理者向けの機能です。
+                                </p>
+                                <input type="number" placeholder="発行額" value={mintAmount}
+                                       onChange={e => setMintAmount(e.target.value)} min="1" />
+                                <div className="flex gap-2 flex-wrap">
+                                    {[100, 500, 1000, 5000].map(v => (
+                                        <button key={v} className="btn-secondary text-sm py-1 px-3"
+                                                onClick={() => setMintAmount(String(v))}>
+                                            {v.toLocaleString()}
+                                        </button>
+                                    ))}
+                                </div>
+                                <input type="text" placeholder="メモ（例: 初期配布、イベント報酬）"
+                                       value={mintMemo} onChange={e => setMintMemo(e.target.value)}
+                                       maxLength={50} />
+                                <button className="btn-primary w-full" onClick={handleMint}
+                                        disabled={!mintAmount || parseInt(mintAmount) <= 0}>
+                                    発行する
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* データ管理 */}
+                    <div className="glass rounded-3xl p-6">
+                        <h3 className="text-white font-bold mb-4">データ管理</h3>
+                        <div className="space-y-3">
+                            <button className="btn-secondary w-full" onClick={handleExport}>
+                                💾 データをエクスポート（バックアップ）
+                            </button>
+                            <button className="btn-danger w-full" onClick={() => setShowReset(true)}>
+                                🗑️ ウォレットをリセット
+                            </button>
+                            {showReset && (
+                                <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4 animate-fade-in">
+                                    <p className="text-red-300 text-sm mb-3">
+                                        本当にリセットしますか？すべてのデータが削除されます。
+                                        事前にエクスポートすることを推奨します。
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <button className="btn-danger flex-1" onClick={handleReset}>
+                                            削除する
+                                        </button>
+                                        <button className="btn-secondary flex-1" onClick={() => setShowReset(false)}>
+                                            キャンセル
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // ========== アプリ ==========
+        function App() {
+            const [wallet, setWallet] = useState(() => loadData());
+
+            useEffect(() => {
+                if (wallet) saveData(wallet);
+            }, [wallet]);
+
+            const handleCreateWallet = (w) => {
+                saveData(w);
+                setWallet(w);
+            };
+
+            return (
+                <div className="min-h-screen">
+                    <Header wallet={wallet} />
+                    {wallet ? (
+                        <Dashboard wallet={wallet} setWallet={setWallet} />
+                    ) : (
+                        <WalletSetup onCreate={handleCreateWallet} />
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
