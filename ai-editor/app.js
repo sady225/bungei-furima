@@ -1,49 +1,49 @@
 /* =========================================================
-   沖縄文芸フリマ AI創作編集室 — app.js
-   Vanilla JS のみ。外部ライブラリ・通信・保存機能なし。
+   沖縄文芸フリマ オンライン事務局
+   Vanilla JS only. No storage, no network, no generated text.
    ========================================================= */
 (function () {
   "use strict";
 
-  // ---- 要素取得 -------------------------------------------------
   var els = {
-    cho:    document.getElementById("char-cho"),
-    kotoba: document.getElementById("char-kotoba"),
-    e:      document.getElementById("char-e"),
-    shima:  document.getElementById("char-shima"),
-    kouhou: document.getElementById("char-kouhou"),
-    now:    document.getElementById("now-playing"),
+    guide: document.getElementById("staff-guide"),
+    entry: document.getElementById("staff-entry"),
+    works: document.getElementById("staff-works"),
+    public: document.getElementById("staff-public"),
+    volunteer: document.getElementById("staff-volunteer"),
+    now: document.getElementById("now-playing"),
     progress: document.getElementById("progress"),
     btnPlay: document.getElementById("btn-play"),
     btnRestart: document.getElementById("btn-restart"),
     btnStop: document.getElementById("btn-stop")
   };
 
-  if (!els.cho || !els.now) { return; } // 要素が無ければ何もしない
+  if (!els.guide || !els.now || !els.progress) { return; }
 
-  // ---- 座標（stage.spot と対応） --------------------------------
   var POS = {
-    entranceCho:    { x: 4,  y: 70 },
-    entranceKotoba: { x: 4,  y: 78 },
-    entranceE:      { x: 4,  y: 86 },
-    entranceShima:  { x: 8,  y: 92 },
-    entranceKouhou: { x: 12, y: 92 },
-    deskCho:    { x: 16, y: 20 },
-    deskKotoba: { x: 40, y: 14 },
-    deskE:      { x: 64, y: 14 },
-    deskShima:  { x: 84, y: 20 },
-    deskKouhou: { x: 84, y: 60 },
-    meeting:    { x: 48, y: 52 },
-    meetingL:   { x: 42, y: 52 },
-    meetingR:   { x: 54, y: 52 },
-    meetingCenterL: { x: 46, y: 46 },
-    meetingCenterR: { x: 50, y: 46 },
-    coverTalk:  { x: 60, y: 40 }
+    entranceGuide: { x: 9, y: 88 },
+    entranceEntry: { x: 13, y: 88 },
+    entranceWorks: { x: 17, y: 88 },
+    entrancePublic: { x: 21, y: 88 },
+    entranceVolunteer: { x: 25, y: 88 },
+    guide: { x: 50, y: 58 },
+    guideLeft: { x: 43, y: 58 },
+    guideRight: { x: 57, y: 58 },
+    entry: { x: 18, y: 76 },
+    works: { x: 31, y: 48 },
+    public: { x: 68, y: 47 },
+    volunteer: { x: 84, y: 30 },
+    display: { x: 74, y: 77 },
+    safeCenter: { x: 50, y: 70 },
+    safeRight: { x: 65, y: 62 },
+    safeLeft: { x: 35, y: 66 },
+    finaleGuide: { x: 44, y: 63 },
+    finaleEntry: { x: 36, y: 68 },
+    finaleWorks: { x: 52, y: 66 },
+    finalePublic: { x: 60, y: 63 },
+    finaleVolunteer: { x: 68, y: 68 }
   };
 
-  var PROGRESS_STEPS = ["soudan", "kikaku", "henshu", "hyoshi", "kouhou", "junbi"];
-
-  // ---- タイマー管理 -----------------------------------------------
   var timers = [];
   var isRunning = false;
 
@@ -54,13 +54,16 @@
   }
 
   function clearAllTimers() {
-    for (var i = 0; i < timers.length; i++) {
-      window.clearTimeout(timers[i]);
-    }
+    timers.forEach(function (id) {
+      window.clearTimeout(id);
+    });
     timers = [];
   }
 
-  // ---- 見た目の操作ヘルパー ----------------------------------------
+  function staffList() {
+    return [els.guide, els.entry, els.works, els.public, els.volunteer];
+  }
+
   function moveTo(el, pos) {
     el.style.setProperty("--x", pos.x);
     el.style.setProperty("--y", pos.y);
@@ -73,13 +76,20 @@
 
   function setBubble(el, text) {
     var bubble = el.querySelector(".bubble");
+    if (!bubble) { return; }
     if (!text) {
       el.classList.remove("show-bubble");
       bubble.textContent = "";
       return;
     }
-    bubble.textContent = text; // 固定文言のみ。利用者入力は使用しない
+    bubble.textContent = text;
     el.classList.add("show-bubble");
+  }
+
+  function clearBubbles() {
+    staffList().forEach(function (el) {
+      setBubble(el, "");
+    });
   }
 
   function say(text) {
@@ -101,184 +111,28 @@
     });
   }
 
-  function resetVisuals() {
-    var pairs = [
-      [els.cho, POS.entranceCho],
-      [els.kotoba, POS.entranceKotoba],
-      [els.e, POS.entranceE],
-      [els.shima, POS.entranceShima],
-      [els.kouhou, POS.entranceKouhou]
-    ];
-    pairs.forEach(function (p) {
-      moveTo(p[0], p[1]);
-      setState(p[0], "");
-      setBubble(p[0], null);
-    });
+  function resetProgress() {
     els.progress.querySelectorAll("li").forEach(function (li) {
       li.classList.remove("active", "done");
     });
-    say("ボタンを押すと、編集室が動き出します。");
   }
 
-  function clearCharacterMotion() {
-    [els.cho, els.kotoba, els.e, els.shima, els.kouhou].forEach(function (el) {
+  function clearMotion() {
+    staffList().forEach(function (el) {
       setState(el, "");
     });
   }
 
-  // ---- タイムライン（時間はデモ開始からの相対ミリ秒） --------------
-  var timeline = [
-    { t: 0, run: function () {
-        say("編集員たちが出勤してきました。");
-        setState(els.cho, "walking");
-        setState(els.kotoba, "walking");
-        setState(els.e, "walking");
-        setState(els.shima, "walking");
-        setState(els.kouhou, "walking");
-        moveTo(els.cho, POS.deskCho);
-        moveTo(els.kotoba, POS.deskKotoba);
-        moveTo(els.e, POS.deskE);
-        moveTo(els.shima, POS.deskShima);
-        moveTo(els.kouhou, POS.deskKouhou);
-    }},
-    { t: 1400, run: function () {
-        setState(els.cho, ""); setState(els.kotoba, "");
-        setState(els.e, ""); setState(els.shima, ""); setState(els.kouhou, "");
-        say("編集長シーサーのもとに、作品相談が届きました。");
-        setBubble(els.cho, "相談が届いた！");
-    }},
-    { t: 3200, run: function () {
-        say("「沖縄の思い出を、小さな本にしたい」というご相談です。");
-    }},
-    { t: 5200, run: function () {
-        setBubble(els.cho, null);
-        setProgress("soudan");
-        say("編集長シーサーが、島の記録係とことば編集員に声をかけます。");
-        setState(els.cho, "walking");
-        moveTo(els.cho, POS.meeting);
-    }},
-    { t: 6600, run: function () {
-        setState(els.cho, "");
-        setState(els.shima, "walking");
-        setState(els.kotoba, "walking");
-        moveTo(els.shima, POS.meetingR);
-        moveTo(els.kotoba, POS.meetingL);
-    }},
-    { t: 8000, run: function () {
-        setState(els.shima, ""); setState(els.kotoba, "");
-        setProgress("kikaku");
-        say("3人で、どんな本にするか話し合っています。");
-    }},
-    { t: 10500, run: function () {
-        say("島の記録係が、席に戻って聞き書きを整理し始めました。");
-        setState(els.shima, "walking");
-        moveTo(els.shima, POS.deskShima);
-        setState(els.cho, "walking");
-        moveTo(els.cho, POS.deskCho);
-    }},
-    { t: 11900, run: function () {
-        setState(els.shima, "working");
-        setState(els.cho, "");
-        setProgress("henshu");
-    }},
-    { t: 15000, run: function () {
-        say("ことば編集員が、集まった言葉を確認しています。");
-        setState(els.kotoba, "walking");
-        moveTo(els.kotoba, POS.deskKotoba);
-    }},
-    { t: 16400, run: function () {
-        setState(els.kotoba, "working");
-    }},
-    { t: 20000, run: function () {
-        setState(els.shima, "");
-        setState(els.kotoba, "");
-        setBubble(els.kotoba, "タイトルが決まりません…？");
-        say("ことば編集員が「タイトルが決まりません」と困っています。");
-    }},
-    { t: 23000, run: function () {
-        setBubble(els.kotoba, null);
-        say("お絵かき編集員も加わって、表紙とタイトルを相談します。");
-        setState(els.kotoba, "walking");
-        setState(els.e, "walking");
-        setState(els.shima, "walking");
-        moveTo(els.kotoba, POS.meetingL);
-        moveTo(els.e, POS.meeting);
-        moveTo(els.shima, POS.meetingR);
-    }},
-    { t: 24400, run: function () {
-        setState(els.kotoba, ""); setState(els.e, ""); setState(els.shima, "");
-        setProgress("hyoshi");
-    }},
-    { t: 27500, run: function () {
-        say("表紙の絵と一緒に、言葉を選んでいきます。");
-        setState(els.e, "working");
-    }},
-    { t: 31000, run: function () {
-        setBubble(els.e, "できました！");
-        say("仮タイトル「島の記憶をつなぐ」に決まりました。");
-    }},
-    { t: 34000, run: function () {
-        setBubble(els.e, null);
-        setState(els.e, "");
-        setState(els.kotoba, "walking");
-        setState(els.shima, "walking");
-        setState(els.e, "walking");
-        moveTo(els.kotoba, POS.deskKotoba);
-        moveTo(els.shima, POS.deskShima);
-        moveTo(els.e, POS.deskE);
-    }},
-    { t: 35400, run: function () {
-        setState(els.kotoba, ""); setState(els.shima, ""); setState(els.e, "");
-        setProgress("kouhou");
-        say("作品企画がまとまりました。");
-    }},
-    { t: 37800, run: function () {
-        say("次回の文芸フリマへの出展準備を始めます。");
-        setState(els.cho, "walking");
-        moveTo(els.cho, POS.meeting);
-    }},
-    { t: 39200, run: function () {
-        setState(els.cho, "");
-        setState(els.kouhou, "walking");
-        moveTo(els.kouhou, POS.meeting);
-    }},
-    { t: 40600, run: function () {
-        setState(els.kouhou, "working");
-        say("広報係が、出展案内とボランティア案内を準備しています。");
-    }},
-    { t: 44500, run: function () {
-        setBubble(els.kouhou, "案内できました！");
-    }},
-    { t: 47000, run: function () {
-        setBubble(els.kouhou, null);
-        setState(els.kouhou, "walking");
-        moveTo(els.kouhou, POS.deskKouhou);
-    }},
-    { t: 48400, run: function () {
-        setState(els.kouhou, "");
-        setProgress("junbi");
-        say("つくる人も、読む人も、支える人も。一緒に文芸フリマをつくりませんか？");
-    }},
-    { t: 50000, run: function () {
-        [els.cho, els.kotoba, els.e, els.shima, els.kouhou].forEach(function (el) {
-          setState(el, "waving");
-        });
-        moveTo(els.cho, POS.meetingCenterL);
-        moveTo(els.kotoba, POS.meeting);
-        moveTo(els.e, POS.meetingCenterR);
-        moveTo(els.shima, POS.meetingL);
-        moveTo(els.kouhou, POS.meetingR);
-    }},
-    { t: 54500, run: function () {
-        finishDemo();
-    }}
-  ];
-
-  function finishDemo() {
-    clearAllTimers();
-    clearCharacterMotion();
-    isRunning = false;
-    setButtons();
+  function resetVisuals() {
+    moveTo(els.guide, POS.entranceGuide);
+    moveTo(els.entry, POS.entranceEntry);
+    moveTo(els.works, POS.entranceWorks);
+    moveTo(els.public, POS.entrancePublic);
+    moveTo(els.volunteer, POS.entranceVolunteer);
+    clearMotion();
+    clearBubbles();
+    resetProgress();
+    say("ボタンを押すと、オンライン事務局の案内が始まります。");
   }
 
   function setButtons() {
@@ -286,9 +140,135 @@
     els.btnStop.disabled = !isRunning;
   }
 
-  // ---- 実行制御 ----------------------------------------------------
+  var timeline = [
+    { t: 0, run: function () {
+        say("オンライン事務局スタッフが順番に出勤します。");
+        staffList().forEach(function (el) { setState(el, "walking"); });
+        moveTo(els.guide, POS.guide);
+        moveTo(els.entry, POS.entry);
+        moveTo(els.works, POS.works);
+        moveTo(els.public, POS.public);
+        moveTo(els.volunteer, POS.volunteer);
+      }
+    },
+    { t: 1800, run: function () {
+        clearMotion();
+        setProgress("contact");
+        say("「文芸フリマに参加したい」という問い合わせが届きました。");
+        setBubble(els.guide, "問い合わせです");
+      }
+    },
+    { t: 5200, run: function () {
+        setBubble(els.guide, "");
+        setProgress("choice");
+        say("総合案内担当が、出展かボランティアかを一緒に整理します。");
+        setState(els.guide, "working");
+      }
+    },
+    { t: 9200, run: function () {
+        setState(els.guide, "walking");
+        setState(els.entry, "walking");
+        moveTo(els.guide, POS.safeLeft);
+        moveTo(els.entry, POS.safeCenter);
+        say("出展を考えている方には、まず募集内容の確認をご案内します。");
+      }
+    },
+    { t: 12800, run: function () {
+        setState(els.guide, "");
+        setState(els.entry, "working");
+        setProgress("exhibit");
+        setBubble(els.entry, "出展の流れ");
+        say("出展受付担当が、募集開始後に申込みフォームから応募する流れを説明します。");
+      }
+    },
+    { t: 18200, run: function () {
+        setBubble(els.entry, "");
+        setState(els.entry, "walking");
+        setState(els.works, "walking");
+        moveTo(els.entry, POS.entry);
+        moveTo(els.works, POS.safeCenter);
+        say("作品案内担当が、本・ZINE・漫画・地域文化などの作品例を案内します。");
+      }
+    },
+    { t: 23200, run: function () {
+        setState(els.works, "working");
+        setBubble(els.works, "作品例を確認");
+        say("作品や展示物、当日の持ち物は、事務局からの案内を見ながら準備します。");
+      }
+    },
+    { t: 28600, run: function () {
+        setBubble(els.works, "");
+        setState(els.works, "walking");
+        setState(els.volunteer, "walking");
+        moveTo(els.works, POS.works);
+        moveTo(els.volunteer, POS.safeRight);
+        setProgress("volunteer");
+        say("ボランティアで参加したい方には、役割例を見ながら考える流れをご案内します。");
+      }
+    },
+    { t: 33200, run: function () {
+        setState(els.volunteer, "working");
+        setBubble(els.volunteer, "できる範囲で");
+        say("できることを、できる範囲で。詳しい参加方法や時間帯は、募集内容が決まり次第お知らせします。");
+      }
+    },
+    { t: 39600, run: function () {
+        setBubble(els.volunteer, "");
+        setState(els.volunteer, "walking");
+        setState(els.public, "walking");
+        moveTo(els.volunteer, POS.volunteer);
+        moveTo(els.public, POS.safeCenter);
+        setProgress("news");
+        say("広報担当が、次回は2027年2月頃を予定し、田場公民館で開催企画中であることを案内します。");
+      }
+    },
+    { t: 45600, run: function () {
+        setState(els.public, "working");
+        setBubble(els.public, "企画中です");
+        say("まだ募集開始前です。正式な日程や募集内容は、決まり次第お知らせします。");
+      }
+    },
+    { t: 52000, run: function () {
+        setBubble(els.public, "");
+        setState(els.public, "walking");
+        setState(els.guide, "walking");
+        moveTo(els.public, POS.public);
+        moveTo(els.guide, POS.safeCenter);
+        setProgress("next");
+        say("募集開始後に申込みできます。情報を受け取りたい方はお問い合わせからご連絡ください。");
+      }
+    },
+    { t: 59200, run: function () {
+        clearMotion();
+        moveTo(els.guide, POS.finaleGuide);
+        moveTo(els.entry, POS.finaleEntry);
+        moveTo(els.works, POS.finaleWorks);
+        moveTo(els.public, POS.finalePublic);
+        moveTo(els.volunteer, POS.finaleVolunteer);
+        say("つくる人も、読む人も、支える人も。一緒に沖縄文芸フリマをつくりませんか？");
+      }
+    },
+    { t: 63800, run: function () {
+        staffList().forEach(function (el) {
+          setState(el, "waving");
+        });
+      }
+    },
+    { t: 70000, run: function () {
+        finishDemo();
+      }
+    }
+  ];
+
+  function finishDemo() {
+    clearAllTimers();
+    clearMotion();
+    isRunning = false;
+    setButtons();
+  }
+
   function playDemo() {
-    if (isRunning) { return; } // 連打対策：多重起動を防ぐ
+    if (isRunning) { return; }
     clearAllTimers();
     resetVisuals();
     isRunning = true;
@@ -300,10 +280,10 @@
 
   function stopDemo() {
     clearAllTimers();
-    clearCharacterMotion();
+    clearMotion();
     isRunning = false;
     setButtons();
-    say("動きを止めました。「作品づくりの流れを見てみる」または「最初から見る」で再開できます。");
+    say("動きを止めました。「オンライン事務局を見る」または「最初から見る」で再開できます。");
   }
 
   function restartDemo() {
@@ -314,12 +294,10 @@
     playDemo();
   }
 
-  // ---- イベント登録 --------------------------------------------------
   els.btnPlay.addEventListener("click", playDemo);
   els.btnRestart.addEventListener("click", restartDemo);
   els.btnStop.addEventListener("click", stopDemo);
 
-  // 初期表示
   resetVisuals();
   setButtons();
 })();
