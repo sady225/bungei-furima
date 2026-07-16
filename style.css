@@ -1,0 +1,919 @@
+:root {
+    --color-primary: #2c3e50;
+    --color-secondary: #4ecdc4;
+    --color-accent: #f093fb;
+    --color-link: #4ecdc4;
+    --bg-gradient-default: linear-gradient(135deg, #667eea 0%, #764ba2 50%, var(--color-accent) 100%);
+    --bg-light: rgba(255, 255, 255, 0.9);
+    --bg-semi-transparent: rgba(255, 255, 255, 0.7);
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+body.yamabuki {
+    --bg-gradient-default: linear-gradient(135deg, #facc15 0%, #fb923c 50%, #f59e0b 100%);
+}
+
+body.mizuiro {
+    --bg-gradient-default: linear-gradient(135deg, #7dd3fc 0%, #22d3ee 50%, #3b82f6 100%);
+}
+
+body.uguisu {
+    --bg-gradient-default: linear-gradient(135deg, #a3e635 0%, #22c55e 50%, #10b981 100%);
+}
+
+body.monochrome {
+    --bg-gradient-default: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #374151 100%);
+    --color-primary: #f5f5f5;
+    --bg-light: rgba(0, 0, 0, 0.8);
+    --bg-semi-transparent: rgba(0, 0, 0, 0.6);
+}
+
+body.monochrome .logo span,
+body.monochrome .subtitle,
+body.monochrome .social-link__text,
+body.monochrome .footer-section p {
+    color: var(--color-primary);
+}
+
+body.monochrome .section:nth-child(even) {
+    background: var(--bg-light);
+}
+
+body.monochrome .section:nth-child(odd) {
+    background: var(--bg-semi-transparent);
+}
+
+body.monochrome .hero-subtitle {
+    color: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+    line-height: 1.7;
+    color: var(--color-primary);
+    background: var(--bg-gradient-default);
+    min-height: 100vh;
+    transition: background .5s ease;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+a {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color .3s ease;
+}
+
+a:hover {
+    opacity: .8;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes gradient {
+
+    0%,
+    100% {
+        opacity: .3;
+    }
+
+    50% {
+        opacity: .6;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+header {
+    background: var(--bg-light);
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    display: flex;
+}
+
+.logo__okinawa {
+    color: #57bbbb;
+    font-family: "Yu Gothic", "BIZ UDPGothic", sans-serif;
+}
+
+.logo__bungei-frima {
+    color: #e969a2;
+    font-family: "BIZ UDPMincho", "MS Mincho", serif;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-top: -5px;
+    font-weight: bold;
+}
+
+.color-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.color-btn {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+    padding: 0;
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+    border-color: #333;
+}
+
+.color-btn.active {
+    border-color: #333;
+    border-width: 4px;
+}
+
+.color-btn.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
+    font-size: 12px;
+}
+
+.default-color {
+    background: linear-gradient(45deg, #667eea, var(--color-accent));
+}
+
+.yamabuki-color {
+    background: linear-gradient(45deg, #facc15, #f59e0b);
+}
+
+.mizuiro-color {
+    background: linear-gradient(45deg, #7dd3fc, #3b82f6);
+}
+
+.uguisu-color {
+    background: linear-gradient(45deg, #a3e635, #10b981);
+}
+
+.mono-color {
+    background: linear-gradient(45deg, #9ca3af, #374151);
+}
+
+.hero {
+    color: white;
+    text-align: center;
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 107, 107, .3), rgba(78, 205, 196, .3));
+    animation: gradient 8s ease infinite;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    animation: fadeInUp 1s ease-out .3s both;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(45deg, #ffa074, #ff8c64);
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: .3s;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+    animation: fadeInUp 1s ease-out .6s both;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, .3);
+}
+
+.instagram-button {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+
+.icon-instagram {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.flyer-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--bg-light);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 15px;
+    text-align: center;
+}
+
+.flyer-card__title {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: var(--color-primary);
+}
+
+.flyer-card__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.section {
+    padding: 80px 0;
+    position: relative;
+}
+
+.section:nth-child(even) {
+    background: var(--bg-light);
+    backdrop-filter: blur(10px);
+}
+
+.section:nth-child(odd) {
+    background: var(--bg-semi-transparent);
+    backdrop-filter: blur(5px);
+}
+
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 50px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-description {
+    font-size: 1.2rem;
+    text-align: center;
+    /* センタリングに変更 */
+    margin-bottom: 40px;
+}
+
+.note-link {
+    font-weight: bold;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.instagram-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+    justify-items: center;
+}
+
+/* ギャラリー用のスタイル追加 */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.gallery-item {
+    width: 100%;
+    height: 200px;
+    /* 高さ固定 */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    background-color: #ddd;
+    /* プレースホルダー色 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 0.8rem;
+    overflow: hidden;
+    position: relative;
+    /* オーバーレイのために追加 */
+}
+
+/* ギャラリーアイテムのオーバーレイキャプション */
+.gallery-caption-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    /* 画像クリックを妨げない */
+}
+
+.gallery-item:hover .gallery-caption-overlay {
+    opacity: 1;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+/* 来場者の声スタイル */
+.voice-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px 15px 15px 0;
+    /* 吹き出し風 */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.voice-card::before {
+    content: "💬";
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    font-size: 2rem;
+}
+
+.voice-text {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.voice-author {
+    font-size: 0.8rem;
+    color: #888;
+    text-align: right;
+}
+
+
+.card {
+    background: var(--bg-light);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+    transition: .3s;
+    border: 1px solid rgba(255, 255, 255, .3);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .15);
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--color-primary);
+}
+
+.info-card {
+    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+}
+
+.info-card--accent {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+}
+
+.event-date {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--color-primary);
+}
+
+.contact-info {
+    background: rgba(255, 255, 255, .1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 30px;
+}
+
+.contact-details p {
+    font-weight: bold;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.copyright {
+    margin-top: 30px;
+    opacity: .7;
+}
+
+.slideshow-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--bg-light);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 15px;
+    margin: 20px auto 0;
+}
+
+.slideshow-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+
+.social-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+}
+
+.social-link__icon {
+    width: 30px;
+    height: 30px;
+}
+
+.social-link__text {
+    margin-left: 5px;
+}
+
+.petal {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    background: #ffb3ba;
+    border-radius: 50%;
+    animation: fall linear infinite;
+    opacity: .7;
+}
+
+/* 出展者紹介セクションのスタイル */
+.exhibitor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.exhibitor-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.exhibitor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.exhibitor-card__image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.exhibitor-card__name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 5px;
+}
+
+.exhibitor-card__content {
+    font-size: 0.9rem;
+    color: var(--color-link);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.exhibitor-card__intro {
+    font-size: 0.85rem;
+    color: #444;
+    line-height: 1.6;
+    margin-top: 5px;
+}
+
+/* 特別エピソードセクションのスタイル */
+.special-episode {
+    background: linear-gradient(135deg, #fff5f5 0%, #fff9f0 100%);
+    padding: 80px 20px;
+    margin: 60px 0;
+    border-radius: 30px;
+    position: relative;
+}
+
+.episode-card+.episode-card {
+    margin-top: 60px;
+}
+
+.episode-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(255, 180, 180, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.episode-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.episode-title {
+    font-size: 1.6rem;
+    color: #d63384;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.episode-subtitle {
+    font-size: 0.95rem;
+    color: #888;
+}
+
+.episode-content {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #444;
+}
+
+.highlight-quote {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    display: inline-block;
+    background: linear-gradient(transparent 60%, #ffe0e0 60%);
+    padding: 0 8px;
+    margin: 15px 0;
+}
+
+.episode-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed #ffc0cb;
+    text-align: right;
+    font-style: italic;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* ヒーローエリアの微調整 */
+.hero h1 {
+    font-size: 3rem;
+}
+
+@media (max-width:768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .content-grid,
+    .instagram-grid,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .color-selector {
+        justify-content: center;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-button {
+        width: 80%;
+        justify-content: center;
+    }
+}
+
+/* モーダル (Medium Size) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: auto;
+    max-width: 60%;
+    /* 中サイズ指定 */
+    max-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    animation: zoomIn 0.3s ease;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 1001;
+}
+
+/* モーダル内のキャプション */
+#modalCaption {
+    margin: 15px auto 0;
+    display: block;
+    width: 80%;
+    text-align: center;
+    color: white;
+    padding: 10px 0;
+    font-size: 1.2rem;
+    /* font-weight: bold; */
+}
+
+.modal-close:hover {
+    color: #bbb;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile Optimization (iPhone 12 and similar) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .section {
+        padding: 50px 0;
+    }
+
+    .hero {
+        padding: 60px 0;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    /* Modal adjustments for mobile */
+    .modal-content {
+        max-width: 95%;
+        width: 95%;
+    }
+
+    .modal-close {
+        top: 15px;
+        right: 15px;
+        font-size: 36px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+
+    #modalCaption {
+        width: 95%;
+        font-size: 1rem;
+    }
+
+    /* Card and Episode adjustments */
+    .episode-card {
+        padding: 25px 20px;
+        border-radius: 20px;
+    }
+
+    .episode-title {
+        font-size: 1.4rem;
+    }
+
+    .highlight-quote {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+    .info-card, .card {
+        padding: 25px;
+    }
+
+    .special-episode {
+        padding: 50px 15px;
+        margin: 40px 0;
+    }
+}

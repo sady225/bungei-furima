@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>沖縄文芸フリマ - 子どもも大人も一緒に楽しむ</title>
     <style>
-        /* --- 変数定義 --- */
         :root {
             --color-primary: #2c3e50;
             --color-secondary: #4ecdc4;
@@ -17,92 +17,132 @@
             --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        /* --- テーマ切り替え --- */
         body.yamabuki {
             --bg-gradient-default: linear-gradient(135deg, #facc15 0%, #fb923c 50%, #f59e0b 100%);
         }
+
         body.mizuiro {
             --bg-gradient-default: linear-gradient(135deg, #7dd3fc 0%, #22d3ee 50%, #3b82f6 100%);
         }
+
         body.uguisu {
             --bg-gradient-default: linear-gradient(135deg, #a3e635 0%, #22c55e 50%, #10b981 100%);
         }
+
         body.monochrome {
             --bg-gradient-default: linear-gradient(135deg, #9ca3af 0%, #6b7280 50%, #374151 100%);
             --color-primary: #f5f5f5;
             --bg-light: rgba(0, 0, 0, 0.8);
             --bg-semi-transparent: rgba(0, 0, 0, 0.6);
         }
+
         body.monochrome .logo span,
         body.monochrome .subtitle,
         body.monochrome .social-link__text,
         body.monochrome .footer-section p {
             color: var(--color-primary);
         }
+
         body.monochrome .section:nth-child(even) {
             background: var(--bg-light);
         }
+
         body.monochrome .section:nth-child(odd) {
             background: var(--bg-semi-transparent);
         }
+
         body.monochrome .hero-subtitle {
             color: white;
         }
 
-        /* --- 基本設定 --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         html {
             scroll-behavior: smooth;
         }
+
         body {
             font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
             line-height: 1.7;
             color: var(--color-primary);
             background: var(--bg-gradient-default);
             min-height: 100vh;
-            transition: background 0.5s ease;
+            transition: background .5s ease;
             position: relative;
             overflow-x: hidden;
         }
+
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: auto;
             padding: 0 20px;
         }
+
         .text-center {
             text-align: center;
         }
+
         a {
             color: var(--color-link);
             text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        a:hover {
-            opacity: 0.8;
+            transition: color .3s ease;
         }
 
-        /* --- アニメーション --- */
+        a:hover {
+            opacity: .8;
+        }
+
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transition: opacity .6s ease, transform .6s ease;
         }
+
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        @keyframes fall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-        }
-        @keyframes gradient { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- ヘッダー --- */
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes gradient {
+
+            0%,
+            100% {
+                opacity: .3;
+            }
+
+            50% {
+                opacity: .6;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         header {
             background: var(--bg-light);
             backdrop-filter: blur(10px);
@@ -112,6 +152,7 @@
             top: 0;
             z-index: 100;
         }
+
         .header-content {
             display: flex;
             justify-content: space-between;
@@ -119,471 +160,431 @@
             flex-wrap: wrap;
             gap: 20px;
         }
+
         .logo {
             font-size: 2.5rem;
             font-weight: bold;
             display: flex;
         }
-        .logo__okinawa { 
-            color: rgb(87, 187, 187); 
+
+        .logo__okinawa {
+            color: #57bbbb;
             font-family: "Yu Gothic", "BIZ UDPGothic", sans-serif;
         }
-        .logo__bungei-frima { 
-            color: rgb(233, 105, 162); 
+
+        .logo__bungei-frima {
+            color: #e969a2;
             font-family: "BIZ UDPMincho", "MS Mincho", serif;
         }
-        .subtitle { 
-            font-size: 1rem; 
-            color: #666; 
-            margin-top: -5px; 
+
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-top: -5px;
             font-weight: bold;
         }
-        .color-selector { 
-            display: flex; 
-            gap: 10px; 
-            align-items: center; 
-        }
-        .color-selector label { 
-            font-size: 0.9rem; 
-            color: #666; 
-            margin-right: 10px;
-        }
-        .color-btn { 
-            width: 32px; 
-            height: 32px; 
-            border: 2px solid #ddd; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            position: relative; 
-            padding: 0;
-        }
-        .color-btn:hover { 
-            transform: scale(1.1); 
-            border-color: #333; 
-        }
-        .color-btn.active { 
-            border-color: #333; 
-            border-width: 4px; 
-        }
-        .color-btn.active::after { 
-            content: '✓'; 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            color: white; 
-            font-weight: bold; 
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8); 
-            font-size: 12px; 
-        }
-        .default-color { 
-            background: linear-gradient(45deg, #667eea, var(--color-accent)); 
-        }
-        .yamabuki-color { 
-            background: linear-gradient(45deg, #facc15, #f59e0b); 
-        }
-        .mizuiro-color { 
-            background: linear-gradient(45deg, #7dd3fc, #3b82f6); 
-        }
-        .uguisu-color { 
-            background: linear-gradient(45deg, #a3e635, #10b981); 
-        }
-        .mono-color { 
-            background: linear-gradient(45deg, #9ca3af, #374151); 
+
+        .color-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
-        /* --- メインコンテンツ --- */
-        .hero { 
-            color: white; 
-            text-align: center; 
-            padding: 80px 0; 
-            position: relative; 
-            overflow: hidden; 
+        .color-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: .3s;
+            position: relative;
+            padding: 0;
         }
-        .hero::before { 
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            background: linear-gradient(45deg, rgba(255,107,107,0.3), rgba(78,205,196,0.3)); 
-            animation: gradient 8s ease infinite; 
+
+        .color-btn:hover {
+            transform: scale(1.1);
+            border-color: #333;
+        }
+
+        .color-btn.active {
+            border-color: #333;
+            border-width: 4px;
+        }
+
+        .color-btn.active::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
+            font-size: 12px;
+        }
+
+        .default-color {
+            background: linear-gradient(45deg, #667eea, var(--color-accent));
+        }
+
+        .yamabuki-color {
+            background: linear-gradient(45deg, #facc15, #f59e0b);
+        }
+
+        .mizuiro-color {
+            background: linear-gradient(45deg, #7dd3fc, #3b82f6);
+        }
+
+        .uguisu-color {
+            background: linear-gradient(45deg, #a3e635, #10b981);
+        }
+
+        .mono-color {
+            background: linear-gradient(45deg, #9ca3af, #374151);
+        }
+
+        .hero {
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 107, 107, .3), rgba(78, 205, 196, .3));
+            animation: gradient 8s ease infinite;
             z-index: 1;
         }
-        .hero-content { 
-            position: relative; 
-            z-index: 2; 
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 40px; 
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
         }
-        .hero__text-content { 
-            text-align: center; 
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+            animation: fadeInUp 1s ease-out;
         }
-        .hero h1 { 
-            font-size: 3.5rem; 
-            margin-bottom: 20px; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
-            animation: fadeInUp 1s ease-out; 
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out .3s both;
         }
-        .hero-subtitle { 
-            font-size: 1.5rem; 
-            margin-bottom: 30px; 
-            animation: fadeInUp 1s ease-out 0.3s both; 
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
         }
-        .hero-buttons { 
-            display: flex; 
-            justify-content: center; 
-            gap: 20px; 
-            margin-top: 30px; 
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #ffa074, #ff8c64);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: .3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, .2);
+            animation: fadeInUp 1s ease-out .6s both;
         }
-        .cta-button { 
-            display: inline-flex; 
-            align-items: center; 
-            background: linear-gradient(45deg, #ffa074, #ff8c64); 
-            color: white; 
-            padding: 15px 40px; 
-            border-radius: 50px; 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
-            animation: fadeInUp 1s ease-out 0.6s both; 
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, .3);
         }
-        .cta-button:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
+
+        .instagram-button {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
         }
-        .instagram-button { 
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); 
+
+        .icon-instagram {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 8px;
         }
-        .icon-instagram { 
-            width: 20px; 
-            height: 20px; 
-            vertical-align: middle; 
-            margin-right: 8px; 
+
+        .flyer-card {
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--bg-light);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 15px;
+            text-align: center;
         }
-        .flyer-card { 
-            width: 100%; 
-            max-width: 400px; 
-            background-color: var(--bg-light); 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            border-radius: 8px; 
-            overflow: hidden; 
-            padding: 15px; 
-            text-align: center; 
+
+        .flyer-card__title {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--color-primary);
         }
-        .flyer-card__title { 
-            margin-bottom: 10px; 
-            font-weight: bold; 
-            color: var(--color-primary); 
+
+        .flyer-card__image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
         }
-        .flyer-card__image { 
-            width: 100%; 
-            height: auto; 
-            display: block; 
-            border-radius: 4px; 
+
+        .section {
+            padding: 80px 0;
+            position: relative;
         }
-        .section { 
-            padding: 80px 0; 
-            position: relative; 
+
+        .section:nth-child(even) {
+            background: var(--bg-light);
+            backdrop-filter: blur(10px);
         }
-        .section:nth-child(even) { 
-            background: var(--bg-light); 
-            backdrop-filter: blur(10px); 
+
+        .section:nth-child(odd) {
+            background: var(--bg-semi-transparent);
+            backdrop-filter: blur(5px);
         }
-        .section:nth-child(odd) { 
-            background: var(--bg-semi-transparent); 
-            backdrop-filter: blur(5px); 
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .section-title { 
-            font-size: 2.5rem; 
-            text-align: center; 
-            margin-bottom: 50px; 
-            background: linear-gradient(45deg, #667eea, #764ba2); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            background-clip: text; 
+
+        .section-description {
+            font-size: 1.2rem;
+            text-align: center;
+            /* センタリングに変更 */
+            margin-bottom: 40px;
         }
-        .section-description { 
-            font-size: 1.2rem; 
-            text-align: left; 
-            margin-bottom: 40px; 
+
+        .note-link {
+            font-weight: bold;
         }
-        .note-link { 
-            font-weight: bold; 
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
         }
-        .content-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 40px; 
-            margin-top: 40px; 
-        }
+
         .instagram-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
+            gap: 20px;
+            margin-top: 40px;
+            justify-items: center;
         }
-        .card { 
-            background: var(--bg-light); 
-            padding: 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            transition: all 0.3s ease; 
-            border: 1px solid rgba(255,255,255,0.3); 
+
+        /* ギャラリー用のスタイル追加 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
         }
-        .card:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+
+        .gallery-item {
+            width: 100%;
+            height: 200px;
+            /* 高さ固定 */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            background-color: #ddd;
+            /* プレースホルダー色 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 0.8rem;
+            overflow: hidden;
+            position: relative;
+            /* オーバーレイのために追加 */
         }
-        .card-icon { 
-            font-size: 3rem; 
-            margin-bottom: 20px; 
-            text-align: center; 
+
+        /* ギャラリーアイテムのオーバーレイキャプション */
+        .gallery-caption-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            /* 画像クリックを妨げない */
         }
-        .card h3 { 
-            font-size: 1.5rem; 
-            margin-bottom: 15px; 
-            color: var(--color-primary); 
+
+        .gallery-item:hover .gallery-caption-overlay {
+            opacity: 1;
         }
-        .info-card { 
-            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%); 
-            padding: 40px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+
+        .gallery-item:hover {
+            transform: scale(1.05);
         }
+
+        /* 来場者の声スタイル */
+        .voice-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px 15px 15px 0;
+            /* 吹き出し風 */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .voice-card::before {
+            content: "💬";
+            position: absolute;
+            left: -10px;
+            top: -10px;
+            font-size: 2rem;
+        }
+
+        .voice-text {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .voice-author {
+            font-size: 0.8rem;
+            color: #888;
+            text-align: right;
+        }
+
+
+        .card {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+            transition: .3s;
+            border: 1px solid rgba(255, 255, 255, .3);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .15);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+        }
+
         .info-card--accent {
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
         }
-        .event-date { 
-            font-size: 1.3rem; 
-            font-weight: bold; 
-            margin-bottom: 10px; 
-            color: var(--color-primary); 
-        }
-        .event-location { 
-            font-size: 1.1rem; 
-            color: #555; 
-            margin-bottom: 20px; 
-        }
-        .two-column-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); 
-            gap: 40px; 
-        }
-        .schedule-card__title { 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            margin-bottom: 30px; 
-            text-align: center; 
-            color: var(--color-primary); 
-        }
-        .schedule-card__list { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-        }
-        .schedule-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            padding: 15px; 
-            background: rgba(255,255,255,0.7); 
-            border-radius: 10px; 
-        }
-        .schedule-item__icon { 
-            font-size: 1.5rem; 
-            flex-shrink: 0;
-        }
-        .schedule-item__details { 
-            flex: 1; 
-        }
-        .schedule-item__time { 
-            font-weight: bold; 
-            color: var(--color-primary); 
-        }
-        .schedule-item__description { 
-            color: #666; 
-        }
-        .recruitment-card { 
-            background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%); 
-        }
-        .recruitment-card__title { 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-            margin-bottom: 30px; 
-            text-align: center; 
-            color: var(--color-primary); 
-        }
-        .recruitment-card__content { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 25px; 
-        }
-        .recruitment-section { 
-            background: rgba(255,255,255,0.7); 
-            padding: 25px; 
-            border-radius: 10px; 
-        }
-        .recruitment-section__title { 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            margin-bottom: 15px; 
-            color: var(--color-primary); 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-        }
-        .recruitment-period { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-        }
-        .recruitment-period__item { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-        }
-        .dot { 
-            width: 12px; 
-            height: 12px; 
-            border-radius: 50%; 
-            flex-shrink: 0; 
-        }
-        .dot--green { 
-            background: #22c55e; 
-        }
-        .dot--blue { 
-            background: #3b82f6; 
-        }
-        .period-title { 
-            font-weight: 600; 
-            color: var(--color-primary); 
-        }
-        .period-date { 
-            color: #666; 
-        }
-        .recruitment-method { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            padding: 15px; 
-            background: #e0f2fe; 
-            border-radius: 8px; 
-            border-left: 4px solid #3b82f6; 
-        }
-        .recruitment-method__icon { 
-            font-size: 1.5rem; 
-            flex-shrink: 0;
-        }
-        .recruitment-method__status { 
-            font-weight: 600; 
-            color: var(--color-primary); 
-        }
-        .recruitment-method__link { 
-            font-size: 0.9rem; 
-            color: #3b82f6; 
-            text-decoration: underline; 
-        }
-        .note-text {
-            margin-top: 20px;
+
+        .event-date {
+            font-size: 1.3rem;
             font-weight: bold;
-        }
-        .bullet-list {
-            margin-top: 20px;
-            list-style: none;
-            padding: 0;
-        }
-        .bullet-list li {
-            position: relative;
-            padding-left: 25px;
             margin-bottom: 10px;
-        }
-        .bullet-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--color-link);
-            font-weight: bold;
+            color: var(--color-primary);
         }
 
-        /* --- フッター --- */
-        footer { 
-            background: rgba(44, 62, 80, 0.9); 
-            color: white; 
-            text-align: center; 
-            padding: 40px 0; 
-            backdrop-filter: blur(10px); 
+        .contact-info {
+            background: rgba(255, 255, 255, .1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 30px;
         }
-        .footer-content { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
-            gap: 30px; 
-            margin-bottom: 30px; 
+
+        .contact-details p {
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
         }
-        .footer-section h3 { 
-            margin-bottom: 15px; 
-            color: var(--color-secondary); 
+
+        .copyright {
+            margin-top: 30px;
+            opacity: .7;
         }
-        .contact-info { 
-            background: rgba(255, 255, 255, 0.1); 
-            padding: 20px; 
-            border-radius: 15px; 
-            margin-top: 30px; 
+
+        .slideshow-card {
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--bg-light);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+            border-radius: 8px;
+            overflow: hidden;
+            padding: 15px;
+            margin: 20px auto 0;
         }
-        .contact-details { 
-            margin-top: 15px; 
+
+        .slideshow-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
         }
-        .contact-details p { 
-            font-weight: bold; 
-            color: white; 
-            margin-bottom: 8px; 
-        }
-        .copyright { 
-            margin-top: 30px; 
-            opacity: 0.7; 
-        }
-        .slideshow-card { 
-            width: 100%; 
-            max-width: 400px; 
-            background-color: var(--bg-light); 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            border-radius: 8px; 
-            overflow: hidden; 
-            padding: 15px; 
-            margin: 20px auto 0; 
-        }
-        .slideshow-image { 
-            width: 100%; 
-            height: auto; 
-            display: block; 
-            border-radius: 4px; 
-        }
-        .social-links { 
-            margin-top: 20px; 
+
+        .social-links {
+            margin-top: 20px;
             display: flex;
             justify-content: center;
             gap: 20px;
         }
-        .social-link { 
-            display: inline-flex; 
-            align-items: center; 
-            text-decoration: none; 
-            color: white; 
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
         }
-        .social-link__icon { 
-            width: 30px; 
-            height: 30px; 
+
+        .social-link__icon {
+            width: 30px;
+            height: 30px;
         }
-        .social-link__text { 
-            margin-left: 5px; 
+
+        .social-link__text {
+            margin-left: 5px;
         }
-        
-        /* --- 花びらアニメーション --- */
+
         .petal {
             position: absolute;
             top: 0;
@@ -592,83 +593,273 @@
             background: #ffb3ba;
             border-radius: 50%;
             animation: fall linear infinite;
-            opacity: 0.7;
+            opacity: .7;
         }
 
-        /* --- レスポンシブ対応 --- */
-        @media (max-width: 768px) {
-            .hero h1 { 
-                font-size: 2.5rem; 
+        /* 出展者紹介セクションのスタイル */
+        .exhibitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .exhibitor-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .exhibitor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .exhibitor-card__image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .exhibitor-card__name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+
+        .exhibitor-card__content {
+            font-size: 0.9rem;
+            color: var(--color-link);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .exhibitor-card__intro {
+            font-size: 0.85rem;
+            color: #444;
+            line-height: 1.6;
+            margin-top: 5px;
+        }
+
+        /* 特別エピソードセクションのスタイル */
+        .special-episode {
+            background: linear-gradient(135deg, #fff5f5 0%, #fff9f0 100%);
+            padding: 80px 20px;
+            margin: 60px 0;
+            border-radius: 30px;
+            position: relative;
+        }
+
+        .episode-card+.episode-card {
+            margin-top: 60px;
+        }
+
+        .episode-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(255, 180, 180, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .episode-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .episode-title {
+            font-size: 1.6rem;
+            color: #d63384;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .episode-subtitle {
+            font-size: 0.95rem;
+            color: #888;
+        }
+
+        .episode-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .highlight-quote {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--color-primary);
+            display: inline-block;
+            background: linear-gradient(transparent 60%, #ffe0e0 60%);
+            padding: 0 8px;
+            margin: 15px 0;
+        }
+
+        .episode-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed #ffc0cb;
+            text-align: right;
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* ヒーローエリアの微調整 */
+        .hero h1 {
+            font-size: 3rem;
+        }
+
+        @media (max-width:768px) {
+            .hero h1 {
+                font-size: 2rem;
             }
-            .hero-subtitle { 
-                font-size: 1.2rem; 
+
+            .hero-subtitle {
+                font-size: 1.2rem;
             }
-            .logo { 
-                font-size: 2rem; 
+
+            .logo {
+                font-size: 2rem;
             }
-            .section-title { 
-                font-size: 2rem; 
+
+            .section-title {
+                font-size: 2rem;
             }
-            .content-grid, .instagram-grid { 
-                grid-template-columns: 1fr; 
-                gap: 20px; 
+
+            .content-grid,
+            .instagram-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
-            .header-content { 
-                flex-direction: column; 
-                text-align: center; 
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
             }
-            .color-selector { 
-                justify-content: center; 
+
+            .color-selector {
+                justify-content: center;
             }
-            .two-column-grid { 
-                grid-template-columns: 1fr; 
-                gap: 30px; 
-            }
-            .card { 
-                margin: 0 10px; 
-            }
-            .card h3 { 
-                font-size: 1.3rem; 
-            }
+
             .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
+
             .cta-button {
                 width: 80%;
                 justify-content: center;
             }
-            .youtube-container {
-                position: relative;
-                width: 100%;
-                padding-top: 56.25%; /* 16:9 Aspect Ratio */
-                overflow: hidden;
+        }
+
+        /* モーダル (Medium Size) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: auto;
+            max-width: 60%;
+            /* 中サイズ指定 */
+            max-height: 80vh;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: zoomIn 0.3s ease;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 1001;
+        }
+
+        /* モーダル内のキャプション */
+        #modalCaption {
+            margin: 15px auto 0;
+            display: block;
+            width: 80%;
+            text-align: center;
+            color: white;
+            padding: 10px 0;
+            font-size: 1.2rem;
+            /* font-weight: bold; */
+        }
+
+        .modal-close:hover {
+            color: #bbb;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
             }
-            .youtube-container iframe {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+
+            to {
+                transform: scale(1);
+                opacity: 1;
             }
         }
-        @media (max-width: 480px) {
-            .container { 
-                padding: 0 15px; 
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
-            .card { 
-                margin: 0 5px; 
-                padding: 20px; 
-            }
-            .section { 
-                padding: 60px 0; 
-            }
-            .two-column-grid { 
-                grid-template-columns: 1fr; 
+
+            to {
+                opacity: 1;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="container">
@@ -679,6 +870,7 @@
                     </div>
                     <div class="subtitle">子どもも大人も一緒に楽しむ</div>
                 </div>
+                <!-- 色選択ボタン省略せず残します -->
                 <div class="color-selector">
                     <label>色設定:</label>
                     <button class="color-btn default-color active" data-theme="default" title="標準"></button>
@@ -692,62 +884,231 @@
     </header>
 
     <main>
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">vol.1 2025.9.20 in cafeLuana</h2>
-                <div class="instagram-grid">
-                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DOhd0iXEg9t/" data-instgrm-version="14"></blockquote>
-                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DO2DhFyEuU_/" data-instgrm-version="14"></blockquote>
-                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DOxbkNSkspb/" data-instgrm-version="14"></blockquote>
-                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DOvn0ubErTT/" data-instgrm-version="14"></blockquote>
-                    <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DOqbcVpEk-B/" data-instgrm-version="14"></blockquote>
-                </div>
-            </div>
-        </section>
 
+        <!-- ヒーロー (リニューアル版) -->
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
                     <div class="hero__text-content">
-                        <h1>想いをかたちに<br>創造力をきらめかせて</h1>
-                        <p class="hero-subtitle">沖縄から始まる新しい文化の場</p>
+                        <h1>第２回開催御礼！<br>ありがとうございました</h1>
+                        <p class="hero-subtitle">12月13日(土)、田場区公民館にて<br>たくさんの笑顔と表現に出会えました。</p>
+                        <p class="hero-subtitle" style="font-size: 1.2rem; margin-top:20px;">次回開催は 2026年
+                            夏頃を予定しています。<br>またお会いできる日を楽しみにしています。</p>
+
                         <div class="hero-buttons">
-                            <a href="#about" class="cta-button">詳しく見る</a>
-                            <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer" class="cta-button instagram-button">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="icon-instagram">
-                                公式インスタグラム
+                            <a href="#report" class="cta-button">当日の様子を見る</a>
+                            <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer"
+                                class="cta-button instagram-button">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+                                    alt="Instagram" class="icon-instagram">公式インスタグラム
                             </a>
                         </div>
                     </div>
-                    
+                    <!-- ヒーロー右側：スライドショー -->
                     <div class="flyer-card">
-                        <p class="flyer-card__title">最新チラシはこちら</p>
-                        <a href="./250920bungei-frima.pdf" target="_blank" rel="noopener noreferrer">
-                            <img src="./photo/250920bungei.png" alt="沖縄文芸フリマのチラシ" class="flyer-card__image">
-                        </a>
+                        <!-- <p class="flyer-card__title">ハイライト</p> -->
+                        <img id="heroSlideshowImage" class="slideshow-image" src="./photo/251213/001.jpg"
+                            alt="イベントの様子">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section section-video">
-            <div class="container text-center">
-                <div class="youtube-container">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/zSAcZVPhUno" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <!-- 第2回 開催レポート (新設) -->
+        <section class="section" id="report">
+            <div class="container">
+                <h2 class="section-title fade-in">✨ 第2回開催レポート (2025.12.13)</h2>
+                <div>
+                    <!-- 出展者一覧 -->
+                    <h3 class="text-center" style="margin-top:60px; color:var(--color-primary);">🤝 出展者のご紹介</h3>
+                    <div class="exhibitor-grid" id="exhibitorGrid">
+                        <!-- JSで自動生成されます -->
+                    </div>
+
+                    <!-- Special Thanks List -->
+                    <h3 class="text-center" style="margin-top:60px; color:var(--color-primary);">🙏 Special Thanks (Food
+                        & Drink)</h3>
+                    <div class="exhibitor-grid">
+                        <div class="exhibitor-card fade-in">
+                            <img src="./photo/251213/045.jpg" class="exhibitor-card__image" alt="深川めし（藤澤利紗）"
+                                style="object-position: top;">
+                            <div class="exhibitor-card__name">深川めし（藤澤利紗）</div>
+                            <div class="exhibitor-card__content">郷土料理</div>
+                            <div class="exhibitor-card__intro">「深川めし」（あさりの炊き込みご飯）で来場者に東京都江東区の郷土料理を披露しました。</div>
+                        </div>
+                        <div class="exhibitor-card fade-in">
+                            <img src="./photo/251213/030.jpg" class="exhibitor-card__image" alt="やどかり喫茶店"
+                                style="object-position: top;">
+                            <div class="exhibitor-card__name">やどかり喫茶店</div>
+                            <div class="exhibitor-card__content">ケーキ・コーヒー</div>
+                            <div class="exhibitor-card__intro">オススメのチーズケーキ、自家製トニックウォーター珈琲など、スイーツで会場を盛り上げてくださいました。
+                            </div>
+                        </div>
+                        <div class="exhibitor-card fade-in">
+                            <img src="./photo/251213/010.jpg" class="exhibitor-card__image" alt="焼鳥たまりば"
+                                style="object-position: top;">
+                            <div class="exhibitor-card__name">焼鳥たまりば</div>
+                            <div class="exhibitor-card__content">焼き鳥</div>
+                            <div class="exhibitor-card__intro">炭の香り漂うおいしい焼き鳥で、来場者の笑顔を魅了しました。</div>
+                        </div>
+                        <div class="exhibitor-card fade-in">
+                            <img src="./photo/251213/009.jpg" class="exhibitor-card__image" alt="kametas'br"
+                                style="object-position: top;">
+                            <div class="exhibitor-card__name">kametas'br</div>
+                            <div class="exhibitor-card__content">ブラジル料理</div>
+                            <div class="exhibitor-card__intro">パステルやチーズボールなどをご提供していただきました。</div>
+                        </div>
+                        <div class="exhibitor-card fade-in">
+                            <img src="./photo/251213/008.jpg" class="exhibitor-card__image" alt="パナマ原人">
+                            <div class="exhibitor-card__name">パナマ原人</div>
+                            <div class="exhibitor-card__content">肉巻きおにぎり・ジャークチキン・ポテト・スイーツ</div>
+                            <div class="exhibitor-card__intro">子供から大人まで笑顔になれるフードを心掛け、デザートからバーベキュー料理まで幅広くご提供いただきました。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 特別エピソード -->
+                    <div class="special-episode">
+                        <!-- エピソード1 -->
+                        <div class="episode-card">
+                            <div class="episode-header">
+                                <div class="episode-title">✨ 絆が生まれた瞬間：ある親子の物語</div>
+                                <div class="episode-subtitle">「子どもの社会参加」が、小さな自信へ。</div>
+                            </div>
+                            <div class="episode-content">
+                                <p>週に一度ほど小学校へ通っている小5の息子さん。前日は初めての経験に不安で泣いていたそうですが、会場の温かな雰囲気に包まれ、安心して過ごすことができました。</p>
+
+                                <p>「すごいね」「描き続けてね」という大人たちからの言葉。帰り道、彼が漏らした一言は、主催者一同の心に深く刻まれました。</p>
+
+                                <div class="text-center">
+                                    <span class="highlight-quote">「オレは天才✨ 優しい世界だった🌈」</span>
+                                </div>
+
+                                <p>高校生のお姉さんからiPadでの「影の描き方」を丁寧に教わったことが、この日一番の収穫だったそうです。会場で創作意欲が止まらず、早速練習を始める姿。子どもたちが主役になり、安心して輝ける居心地のよい場所。そんな「優しい世界」が、ここにはありました。
+                                </p>
+                            </div>
+                            <div class="episode-footer">
+                                ― 出展されたお子さんの保護者様より
+                            </div>
+                        </div>
+
+                        <!-- エピソード2 -->
+                        <div class="episode-card">
+                            <div class="episode-header">
+                                <div class="episode-title">✨ 優しい世界とVR花火：母娘の喜び</div>
+                                <div class="episode-subtitle">苦手だった花火が、VRで「最高の思い出」に。</div>
+                            </div>
+                            <div class="episode-content">
+                                <p>穏やかで温かな空間。出展者やスタッフ、来場者の皆さんの優しさに包まれ、緊張せずに過ごせたひとときでした。</p>
+
+                                <p>娘さんは花火の音が大きくて怖がるため、これまで花火大会を避けてきました。しかし、VRでの花火体験は音も心地よく、素晴らしい感動を与えてくれました。</p>
+
+                                <div class="text-center">
+                                    <span class="highlight-quote">「楽しかった〜🌈」</span>
+                                </div>
+
+                                <p>帰り道、何度も繰り返されたその言葉に、作品発表の機会をいただけたことへの感謝が溢れます。誰もが安心して「楽しい」を共有できる、そんな素晴らしい体験がここにありました。
+                                </p>
+                            </div>
+                            <div class="episode-footer">
+                                ― 出展されたお子さんの保護者様より
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ギャラリーグリッド -->
+                    <h3 class="text-center" style="margin-top:40px; color:var(--color-primary);">📸 Photo Gallery</h3>
+                    <div class="gallery-grid" id="galleryGrid">
+                        <!-- JSで自動生成されます -->
+                    </div>
+                </div>
+
+                <!-- 来場者の声 (コンテンツグリッドを流用) -->
+                <div style="margin-top:60px;">
+                    <h3 class="text-center" style="margin-bottom:30px; color:var(--color-primary);">🗣️ 参加者の声</h3>
+                    <div class="content-grid">
+                        <div class="voice-card">
+                            <p class="voice-text">「平和学習の旅　神田志有／スゴイ情報量で驚き！」</p>
+
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">「うたさんの絵を見て影響されたのか、5歳の息子が絵を描き始めました😍素敵な絵をありがとう🥰
+                                」</p>
+
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">「自分の心の中の風景を見せてくれてるみたいで、心地よかった！
+                                」</p>
+
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">「キレイでカワイイ作品がいっぱいだった」</p>
+
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">「ほんわかしていて可愛い作品たちに癒されました💕また次回も楽しみにしてます☺️」</p>
+
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">さささりんのオリジナルイラスト可愛すぎました😍カレンダー飾るの楽しみです🫶</p>
+
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">平和学習の読み応えがありすぎるページ数に驚き、思わずご本人と親御さんに本にする予定はないのか聞いてしまいました</p>
+
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">会議室の展示の絵はグッズ化されてたら買いたかった</p>
+                        </div>
+                        <div class="voice-card">
+                            <p class="voice-text">おみくじは超オススメです！ 絶対いいことが起こる気がする！</p>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- Instagram埋め込み -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">✨ 第1回開催の様子 (2025.9.20) in Cafe LUANA</h2>
+                <div class="text-center">
+                    <p class="section-description">
+                        第1回目の出展者さんの紹介や、当日のリール動画などをInstagramで発信しています。<br>
+                        次回の募集開始も見逃さないように、フォローをお願いします🕊
+                    </p>
+                    <div class="instagram-grid">
+                        <blockquote class="instagram-media" data-instgrm-captioned
+                            data-instgrm-permalink="https://www.instagram.com/p/DOhd0iXEg9t/" data-instgrm-version="14">
+                        </blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned
+                            data-instgrm-permalink="https://www.instagram.com/p/DO2DhFyEuU_/" data-instgrm-version="14">
+                        </blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned
+                            data-instgrm-permalink="https://www.instagram.com/p/DOxbkNSkspb/" data-instgrm-version="14">
+                        </blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned
+                            data-instgrm-permalink="https://www.instagram.com/p/DOvn0ubErTT/" data-instgrm-version="14">
+                        </blockquote>
+                        <blockquote class="instagram-media" data-instgrm-captioned
+                            data-instgrm-permalink="https://www.instagram.com/p/DOqbcVpEk-B/" data-instgrm-version="14">
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- フリマ概要 (About) - コンセプトは維持 -->
         <section class="section" id="about">
             <div class="container">
                 <h2 class="section-title fade-in">🌸 沖縄文芸フリマとは？</h2>
-                <div class="fade-in">
-                    <p class="section-description">
+                <div>
+                    <p class="section-description text-center">
                         人の想いや創造力が静かにきらめく文化の場を、沖縄で始めます。<br>
-                        子どもから大人までが表現できる新たな試み──それが「沖縄文芸フリマ」です。<br>
-                        <a href="https://note.com/kodomo_no_mikata/m/m17370ab49a80" target="_blank" rel="noopener noreferrer" class="note-link">➡️ より詳しいコンセプトや活動報告はnote公式マガジンをご覧ください</a>
+                        子どもから大人までが表現できる新たな試み──それが「沖縄文芸フリマ」です。
                     </p>
-                    
                     <div class="content-grid">
                         <div class="card">
                             <div class="card-icon">📚</div>
@@ -759,145 +1120,53 @@
                             <h3>世代を超えて</h3>
                             <p>子どもから大人まで、誰もが主役になれる場所。年齢や立場を超えて、世代をつなぐ「お披露目の場」です。</p>
                         </div>
-                        <div class="card">
-                            <div class="card-icon">🌺</div>
-                            <h3>沖縄らしい文化</h3>
-                            <p>イスタンブールが東西文化の結節点として栄えたように、沖縄でも世代と表現が交差する文化の場を創ります。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 過去の開催 -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">📜 開催履歴</h2>
+                <div>
+                    <div class="info-card info-card--accent" style="margin-top:20px;">
+                        <div class="event-date">📍【第2回】2025年12月13日（土） 田場区公民館</div>
+                        <p>田場小金管バンドや高校生ダンス、VR花火など、地域と文化が混ざり合う1日となりました。</p>
+                        <p>🎨 総出展数: 24組　主催: 琉球のタネ　共催：田場区自治会</p>
+                    </div>
+                    <div class="info-card info-card--accent"
+                        style="margin-top:20px; display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+                        <div>
+                            <div class="event-date">📍【第1回】2025年9月20日（土） cafeLUANA</div>
+                            <p>記念すべき第1回目。豊見城市のカフェでアットホームに開催されました。</p>
+                            <p>🎨 総出展数: 10組　主催: 琉球のタネ　共催：cafe LUANA</p>
                         </div>
+                        <img src="./photo/250920-thanks.png" alt="第1回開催の様子" style="width:100px; border-radius:8px;">
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- 次回予告 -->
         <section class="section">
-            <div class="container">
-                <h2 class="section-title fade-in">🌼 こんな作品が集まります</h2>
-                <div class="content-grid fade-in">
-                    <div class="card"><h3>📖 文芸作品</h3><p>小説、詩、エッセイ、評論など、「自分が文学と信じるもの」すべてが対象です。</p></div>
-                    <div class="card"><h3>🎨 アート・イラスト</h3><p>描いたイラスト、色鉛筆で描いた一枚の絵など、視覚的な表現作品も大歓迎。</p></div>
-                    <div class="card"><h3>🧶 手作り作品</h3><p>さおり織り、刺し子、編み物など、手芸やハンドメイド作品も出展予定です。</p></div>
-                    <div class="card"><h3>👶 子どもの作品</h3><p>教育相談室に通う中学生たちの作品や、ワンコイン勉強会の成果も発表されます。</p></div>
-                </div>
-                <p class="note-text">
-                    🍀 他薦・推薦での出展も可能です。<br>
-                    👩‍🏫 スクールカウンセラー、🧑‍💼 スクールソーシャルワーカー、👨‍👩‍👧 自立支援員、🌐 地域コーディネーターなど、
-                    子どもに関わる大人からの「作品発表のきっかけ」づくりも大歓迎です。
-                </p>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title fade-in">📅 開催予定</h2>
-                <div class="fade-in">
-                    <div class="info-card info-card--accent" style="margin-top: 20px;">
-                        <div class="event-date">📍【第2回】2025年12月13日（土）</div>
-                        <div class="event-location">@田場区公民館（うるま市）</div>
-                        <p>地域に根ざした文化イベントとして、さらに多くの方々との出会いを目指します。</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title fade-in">⏰ タイムスケジュール・参加者募集</h2>
-                <div class="two-column-grid fade-in">
-                    <div class="card schedule-card">
-                        <h3 class="schedule-card__title">📅 12月開催のタイムスケジュール（案）</h3>
-                        <div class="schedule-card__list">
-                            <div class="schedule-item"><div class="schedule-item__icon">📦</div><div class="schedule-item__details"><div class="schedule-item__time">9:00 - 11:00</div><div class="schedule-item__description">搬入 （2時間）</div></div></div>
-                            <div class="schedule-item"><div class="schedule-item__icon">🎪</div><div class="schedule-item__details"><div class="schedule-item__time">11:00 - 13:00</div><div class="schedule-item__description">開催（第一部） （2時間）</div></div></div>
-                            <div class="schedule-item"><div class="schedule-item__icon">☕</div><div class="schedule-item__details"><div class="schedule-item__time">13:00 - 14:00</div><div class="schedule-item__description">休憩 （1時間）</div></div></div>
-                            <div class="schedule-item"><div class="schedule-item__icon">🎭</div><div class="schedule-item__details"><div class="schedule-item__time">14:00 - 16:00</div><div class="schedule-item__description">開催（第二部） （2時間）</div></div></div>
-                            <div class="schedule-item"><div class="schedule-item__icon">🧹</div><div class="schedule-item__details"><div class="schedule-item__time">16:00 - 17:00/18:00</div><div class="schedule-item__description">片付け （1～2時間）</div></div></div>
-                        </div>
-                    </div>
-
-                    <div class="card recruitment-card">
-                        <h3 class="recruitment-card__title">📝 参加者募集について</h3>
-                        <div class="recruitment-card__content">
-                            <div class="recruitment-section">
-                                <h4 class="recruitment-section__title">🗓️ 募集期間</h4>
-                                <div class="recruitment-period">
-                                    <div class="recruitment-period__item"><span class="dot dot--green"></span><div><div class="period-title">第１次募集期間</div><div class="period-date">10/16〜11/19</div></div></div>
-                                    <div class="recruitment-period__item"><span class="dot dot--blue"></span><div><div class="period-title">第２次募集期間</div><div class="period-date">11/19〜12/7（仮）</div></div></div>
-                                </div>
-                            </div>
-                            <div class="recruitment-section">
-                                <h4 class="recruitment-section__title">📋 参加募集方法</h4>
-                                <div class="recruitment-method">
-                                    <div class="recruitment-method__icon">📝</div>
-                                    <div>
-                                        <div class="recruitment-method__status">参加者募集中！</div>
-                                        <a href="https://note.com/kodomo_no_mikata/m/m17370ab49a80" target="_blank" rel="noopener noreferrer" class="recruitment-method__link">note公式マガジンより詳細をご確認ください</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title fade-in">🌈 表現することは、世界とつながる第一歩</h2>
-                <div class="fade-in">
-                    <p class="section-description">
-                        小さな一冊の本、色鉛筆で描いた一枚の絵、編み物のひと目──<br>
-                        すべてが「私がここにいる」という証になります。
-                    </p>
-                    <div class="content-grid">
-                        <div class="card"><div class="card-icon">💫</div><h3>「出品したいけど自信がない」</h3><p>そんな声も大丈夫。まずは小さな一歩から始めましょう。あなたの想いを待っています。</p></div>
-                        <div class="card"><div class="card-icon">🤝</div><h3>「準備が不安」</h3><p>当日のお手伝いや、情報のシェアだけでも大歓迎です。一緒にこのイベントを育てていきましょう。</p></div>
-                        <div class="card"><div class="card-icon">🌈</div><h3>未来への願い</h3><p>沖縄から始まる新しい表現の輪が広がって、未来がもっと明るく自由になりますように。</p></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container fade-in">
-                <h2 class="section-title">🌈 一緒に“好き”を分かち合う仲間になりませんか？</h2>
+            <div class="container text-center">
+                <h2 class="section-title">🔜 次回は 2026年 夏頃！</h2>
                 <p>
-                    👧👩‍🧓👵 子どもから高齢者まで一緒に楽しむ場！<br>
-                    教育相談室にいる子や、学校に通えていない子が、絵を描いたりハンドメイドを作っているのを見て、
-                    「沖縄中のそんな子の作品お披露目会があったらいいなー」と思いました。<br><br>
-                    子どもへの感度の高いアンテナ📡とやさしい心配り💖で、<br>
-                    子どもの社会参加と自己有能感づくり、セレンディピティ🍀を一緒に作りましょう🌈
-                </p>
-                <ul class="bullet-list">
-                    <li>出展やお手伝いで関わりたい</li>
-                    <li>次回（12/13）参加したい・させたい人がいる</li>
-                    <li>見るだけ・応援だけでも一緒に楽しみたい</li>
-                </ul>
-                <p>
-                    「まずは見てるだけ」もOK。気軽にのぞいてください✨
-                </p>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container text-center fade-in">
-                <h2 class="section-title">📢 継続して情報を受け取りたい方へ</h2>
-                <p>
-                    文芸フリマや子どもの成長サポートに関する情報は、<br>
-                    不定期で公式サイト・Instagram・noteから発信しています。<br>
-                    最新情報をチェックしたい方はぜひフォローしてください🕊
+                    次回の詳細が決まり次第、公式サイトやinstagramでお知らせします。<br>
+                    「次は出展してみたい！」という方、制作期間はたっぷりあります✨<br>
+                    あなたの表現に出会えるのを楽しみにしています。
                 </p>
                 <div class="social-links">
-                    <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer" class="social-link">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" class="social-link__icon">
-                        <span class="social-link__text">Instagram</span>
-                    </a>
-                    <a href="https://note.com/kodomo_no_mikata/m/m17370ab49a80" target="_blank" rel="noopener noreferrer" class="social-link">
-                        <img src="./images/logo.svg" alt="note" class="social-link__icon">
-                        <span class="social-link__text">note</span>
+                    <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer"
+                        class="cta-button instagram-button">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+                            alt="Instagram" class="icon-instagram">公式インスタグラムをフォロー
                     </a>
                 </div>
             </div>
         </section>
+
     </main>
 
     <footer>
@@ -906,13 +1175,10 @@
                 <div class="footer-section">
                     <h3>沖縄文芸フリマ</h3>
                     <p>想いをかたちに、創造力をきらめかせて</p>
-                    <div class="slideshow-card">
-                        <img id="footerSlideshowImage" class="slideshow-image" src="" alt="イベントの様子">
-                    </div>
                 </div>
                 <div class="footer-section">
                     <h3>お問い合わせ</h3>
-                    <p>参加ご希望の方、お手伝いいただける方、<br>お気軽にお声かけください</p>
+                    <p>次回開催へのご質問等は<br>お気軽にお声かけください</p>
                     <div class="contact-details">
                         <p>📧 info@ryukyu-tane.com</p>
                         <p>📞 070-5692-4173（さどやま）</p>
@@ -922,40 +1188,271 @@
             <div class="contact-info">
                 <p>一緒に、この文化イベントを育てていきましょう ฅˆ•ﻌ•ˆฅ♬*゜</p>
             </div>
+            <div class="social-links">
+                <a href="https://furima.ryukyu-tane.com/" target="_blank" rel="noopener noreferrer" class="social-link"
+                    title="公式HP">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1-4-10z" />
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer"
+                    class="social-link" title="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                    </svg>
+                </a>
+                <a href="https://note.com/kodomo_no_mikata/m/m17370ab49a80" target="_blank" rel="noopener noreferrer"
+                    class="social-link" title="note">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                    </svg>
+                </a>
+                <a href="https://x.com/bungei_oki" target="_blank" rel="noopener noreferrer" class="social-link"
+                    title="X (Twitter)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                </a>
+            </div>
             <p class="copyright">© 2025 沖縄文芸フリマ. All rights reserved.</p>
         </div>
+
     </footer>
+
+    <!-- 画像拡大用モーダル -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <div style="text-align: center; width: 100%;">
+            <img class="modal-content" id="modalImg">
+            <div id="modalCaption"></div>
+        </div>
+    </div>
 
     <script async src="https://www.instagram.com/embed.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        const EXHIBITORS = [
+            {
+                name: "木の子まき",
+                content: "絵画・オリジナルグッズ販売",
+                imageUrl: "./photo/251213/011.jpg",
+                activity_intro: "重曹アートや手描きハット、ポストカードなどをご出展🍄 独自の感性が光る作品たちが会場を彩りました。"
+            },
+            {
+                name: "平和学習の旅 神田志有",
+                content: "戦跡記録・資料展示",
+                imageUrl: "./photo/251213/037.jpg",
+                imagePosition: "top",
+                activity_intro: "沖縄から北海道まで、日本縦断して調べた「戦跡記録」を一挙公開。中学1年生とは思えない圧倒的な情報量と情熱に多くの大人が驚嘆しました。"
+            },
+            {
+                name: "SHIAN",
+                content: "手作りミニカー・作品展示",
+                imageUrl: "https://pbs.twimg.com/media/G7-R6xbboAAhdA1?format=jpg&name=4096x4096",
+                activity_intro: "沖縄東青年会の地謡軽トラを再現！細部までこだわった工作と、最新作の版画出展で子どもたちの注目を集めました。"
+            },
+            {
+                name: "具志川東中",
+                content: "作品展示",
+                imageUrl: "./photo/251213/042.jpg",
+                activity_intro: "中学生による創造性豊かな作品展示。自由な感性から生まれる表現が、来場者の目を楽しませました。"
+            },
+            {
+                name: " Ichimura",
+                content: "フライトシミュレーター",
+                imageUrl: "./photo/251213/025.jpg",
+                activity_intro: "本格的なフライト体験！子どもから大人まで、大空への挑戦を楽しみました。"
+            },
+            {
+                name: "LOVELY ZIPPER",
+                content: "ダンスパフォーマンス",
+                imageUrl: "./photo/251213/014.jpg",
+                activity_intro: "舞台を華麗に彩るダンスパフォーマンス。エネルギッシュな動きに会場全体が魅了されました。"
+            },
+            {
+                name: "田場小金管バンド",
+                content: "楽器演奏",
+                imageUrl: "./photo/251213/028.jpg",
+                activity_intro: "力強い演奏を披露してくれた金管バンド。地域の子どもたちの活躍が中庭を包み込みました。"
+            },
+            {
+                name: "福島太郎",
+                content: "文学作品（福島文学）",
+                imageUrl: "./photo/fukusima.png",
+                activity_intro: "独自の視点で描かれる「福島文学」。公務員の日常から人間讃歌まで、深い物語の世界を提供しました。"
+            },
+            {
+                name: "バーチャル花火",
+                content: "VR体験",
+                imageUrl: "./photo/251213/068.jpg",
+                activity_intro: "高校生によるVR花火体験。季節外れの大輪の花が、デジタルの世界で会場に咲き誇りました。"
+            },
+            {
+                name: "えたに あやこ",
+                content: "パステルアート",
+                imageUrl: "./photo/251213/055.jpg",
+                activity_intro: "上手い下手にこだわらない。アートを通じ自分らしさを愉しむ活動が、多くの人の心に寄り添いました。"
+            },
+            {
+                name: "バッシーのパン作りワークショップ🥐",
+                content: "バターロールパン作り",
+                imageUrl: "./photo/251213/023.jpg",
+                imagePosition: "center",
+                activity_intro: "焼き立てパンのいい香りに包まれるワークショップ。自分の手で作る楽しさを親子で満喫しました。"
+            },
+            {
+                name: "日本の五節句 阿賀嶺 正子",
+                content: "季節の彩り展示",
+                imageUrl: "./photo/251213/054.jpg",
+                activity_intro: "日本の五節句をテーマにした、季節の彩りを感じる展示。伝統文化の奥深さに触れる貴重な機会となりました。"
+            },
+            {
+                name: "さささりん&ボブリ",
+                content: "イラスト展示・グッズ販売",
+                imageUrl: "./photo/251213/043.jpg",
+                activity_intro: "高校生イラストレーターによる力強いイラスト。その溢れる才能に、これからの活躍を感じさせる出展でした。"
+            },
+            {
+                name: "モモ",
+                content: "缶バッジワークショップ",
+                imageUrl: "./photo/251213/044.jpg",
+                activity_intro: "世界に一つだけの缶バッジ！子どもたちが自分だけのデザインに夢中になっていました。"
+            },
+            {
+                name: "nekozukitati🐱",
+                content: "動物ブローチ販売",
+                imageUrl: "./photo/251213/053.jpg",
 
+                activity_intro: "ひとつひとつ違う表情のゆるかわ動物ブローチ。手作りの温もりが詰まった作品に癒されました。"
+            },
+            {
+                name: "大城うた",
+                content: "イラスト展示",
+                imageUrl: "./photo/251213/052.jpg",
+                imagePosition: "center 20%",
+                activity_intro: "小学一年生の頃からアニメの絵を描くようになり、チェンソーマンやダンダダン、ジョジョの奇妙な物語、進撃の巨人、呪術廻戦などを描き始めると何時間でも集中して描きすすめています"
+            },
+            {
+                name: "mimamorineko & CheePluss",
+                content: "宝石石鹸・編み物グッズ",
+                imageUrl: "./photo/251213/048.jpg",
+                activity_intro: "本来の自分らしさを導く宝石石鹸や、心のこもった編み物グッズ。日々の暮らしを彩る素敵な作品が集まりました。"
+            },
+            {
+                name: "りつ",
+                content: "絵画作品展示",
+                imageUrl: "./photo/251213/032.jpg",
+                activity_intro: "表情豊かな絵画展示。個性溢れる筆使いが、見る人の想像力を掻き立てる空間を作りました。"
+            },
+            {
+                name: "枯花（かればな）",
+                content: "イラスト、作品展示",
+                imageUrl: "./photo/251213/040.jpg",
+                imagePosition: "top",
+                activity_intro: "X（旧Twitter）を中心に活動。イラストを軸に、ハンドメイドや小説など幅広く手掛けるマルチな創作活動を展開。多彩な表現ジャンルを横断し、独自の世界観を会場に披露しました。"
+            },
+            {
+                name: "中学生(中部地区)",
+                content: "作品展示（小説・イラストなど）",
+                imageUrl: "https://pbs.twimg.com/media/G7-RU1VagAM2Wd_?format=jpg&name=4096x4096",
+                activity_intro: "多様な創作ジャンルに挑む中学生たち。感想のお礼として作成された「サンタの指輪」など、来場者との交流を大切にする温かな姿勢が注目を集めました。"
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
             // すべての初期化関数をまとめたマスター関数
             function initializeWebsite() {
+                initExhibitors(); // 出展者紹介の生成
+                initGallery(); // ギャラリー生成
                 initSlideshow();
                 initScrollObserver();
                 initPetalAnimation();
                 initThemeSwitcher();
+                initImageModal();
+            }
+
+            // 出展者紹介の自動生成
+            function initExhibitors() {
+                const exhibitorGrid = document.getElementById('exhibitorGrid');
+                if (!exhibitorGrid) return;
+
+                EXHIBITORS.forEach(ex => {
+                    const card = document.createElement('div');
+                    card.className = 'exhibitor-card fade-in';
+
+                    card.innerHTML = `
+                        ${ex.imageUrl ? `<img src="${ex.imageUrl}" class="exhibitor-card__image" alt="${ex.name}" style="${ex.imagePosition ? `object-position: ${ex.imagePosition};` : ''}">` : '<div class="exhibitor-card__image" style="background:#ddd; display:flex; align-items:center; justify-content:center;">No Image</div>'}
+                        <div class="exhibitor-card__name">${ex.name}</div>
+                        <div class="exhibitor-card__content">${ex.content}</div>
+                        <div class="exhibitor-card__intro">${ex.activity_intro}</div>
+                    `;
+
+                    exhibitorGrid.appendChild(card);
+                });
+            }
+
+            // ギャラリーの自動生成
+            function initGallery() {
+                const galleryGrid = document.getElementById('galleryGrid');
+                if (!galleryGrid) return;
+
+                for (let i = 1; i <= 69; i++) {
+                    // ゼロパディング（001, 002...）
+                    const num = i.toString().padStart(3, '0');
+                    const fileName = `${num}.jpg`;
+                    const filePath = `./photo/251213/${fileName}`;
+
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+
+                    const img = document.createElement('img');
+                    img.src = filePath;
+                    img.alt = `Gallery Image ${num}`;
+
+                    // 特定の画像の表示位置調整
+                    if (num === '021') {
+                        img.style.objectPosition = 'top';
+                    }
+
+                    // 必要に応じてキャプション属性などを追加
+                    // img.setAttribute('data-caption', `Image ${num}`);
+
+                    item.appendChild(img);
+                    galleryGrid.appendChild(item);
+                }
             }
 
             // スライドショーの初期化
             function initSlideshow() {
                 const images = [
-                    './photo/IMG_0517.jpg',
-                    './photo/IMG_0519.jpg',
-                    './photo/IMG_0520.jpg',
-                    './photo/IMG_0521.jpg',
-                    './photo/IMG_0522.jpg'
+                    './photo/251213/001.jpg',
+                    './photo/251213/002.jpg',
+                    './photo/251213/003.jpg',
+                    './photo/251213/004.jpg',
+                    './photo/251213/005.jpg'
                 ];
                 let currentIndex = 0;
                 const slideshowImage = document.getElementById('footerSlideshowImage');
-
-                if (!slideshowImage) return;
+                const heroSlideshowImage = document.getElementById('heroSlideshowImage'); // ヒーロー用追加
 
                 function changeImage() {
-                    slideshowImage.src = images[currentIndex];
+                    if (slideshowImage) slideshowImage.src = images[currentIndex];
+                    if (heroSlideshowImage) heroSlideshowImage.src = images[currentIndex]; // ヒーロー用追加
                     currentIndex = (currentIndex + 1) % images.length;
                 }
+
                 changeImage();
                 setInterval(changeImage, 3000);
             }
@@ -970,7 +1467,6 @@
                         }
                     });
                 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
                 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
             }
 
@@ -978,14 +1474,12 @@
             function initPetalAnimation() {
                 const petalCount = 15;
                 const body = document.body;
-                
                 for (let i = 0; i < petalCount; i++) {
                     setTimeout(() => {
                         createPetal(body);
                         setInterval(() => createPetal(body), 4000);
                     }, Math.random() * 4000);
                 }
-                
                 function createPetal(parent) {
                     const petal = document.createElement('div');
                     petal.className = 'petal';
@@ -1003,7 +1497,6 @@
                 const body = document.body;
                 const themeKey = 'okinawa-bungei-theme';
                 const themes = ['yamabuki', 'mizuiro', 'uguisu', 'monochrome'];
-                
                 const savedTheme = localStorage.getItem(themeKey);
                 if (savedTheme) {
                     body.classList.add(savedTheme);
@@ -1013,18 +1506,66 @@
                 } else {
                     document.querySelector('[data-theme="default"]').classList.add('active');
                 }
-                
                 colorButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         const theme = button.dataset.theme;
                         colorButtons.forEach(btn => btn.classList.remove('active'));
                         button.classList.add('active');
                         body.classList.remove(...themes);
-                        if (theme !== 'default') {
-                            body.classList.add(theme);
-                        }
+                        if (theme !== 'default') body.classList.add(theme);
                         localStorage.setItem(themeKey, theme);
                     });
+                });
+            }
+
+            // 画像モーダル機能の初期化
+            function initImageModal() {
+                const modal = document.getElementById('imageModal');
+                const modalImg = document.getElementById('modalImg');
+                const closeBtn = document.querySelector('.modal-close');
+                // class="gallery-item" 内の img を対象にする
+                const galleryImages = document.querySelectorAll('.gallery-item img');
+
+                galleryImages.forEach(img => {
+                    // キャプション（data-caption）があればオーバーレイを追加
+                    const captionText = img.getAttribute('data-caption');
+                    if (captionText) {
+                        const overlay = document.createElement('div');
+                        overlay.className = 'gallery-caption-overlay';
+                        overlay.textContent = captionText;
+                        img.parentElement.appendChild(overlay);
+                    }
+
+                    img.addEventListener('click', () => {
+                        modal.classList.add('active');
+                        modalImg.src = img.src;
+                        // モーダルにキャプションを表示
+                        const modalCaption = document.getElementById('modalCaption');
+                        if (captionText) {
+                            modalCaption.textContent = captionText;
+                        } else {
+                            modalCaption.textContent = "";
+                        }
+                    });
+                });
+
+                // 閉じるボタン
+                closeBtn.addEventListener('click', () => {
+                    modal.classList.remove('active');
+                });
+
+                // 背景クリックで閉じる
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+
+                // Escapeキーで閉じる
+                document.addEventListener('keydown', (e) => {
+                    if ((e.key === 'Escape' || e.key === 'Esc') && modal.classList.contains('active')) {
+                        modal.classList.remove('active');
+                    }
                 });
             }
 
@@ -1033,4 +1574,5 @@
         });
     </script>
 </body>
+
 </html>
