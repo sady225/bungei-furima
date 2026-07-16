@@ -139,7 +139,7 @@
     clearMotion();
     clearBubbles();
     resetProgress();
-    say("ボタンを押すと、参加ルートの管制デモが始まります。");
+    say("ボタンを押すと、参加ルートの案内デモが始まります。");
   }
 
   function setButtons() {
@@ -149,7 +149,7 @@
 
   var timeline = [
     { t: 0, run: function () {
-        say("古民家ミッション管制室に、スタッフが順番に配置につきます。");
+        say("古民家の案内所に、スタッフが順番に配置につきます。");
         staffList().forEach(function (el) { setState(el, "walking"); });
         moveTo(els.guide, POS.guide);
         moveTo(els.entry, POS.entry);
@@ -162,8 +162,8 @@
         clearMotion();
         setProgress("contact");
         focusStaff(els.guide);
-        say("問い合わせ信号を受信。総合案内担当が最初に受け止めます。");
-        setBubble(els.guide, "問い合わせ：出展・来場・お手伝いの相談を、ここで受信します。");
+        say("お問い合わせを受け付けました。総合案内担当が最初に対応します。");
+        setBubble(els.guide, "問い合わせ：出展・来場・お手伝いの相談を、ここで受け付けます。");
       }
     },
     { t: 5200, run: function () {
@@ -180,7 +180,7 @@
         setState(els.entry, "walking");
         moveTo(els.guide, POS.safeLeft);
         moveTo(els.entry, POS.safeCenter);
-        say("出展ルートに接続します。まず募集内容の確認をご案内します。");
+        say("出展ルートに進みます。まず募集内容の確認をご案内します。");
       }
     },
     { t: 12800, run: function () {
@@ -197,7 +197,7 @@
         setState(els.works, "walking");
         moveTo(els.entry, POS.entry);
         moveTo(els.works, POS.safeCenter);
-        say("作品案内担当が、出展できる作品の信号を整理します。");
+        say("作品案内担当が、出展できる作品の情報を整理します。");
       }
     },
     { t: 23200, run: function () {
@@ -213,7 +213,7 @@
         moveTo(els.works, POS.works);
         moveTo(els.volunteer, POS.safeRight);
         setProgress("volunteer");
-        say("支えるルートに接続します。役割例を見ながら考える流れをご案内します。");
+        say("支えるルートに進みます。役割例を見ながら考える流れをご案内します。");
       }
     },
     { t: 33200, run: function () {
@@ -229,13 +229,13 @@
         moveTo(els.volunteer, POS.volunteer);
         moveTo(els.public, POS.safeCenter);
         setProgress("news");
-        say("開催情報のステータスを確認します。広報担当が現在地を案内します。");
+        say("開催情報の状況を確認します。広報担当が今の状況を案内します。");
       }
     },
     { t: 45600, run: function () {
         focusStaff(els.public);
         setBubble(els.public, "開催情報：2027年2月頃を予定し、田場公民館で開催企画中です。");
-        say("開催情報について、広報担当が現在の状況を管制パネルに表示します。");
+        say("開催情報について、広報担当が現在の状況をご案内します。");
       }
     },
     { t: 52000, run: function () {
@@ -245,7 +245,7 @@
         moveTo(els.public, POS.public);
         moveTo(els.guide, POS.safeCenter);
         setProgress("next");
-        say("次のお知らせルートへ接続します。情報を受け取りたい方はお問い合わせからご連絡ください。");
+        say("次のお知らせルートに進みます。情報を受け取りたい方はお問い合わせからご連絡ください。");
       }
     },
     { t: 55200, run: function () {
@@ -300,7 +300,7 @@
     clearMotion();
     isRunning = false;
     setButtons();
-    say("管制を止めました。「管制デモを見る」または「最初から管制」で再開できます。");
+    say("デモを止めました。「案内デモを見る」または「最初から見る」で再開できます。");
   }
 
   function restartDemo() {
