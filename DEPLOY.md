@@ -20,6 +20,10 @@
 
 GitHubで `sady225/bungei-furima` を開きます。
 
+このリポジトリがprivateの場合でもGitHub Pagesに使えますが、GitHub公式ドキュメント上は、private repositoryからPagesを公開するには GitHub Pro / Team / Enterprise 系のプランが必要です。GitHub Freeの場合は、Pages公開元のリポジトリをpublicにする必要があります。
+
+また、private repositoryからGitHub Pagesで公開した場合でも、公開されたWebサイト自体はインターネット上で閲覧可能です。リポジトリ内に公開したくないファイルや秘密情報を置かないでください。
+
 1. `Settings` を開く
 2. 左メニューの `Pages` を開く
 3. `Build and deployment` の `Source` を `Deploy from a branch` にする
