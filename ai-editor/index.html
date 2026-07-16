@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沖縄文芸フリマ AI創作編集室</title>
+<meta name="description" content="作品が生まれ、出展につながるまでを、動く編集室で体験できます。2027年2月頃、田場公民館で次回開催を企画中。出展・来場・ボランティアのご案内。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <p class="eyebrow">開催企画中｜2027年2月頃・田場公民館</p>
+    <h1>
+      <span class="h1-sub">あなたの「つくりたい」を、そっと支える。</span>
+      <span class="h1-main">沖縄文芸フリマ AI創作編集室</span>
+    </h1>
+    <a class="back-link" href="../index.html">← メインサイトへ戻る</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="intro" aria-labelledby="intro-heading">
+    <h2 id="intro-heading" class="visually-hidden">このページについて</h2>
+    <p>物語、詩、漫画、イラスト、自分史、地域の記録。作品が生まれ、出展につながるまでの流れを、動くAI編集室で体験できます。</p>
+
+    <div class="demo-notice" role="note">
+      <p>このページは、作品づくりの流れを紹介する<strong>デモ</strong>です。現在は文章や個人情報を入力・保存する機能はありません。AIが作者に代わって作品を完成させるものではありません。</p>
+    </div>
+  </section>
+
+  <section class="stage-section" aria-labelledby="stage-heading">
+    <h2 id="stage-heading" class="visually-hidden">編集室ステージ</h2>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+
+        <div class="spot spot-entrance"  style="--x:4;  --y:78;"><span>入口</span></div>
+        <div class="spot spot-desk-a"    style="--x:16; --y:20;"><span>企画机</span></div>
+        <div class="spot spot-desk-b"    style="--x:40; --y:14;"><span>ことば机</span></div>
+        <div class="spot spot-desk-c"    style="--x:64; --y:14;"><span>お絵かき机</span></div>
+        <div class="spot spot-desk-d"    style="--x:84; --y:20;"><span>記録机</span></div>
+        <div class="spot spot-desk-e"    style="--x:84; --y:60;"><span>広報机</span></div>
+        <div class="spot spot-meeting"   style="--x:48; --y:52;"><span>相談テーブル</span></div>
+        <div class="spot spot-shelf"     style="--x:16; --y:60;"><span>本棚</span></div>
+        <div class="spot spot-plant"     style="--x:64; --y:64;"><span>島の植物</span></div>
+
+        <div class="character" id="char-cho" data-name="編集長シーサー" data-role="作品企画と担当決め" style="--x:16; --y:20;">
+          <div class="bubble" aria-hidden="true"></div>
+          <div class="dotfig cho"><span class="eye"></span><span class="eye eye2"></span></div>
+          <p class="char-label">編集長シーサー</p>
+        </div>
+
+        <div class="character" id="char-kotoba" data-name="ことば編集員" data-role="詩、小説、エッセイの確認" style="--x:40; --y:14;">
+          <div class="bubble" aria-hidden="true"></div>
+          <div class="dotfig kotoba"><span class="eye"></span><span class="eye eye2"></span></div>
+          <p class="char-label">ことば編集員</p>
+        </div>
+
+        <div class="character" id="char-e" data-name="お絵かき編集員" data-role="漫画、イラスト、表紙の準備" style="--x:64; --y:14;">
+          <div class="bubble" aria-hidden="true"></div>
+          <div class="dotfig e"><span class="eye"></span><span class="eye eye2"></span></div>
+          <p class="char-label">お絵かき編集員</p>
+        </div>
+
+        <div class="character" id="char-shima" data-name="島の記録係" data-role="自分史、地域文化、平和学習、聞き書き" style="--x:84; --y:20;">
+          <div class="bubble" aria-hidden="true"></div>
+          <div class="dotfig shima"><span class="eye"></span><span class="eye eye2"></span></div>
+          <p class="char-label">島の記録係</p>
+        </div>
+
+        <div class="character" id="char-kouhou" data-name="広報係" data-role="作品紹介文、POP、SNS告知" style="--x:84; --y:60;">
+          <div class="bubble" aria-hidden="true"></div>
+          <div class="dotfig kouhou"><span class="eye"></span><span class="eye eye2"></span></div>
+          <p class="char-label">広報係</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="controls">
+      <button type="button" id="btn-play">作品づくりの流れを見てみる</button>
+      <button type="button" id="btn-restart">最初から見る</button>
+      <button type="button" id="btn-stop">動きを止める</button>
+    </div>
+    <p class="demo-sub">約1分のデモです。文章や個人情報の入力はありません。</p>
+
+    <p class="now-playing" id="now-playing" role="status" aria-live="polite">
+      ボタンを押すと、編集室が動き出します。
+    </p>
+
+    <ol class="progress" id="progress" aria-label="制作の進行状況">
+      <li data-step="soudan"><span class="dot" aria-hidden="true"></span>相談</li>
+      <li data-step="kikaku"><span class="dot" aria-hidden="true"></span>企画</li>
+      <li data-step="henshu"><span class="dot" aria-hidden="true"></span>編集</li>
+      <li data-step="hyoshi"><span class="dot" aria-hidden="true"></span>表紙</li>
+      <li data-step="kouhou"><span class="dot" aria-hidden="true"></span>広報</li>
+      <li data-step="junbi"><span class="dot" aria-hidden="true"></span>出展準備</li>
+    </ol>
+
+    <noscript>
+      <p class="noscript-note">JavaScriptが無効なため、アニメーションは表示されません。編集室では、編集長シーサー・ことば編集員・お絵かき編集員・島の記録係・広報係の5人が力を合わせ、相談から出展準備まで作品づくりを支えます。</p>
+    </noscript>
+  </section>
+
+  <section class="event-info" aria-labelledby="event-heading">
+    <h2 id="event-heading">次回の沖縄文芸フリマ</h2>
+    <dl class="event-facts">
+      <div><dt>開催時期</dt><dd>2027年2月頃を予定</dd></div>
+      <div><dt>会場</dt><dd>田場公民館</dd></div>
+      <div><dt>状況</dt><dd>現在企画中</dd></div>
+    </dl>
+    <p>正式な開催日、募集内容、申込方法は、決まり次第このサイトとSNSでお知らせします。</p>
+  </section>
+
+  <section class="entry-cards" aria-labelledby="entry-heading">
+    <h2 id="entry-heading" class="visually-hidden">参加の入口</h2>
+    <div class="card-grid">
+
+      <div class="entry-card">
+        <h3>作品を出展したい</h3>
+        <p>本、ZINE、詩、小説、漫画、イラスト、自分史、地域の記録、平和学習など、さまざまな表現を歓迎します。</p>
+        <a class="card-button" href="#contact">出展に興味がある</a>
+      </div>
+
+      <div class="entry-card">
+        <h3>当日参加したい</h3>
+        <p>作品を読んだり、作者と話したり、会場の交流を楽しみたい方のための入口です。</p>
+        <a class="card-button" href="#contact">開催情報を受け取りたい</a>
+      </div>
+
+      <div class="entry-card">
+        <h3>運営を手伝いたい</h3>
+        <p>受付、会場準備、出展者案内、来場者案内、記録、SNS発信、子どもの創作体験補助など、できる範囲で参加できます。</p>
+        <a class="card-button" href="#contact">ボランティアに興味がある</a>
+      </div>
+
+    </div>
+
+    <div class="volunteer-detail">
+      <h3>ボランティアでできること（例）</h3>
+      <ul>
+        <li>会場準備・片付け</li>
+        <li>受付</li>
+        <li>出展者案内</li>
+        <li>来場者案内</li>
+        <li>会場内の見守り</li>
+        <li>写真・動画記録</li>
+        <li>SNS発信</li>
+        <li>子どもの創作体験補助</li>
+        <li>移動や搬入の補助</li>
+      </ul>
+      <p class="volunteer-note">すべてが必須ではありません。できることを、できる範囲で。</p>
+    </div>
+  </section>
+
+  <section class="contact-method" id="contact" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">お問い合わせ方法</h2>
+    <p>出展、開催情報の受け取り、ボランティアのいずれも、下記からお気軽にご連絡ください。</p>
+    <p class="contact-hint">お問い合わせの際は、「出展希望」「開催情報希望」「ボランティア希望」のいずれかをご記入ください。</p>
+    <ul class="contact-list">
+      <li>📷 <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer">公式Instagram（DMでご連絡ください）</a></li>
+      <li>📞 070-5692-4173（さどやま）</li>
+      <li>🌐 <a href="../index.html">メインサイトのお問い合わせ欄</a>もご覧ください</li>
+    </ul>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-heading">
+    <h2 id="cta-heading">つくる人も、読む人も、支える人も。</h2>
+    <p>一緒に文芸フリマをつくりませんか？</p>
+    <div class="cta-links">
+      <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer">公式Instagram</a>
+      <a href="#contact">お問い合わせ</a>
+      <a href="../index.html">メインサイトへ戻る</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>沖縄文芸フリマ AI創作編集室（デモ版） — 主催：琉球のタネ</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
