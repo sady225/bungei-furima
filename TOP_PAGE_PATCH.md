@@ -1,10 +1,8 @@
-# トップページへの追加パッチ（手動貼り付け用）
+# トップページへの追加パッチ（適用済み・手動貼り付け用控え）
 
-今回、既存サイト `https://furima.ryukyu-tane.com/` のソースファイルやCMS構造には
-直接アクセスできなかったため（閲覧のみでファイル構成不明）、安全のため
-**既存トップページ本体には一切手を加えていません。**
+このリポジトリの `index.html` には、下記の案内リンクを反映済みです。
 
-代わりに、追加したいHTMLの断片と挿入位置をここにまとめます。
+このファイルは、別環境やCMS側に同じ案内を手動で入れる場合の控えです。
 サイト管理者ご自身、または実装担当の方が、下記を該当箇所に貼り付けてください。
 
 ---
@@ -13,12 +11,12 @@
 
 ```html
 <a class="ai-editor-card" href="/ai-editor/">
-  <strong>AI創作編集室を体験する</strong>
-  <p>
+  <span class="ai-editor-card__title">AI創作編集室を体験する</span>
+  <span class="ai-editor-card__text">
     作品が生まれ、出展につながるまでを、動く編集室で体験できます。
     2027年2月頃、田場公民館で次回開催を企画中。
     出展、来場、ボランティアに興味がある方もこちらから。
-  </p>
+  </span>
 </a>
 ```
 
@@ -36,14 +34,15 @@
   color: #3A2E22;
   text-decoration: none;
 }
-.ai-editor-card strong {
+.ai-editor-card__title {
   display: block;
   font-size: 1.05rem;
+  font-weight: bold;
   color: #8F3521;
   margin-bottom: 6px;
 }
-.ai-editor-card p {
-  margin: 0;
+.ai-editor-card__text {
+  display: block;
   font-size: 0.92rem;
   line-height: 1.7;
 }

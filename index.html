@@ -316,6 +316,46 @@
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
         }
 
+        .ai-editor-card {
+            display: block;
+            max-width: 640px;
+            margin: 28px auto 0;
+            padding: 18px 22px;
+            border: 2px solid rgba(180, 71, 47, 0.9);
+            border-radius: 18px;
+            background: rgba(255, 247, 233, 0.95);
+            color: #3a2e22;
+            text-align: left;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+            animation: fadeInUp 1s ease-out .8s both;
+        }
+
+        .ai-editor-card__title {
+            display: block;
+            margin-bottom: 6px;
+            color: #8f3521;
+            font-weight: bold;
+            font-size: 1.08rem;
+        }
+
+        .ai-editor-card__text {
+            display: block;
+            font-size: 0.95rem;
+            line-height: 1.75;
+        }
+
+        .ai-editor-card:hover,
+        .ai-editor-card:focus-visible {
+            transform: translateY(-3px);
+            border-color: #8f3521;
+            background: #fff0d8;
+            opacity: 1;
+        }
+
+        .ai-editor-card--section {
+            margin: 0 auto 48px;
+        }
+
         .icon-instagram {
             width: 20px;
             height: 20px;
@@ -566,6 +606,8 @@
             margin-top: 20px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
             gap: 20px;
         }
 
@@ -761,6 +803,11 @@
                 align-items: center;
             }
 
+            .ai-editor-card {
+                width: 100%;
+                padding: 16px 18px;
+            }
+
             .cta-button {
                 width: 80%;
                 justify-content: center;
@@ -892,8 +939,8 @@
                     <div class="hero__text-content">
                         <h1>第２回開催御礼！<br>ありがとうございました</h1>
                         <p class="hero-subtitle">12月13日(土)、田場区公民館にて<br>たくさんの笑顔と表現に出会えました。</p>
-                        <p class="hero-subtitle" style="font-size: 1.2rem; margin-top:20px;">次回開催は 2026年
-                            夏頃を予定しています。<br>またお会いできる日を楽しみにしています。</p>
+                        <p class="hero-subtitle" style="font-size: 1.2rem; margin-top:20px;">次回開催は 2027年2月頃、
+                            田場公民館で企画中です。<br>またお会いできる日を楽しみにしています。</p>
 
                         <div class="hero-buttons">
                             <a href="#report" class="cta-button">当日の様子を見る</a>
@@ -903,6 +950,14 @@
                                     alt="Instagram" class="icon-instagram">公式インスタグラム
                             </a>
                         </div>
+
+                        <a class="ai-editor-card" href="./ai-editor/">
+                            <span class="ai-editor-card__title">AI創作編集室を体験する</span>
+                            <span class="ai-editor-card__text">
+                                作品が生まれ、出展につながるまでを、動く編集室で体験できます。
+                                出展、来場、ボランティアに興味がある方もこちらから。
+                            </span>
+                        </a>
                     </div>
                     <!-- ヒーロー右側：スライドショー -->
                     <div class="flyer-card">
@@ -1103,6 +1158,13 @@
         <!-- フリマ概要 (About) - コンセプトは維持 -->
         <section class="section" id="about">
             <div class="container">
+                <a class="ai-editor-card ai-editor-card--section" href="./ai-editor/">
+                    <span class="ai-editor-card__title">AI創作編集室を体験する</span>
+                    <span class="ai-editor-card__text">
+                        作品づくりの相談から出展準備までの流れを、約1分のデモで見られます。
+                        2027年2月頃、田場公民館で次回開催を企画中です。
+                    </span>
+                </a>
                 <h2 class="section-title fade-in">🌸 沖縄文芸フリマとは？</h2>
                 <div>
                     <p class="section-description text-center">
@@ -1151,13 +1213,14 @@
         <!-- 次回予告 -->
         <section class="section">
             <div class="container text-center">
-                <h2 class="section-title">🔜 次回は 2026年 夏頃！</h2>
+                <h2 class="section-title">🔜 次回は 2027年2月頃！</h2>
                 <p>
-                    次回の詳細が決まり次第、公式サイトやinstagramでお知らせします。<br>
+                    田場公民館での開催を企画中です。詳細が決まり次第、公式サイトやinstagramでお知らせします。<br>
                     「次は出展してみたい！」という方、制作期間はたっぷりあります✨<br>
                     あなたの表現に出会えるのを楽しみにしています。
                 </p>
                 <div class="social-links">
+                    <a href="./ai-editor/" class="cta-button">AI創作編集室を体験する</a>
                     <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer"
                         class="cta-button instagram-button">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
