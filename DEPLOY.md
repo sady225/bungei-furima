@@ -1,82 +1,86 @@
-# 公開手順（初心者向け）
+# 公開手順：GitHub Pages + Cloudflare
 
-対象：`ai-editor` フォルダ一式（`index.html` / `style.css` / `app.js` / `assets`）
+対象：沖縄文芸フリマ公式サイト一式
 
-## 1. 事前準備
+- 本番URL：`https://furima.ryukyu-tane.com/`
+- GitHubリポジトリ：`sady225/bungei-furima`
+- 公開元：`main` ブランチのルート
+- カスタムドメイン：`furima.ryukyu-tane.com`
 
-- お使いのサーバーへのFTP／SFTP接続情報（ホスト名・ユーザー名・パスワード、または管理画面のファイルマネージャー）をご用意ください。
-- 既存サイトのファイルは**今回一切変更していません**ので、バックアップ済みの状態で作業を始められます（万一に備え、アップロード先フォルダを事前に一度ダウンロードして保管しておくと安心です）。
+## 1. このリポジトリ側で必要なもの
 
-## 2. アップロード先
+このリポジトリには、GitHub Pages公開用に次のファイルを置いています。
 
-サイトのルート（`https://furima.ryukyu-tane.com/` の直下）に、
-そのまま `ai-editor` フォルダごとアップロードしてください。
+- `index.html`：トップページ
+- `ai-editor/`：AI創作編集室
+- `CNAME`：GitHub Pagesのカスタムドメイン指定
+- `.nojekyll`：Jekyll変換を使わず、そのまま静的ファイルとして公開する指定
 
-アップロード後、次のパスでアクセスできるようになります。
+## 2. GitHub Pagesの設定
 
+GitHubで `sady225/bungei-furima` を開きます。
+
+1. `Settings` を開く
+2. 左メニューの `Pages` を開く
+3. `Build and deployment` の `Source` を `Deploy from a branch` にする
+4. `Branch` を `main`、フォルダを `/ (root)` にして保存
+5. `Custom domain` に `furima.ryukyu-tane.com` を入れて保存
+6. `Enforce HTTPS` が選べるようになったら有効化
+
+GitHub公式ドキュメントでは、カスタムサブドメインはGitHub Pages側にドメインを追加したうえで、DNSにCNAMEを設定する流れです。DNS反映やHTTPS設定には時間がかかることがあります。
+
+## 3. Cloudflare DNSの設定
+
+Cloudflareで `ryukyu-tane.com` のDNSを開き、`furima` の既存レコードがValue-DomainのFTPサーバーを指している場合は、GitHub Pages向けに差し替えます。
+
+推奨レコード：
+
+| Type | Name | Target | Proxy status |
+| --- | --- | --- | --- |
+| CNAME | `furima` | `sady225.github.io` | まずは `DNS only` |
+
+GitHub PagesでカスタムドメインとHTTPSが正常になった後、Cloudflare経由にしたい場合は `Proxy status` を `Proxied` に切り替えます。切り替え後は Cloudflare の `SSL/TLS` を `Full` 以上にしてください。
+
+注意：
+
+- CNAMEのTargetにリポジトリ名 `/bungei-furima` は入れません。
+- ワイルドカードDNS（`*.ryukyu-tane.com`）は使わないでください。
+- 旧FTPサーバー向けの `A` / `CNAME` レコードが同じ名前で残っていると、意図しない向き先になります。
+
+## 4. 更新手順
+
+ローカルで変更したら、通常のGit操作でGitHubへ反映します。
+
+```bash
+git status
+git add .
+git commit -m "Update site"
+git push origin main
 ```
-https://furima.ryukyu-tane.com/ai-editor/
-```
 
-フォルダ構成（このまま丸ごと配置してください）：
-
-```
-ai-editor/
-├── index.html
-├── style.css
-├── app.js
-└── assets/        （現時点では空。画像を追加する場合はここに）
-```
-
-## 3. アップロード手順（FTPソフトを使う場合）
-
-1. FileZillaなどのFTPソフトでサーバーへ接続します。
-2. サーバー側でサイトのルートフォルダ（`public_html` や `www` など）を開きます。
-3. お手元の `ai-editor` フォルダをそのままドラッグ＆ドロップでアップロードします。
-4. アップロードが完了したら、ブラウザで `https://furima.ryukyu-tane.com/ai-editor/` を開き、表示を確認します。
-
-## 4. アップロード手順（レンタルサーバーのファイルマネージャーを使う場合）
-
-1. 管理画面にログインし、「ファイルマネージャー」を開きます。
-2. サイトのルートフォルダに移動します。
-3. 「アップロード」機能で、`ai-editor` フォルダの中身（4つのファイル・フォルダ）をまとめて、
-   もしくは1つずつアップロードします。
-   ※ ファイルマネージャーによっては、フォルダごとのアップロードができない場合があります。
-   その場合は先に空の `ai-editor` フォルダを作成し、その中に各ファイルをアップロードしてください。
-4. アップロード後、`https://furima.ryukyu-tane.com/ai-editor/` にアクセスして確認します。
+GitHub Pagesの反映には数十秒から数分かかることがあります。
 
 ## 5. 動作確認チェックリスト
 
-- [ ] `https://furima.ryukyu-tane.com/ai-editor/` を開くと、ページが表示される
-- [ ] 「作品づくりの流れを見てみる」ボタンでアニメーションが始まる
-- [ ] 「動きを止める」ボタンで止まる
-- [ ] 「最初から見る」ボタンで最初からやり直せる
-- [ ] ボタンを連打してもタイマーが重複しない
-- [ ] スマートフォン幅（375px）でも横スクロールせず読める
-- [ ] 「2027年2月頃」「田場公民館」「企画中」の表記が確認できる
-- [ ] 「作品を出展したい」「当日参加したい」「運営を手伝いたい」の3つの入口カードが表示される
-- [ ] すべてのボタン・リンクのリンク先が正しく開く（リンク切れがない）
-- [ ] AIに実際に相談・入力できると誤解させる表現がないことを確認する
+- [ ] `https://furima.ryukyu-tane.com/` がトップページを表示する
+- [ ] `https://furima.ryukyu-tane.com/ai-editor/` がAI創作編集室を表示する
+- [ ] トップページの「AI創作編集室を体験する」リンクが開く
 - [ ] 「メインサイトへ戻る」リンクでトップページに戻れる
-- [ ] 既存トップページの表示が今まで通りであることを確認する
-- [ ] JavaScriptを無効にしても、開催情報とお問い合わせ方法が読める
+- [ ] 「2027年2月頃」「田場公民館」「企画中」の表記が確認できる
+- [ ] スマートフォン幅でも横スクロールせず読める
+- [ ] Instagramなど外部リンクが正しく開く
+- [ ] GitHub Pagesで `Enforce HTTPS` が有効になっている
+- [ ] Cloudflare経由に切り替えた後もHTTPS警告が出ない
 
-## 5-2. 正式なフォームURLが決まったら
+## 6. 正式なフォームURLが決まったら
 
-出展・来場・ボランティアの正式な受付フォームやお問い合わせページのURLが決まったら、
-`TOP_PAGE_PATCH.md` に記載した4箇所のリンク先を、ページ内リンク（`#contact`）から
-実際のURLに差し替えてください。差し替えるまでは、各ボタンはページ内の
-「お問い合わせ方法」セクション（Instagram DM・電話番号）に案内する仕組みになっています。
+出展・来場・ボランティアの正式な受付フォームやお問い合わせページのURLが決まったら、`ai-editor/index.html` 内の `href="#contact"` を実際のURLに差し替えてください。
 
-## 6. トップページへのリンク追加（対応済み）
+現在は、各ボタンがページ内の「お問い合わせ方法」セクション（Instagram DM・電話番号）へ案内する形です。
 
-このリポジトリの `index.html` には、`ai-editor` への案内リンクを反映済みです。
-別環境やCMS側にも同じ案内を入れたい場合は、同封の `TOP_PAGE_PATCH.md` を参照し、
-指定箇所にHTML断片を貼り付けてください。
+## 7. トラブル時
 
-## 7. うまく表示されないときは
-
-- ファイルパスが正しいか（`ai-editor` フォルダがルート直下にあるか）を確認してください。
-- ブラウザのキャッシュが残っている場合があります。スーパーリロード（Ctrl+Shift+R / Cmd+Shift+R）を試してください。
-- `style.css` や `app.js` が読み込めていないときは、ブラウザの開発者ツール（F12）の
-  「コンソール」「ネットワーク」タブでエラーが出ていないか確認してください。
+- GitHub Pagesが404になる：Pages設定が `main` / `/ (root)` になっているか確認
+- 独自ドメインが旧サイトを表示する：Cloudflare DNSに旧FTP向けレコードが残っていないか確認
+- HTTPSが有効にならない：GitHub Pagesのカスタムドメイン保存後、DNS反映を待ってから `Enforce HTTPS` を再確認
+- CSSやJSが読み込めない：ブラウザのキャッシュを削除、またはスーパーリロード
