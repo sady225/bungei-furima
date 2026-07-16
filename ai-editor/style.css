@@ -621,55 +621,29 @@ button:focus-visible {
   max-width: 980px;
 }
 
-.detail-grid,
-.feature-board {
+.detail-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 18px;
 }
 
-.detail-card,
-.feature-board > div {
+.detail-card {
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface);
 }
 
-.detail-card h3,
-.feature-board h3 {
+.detail-card h3 {
   margin: 0 0 8px;
   color: var(--roof-deep);
   font-family: var(--font-head);
   font-size: 1.05rem;
 }
 
-.detail-card p,
-.feature-board p {
+.detail-card p {
   margin: 0;
-}
-
-.plain-list {
-  margin: 0;
-  padding-left: 1.2em;
-}
-
-.plain-list li {
-  margin: 4px 0;
-}
-
-.feature-list {
-  margin-top: 16px;
-}
-
-code {
-  padding: 0.08em 0.32em;
-  border-radius: 5px;
-  background: rgba(234, 217, 188, 0.64);
-  color: var(--roof-deep);
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  font-size: 0.94em;
 }
 
 .event-facts {
@@ -750,8 +724,7 @@ code {
     grid-template-columns: 1fr;
   }
 
-  .detail-grid,
-  .feature-board {
+  .detail-grid {
     grid-template-columns: 1fr;
   }
 }
