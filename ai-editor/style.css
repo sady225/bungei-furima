@@ -13,6 +13,8 @@
   --roof-deep: #803323;
   --sea: #1f6e78;
   --sea-deep: #174f57;
+  --console: #183b3f;
+  --console-line: #5fb8a7;
   --leaf: #607747;
   --gold: #c9902e;
   --line: #dbc59e;
@@ -136,6 +138,29 @@ button:focus-visible {
   margin-top: 22px;
 }
 
+.mission-status {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 20px auto 0;
+  max-width: 880px;
+}
+
+.mission-status span {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 248, 236, 0.36);
+  border-radius: 8px;
+  background: rgba(24, 59, 63, 0.44);
+  color: #fff8ec;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 .primary-link,
 .back-link,
 .card-button,
@@ -250,6 +275,36 @@ button:focus-visible {
   background-repeat: no-repeat;
 }
 
+.console-overlay {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: min(520px, calc(100% - 24px));
+  padding: 8px;
+  border: 1px solid rgba(95, 184, 167, 0.7);
+  border-radius: 8px;
+  background: rgba(24, 59, 63, 0.68);
+  color: #eafff6;
+  box-shadow: 0 8px 18px rgba(24, 59, 63, 0.24);
+}
+
+.console-overlay span {
+  min-height: 25px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border: 1px solid rgba(234, 255, 246, 0.24);
+  border-radius: 5px;
+  background: rgba(234, 255, 246, 0.08);
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
 .stage::after {
   content: "";
   position: absolute;
@@ -298,7 +353,7 @@ button:focus-visible {
 
 .character {
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   left: calc(var(--x) * 1%);
   top: calc(var(--y) * 1%);
   transform: translate(-50%, -50%);
@@ -512,13 +567,14 @@ button:focus-visible {
 }
 
 .progress li.active {
-  border-color: var(--roof);
-  color: var(--roof-deep);
+  border-color: var(--console-line);
+  color: var(--console);
   font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(95, 184, 167, 0.26);
 }
 
 .progress li.active .dot {
-  background: var(--roof);
+  background: var(--console-line);
   opacity: 1;
 }
 
@@ -536,6 +592,50 @@ button:focus-visible {
   content: "済";
   margin-left: 2px;
   font-size: 0.75rem;
+}
+
+.mission-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.mission-board > div {
+  min-height: 112px;
+  padding: 14px;
+  border: 1px solid rgba(95, 184, 167, 0.45);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(24, 59, 63, 0.95), rgba(31, 110, 120, 0.88)),
+    var(--console);
+  color: #f5fff9;
+}
+
+.mission-board strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.05rem;
+}
+
+.mission-board p {
+  margin: 6px 0 0;
+  color: rgba(245, 255, 249, 0.86);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.board-label {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 2px 7px;
+  border: 1px solid rgba(245, 255, 249, 0.24);
+  border-radius: 5px;
+  color: var(--console-line);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
 }
 
 .noscript-note {
@@ -736,6 +836,11 @@ button:focus-visible {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .mission-status,
+  .mission-board {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .event-facts {
     grid-template-columns: 1fr;
   }
@@ -767,6 +872,11 @@ button:focus-visible {
     flex-direction: column;
   }
 
+  .mission-status,
+  .mission-board {
+    grid-template-columns: 1fr;
+  }
+
   .primary-link,
   .back-link,
   .card-button,
@@ -778,6 +888,19 @@ button:focus-visible {
     aspect-ratio: 16 / 11;
     min-height: 300px;
     background-size: 100% 100%, contain, cover;
+  }
+
+  .console-overlay {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    max-width: none;
+    padding: 6px;
+  }
+
+  .console-overlay span {
+    min-height: 22px;
+    font-size: 0.55rem;
   }
 
   .spot span {
