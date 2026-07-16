@@ -352,22 +352,38 @@ button:focus-visible {
 
 .bubble {
   position: absolute;
-  top: -32px;
+  bottom: 55px;
   left: 50%;
   transform: translateX(-50%) scale(0);
   transform-origin: bottom center;
+  width: max-content;
+  max-width: 230px;
   min-height: 26px;
-  padding: 3px 8px;
+  padding: 7px 10px;
   border: 2px solid var(--ink);
   border-radius: 8px;
   background: #fffdf7;
   color: var(--ink);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  line-height: 1.35;
-  white-space: nowrap;
+  line-height: 1.45;
+  white-space: normal;
+  text-align: left;
   opacity: 0;
   transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 12px;
+  height: 12px;
+  background: #fffdf7;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .character.show-bubble .bubble {
@@ -792,10 +808,10 @@ button:focus-visible {
   }
 
   .bubble {
-    top: -30px;
-    max-width: 160px;
-    white-space: normal;
-    text-align: center;
+    bottom: 48px;
+    max-width: 150px;
+    padding: 6px 8px;
+    font-size: 0.62rem;
   }
 
   .office-menu {

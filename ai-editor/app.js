@@ -111,6 +111,13 @@
     });
   }
 
+  function focusStaff(activeEl) {
+    staffList().forEach(function (el) {
+      setState(el, el === activeEl ? "working" : "");
+      if (el !== activeEl) { setBubble(el, ""); }
+    });
+  }
+
   function resetProgress() {
     els.progress.querySelectorAll("li").forEach(function (li) {
       li.classList.remove("active", "done");
@@ -154,18 +161,21 @@
     { t: 1800, run: function () {
         clearMotion();
         setProgress("contact");
-        say("「文芸フリマに参加したい」という問い合わせが届きました。");
-        setBubble(els.guide, "問い合わせです");
+        focusStaff(els.guide);
+        say("問い合わせについて、総合案内担当が最初に受け止めます。");
+        setBubble(els.guide, "問い合わせ：出展・来場・お手伝いの相談を、ここで受け止めます。");
       }
     },
     { t: 5200, run: function () {
-        setBubble(els.guide, "");
+        clearBubbles();
         setProgress("choice");
-        say("総合案内担当が、出展かボランティアかを一緒に整理します。");
-        setState(els.guide, "working");
+        focusStaff(els.guide);
+        say("参加方法について、総合案内担当が入口を整理します。");
+        setBubble(els.guide, "参加方法：出展する、ボランティアで支える、当日遊びに行く。3つの入口があります。");
       }
     },
     { t: 9200, run: function () {
+        clearBubbles();
         setState(els.guide, "walking");
         setState(els.entry, "walking");
         moveTo(els.guide, POS.safeLeft);
@@ -175,14 +185,14 @@
     },
     { t: 12800, run: function () {
         setState(els.guide, "");
-        setState(els.entry, "working");
+        focusStaff(els.entry);
         setProgress("exhibit");
-        setBubble(els.entry, "出展の流れ");
-        say("出展受付担当が、募集開始後に申込みフォームから応募する流れを説明します。");
+        setBubble(els.entry, "出展案内：開催予定と募集内容を確認し、募集開始後に申込みフォームから応募します。");
+        say("出展案内について、出展受付担当が流れを説明します。");
       }
     },
     { t: 18200, run: function () {
-        setBubble(els.entry, "");
+        clearBubbles();
         setState(els.entry, "walking");
         setState(els.works, "walking");
         moveTo(els.entry, POS.entry);
@@ -191,13 +201,13 @@
       }
     },
     { t: 23200, run: function () {
-        setState(els.works, "working");
-        setBubble(els.works, "作品例を確認");
+        focusStaff(els.works);
+        setBubble(els.works, "作品案内：本・ZINE・漫画・地域文化など、出展できる作品例を確認します。");
         say("作品や展示物、当日の持ち物は、事務局からの案内を見ながら準備します。");
       }
     },
     { t: 28600, run: function () {
-        setBubble(els.works, "");
+        clearBubbles();
         setState(els.works, "walking");
         setState(els.volunteer, "walking");
         moveTo(els.works, POS.works);
@@ -207,13 +217,13 @@
       }
     },
     { t: 33200, run: function () {
-        setState(els.volunteer, "working");
-        setBubble(els.volunteer, "できる範囲で");
-        say("できることを、できる範囲で。詳しい参加方法や時間帯は、募集内容が決まり次第お知らせします。");
+        focusStaff(els.volunteer);
+        setBubble(els.volunteer, "ボランティア案内：できることを、できる範囲で。役割や時間帯は決まり次第お知らせします。");
+        say("ボランティア案内について、運営・ボランティア担当が説明します。");
       }
     },
     { t: 39600, run: function () {
-        setBubble(els.volunteer, "");
+        clearBubbles();
         setState(els.volunteer, "walking");
         setState(els.public, "walking");
         moveTo(els.volunteer, POS.volunteer);
@@ -223,13 +233,13 @@
       }
     },
     { t: 45600, run: function () {
-        setState(els.public, "working");
-        setBubble(els.public, "企画中です");
-        say("まだ募集開始前です。正式な日程や募集内容は、決まり次第お知らせします。");
+        focusStaff(els.public);
+        setBubble(els.public, "開催情報：2027年2月頃を予定し、田場公民館で開催企画中です。");
+        say("開催情報について、広報担当が現在の状況を案内します。");
       }
     },
     { t: 52000, run: function () {
-        setBubble(els.public, "");
+        clearBubbles();
         setState(els.public, "walking");
         setState(els.guide, "walking");
         moveTo(els.public, POS.public);
@@ -238,7 +248,14 @@
         say("募集開始後に申込みできます。情報を受け取りたい方はお問い合わせからご連絡ください。");
       }
     },
+    { t: 55200, run: function () {
+        focusStaff(els.guide);
+        setBubble(els.guide, "次のお知らせ：まだ募集開始前です。正式な日程や募集内容は、決まり次第お知らせします。");
+        say("次のお知らせについて、総合案内担当が確認方法を案内します。");
+      }
+    },
     { t: 59200, run: function () {
+        clearBubbles();
         clearMotion();
         moveTo(els.guide, POS.finaleGuide);
         moveTo(els.entry, POS.finaleEntry);
