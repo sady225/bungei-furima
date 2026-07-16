@@ -1,0 +1,7 @@
+.DS_Store
+.env
+ftp_upload.sh
+
+# Local/archive copies kept out of the public repository by default.
+index251214*.html
+indexのコピー*.html
