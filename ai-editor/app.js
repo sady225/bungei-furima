@@ -163,7 +163,7 @@
         setProgress("contact");
         focusStaff(els.guide);
         say("お問い合わせを受け付けました。総合案内担当が最初に対応します。");
-        setBubble(els.guide, "問い合わせ：出展・来場・お手伝いの相談を、ここで受け付けます。");
+        setBubble(els.guide, "問い合わせ：作品、子ども実行委員、場を支える参加、来場についてご案内します。");
       }
     },
     { t: 5200, run: function () {
@@ -171,7 +171,7 @@
         setProgress("choice");
         focusStaff(els.guide);
         say("参加方法のルートを確認します。総合案内担当が入口を整理します。");
-        setBubble(els.guide, "参加方法：出展する、支える、読みに行く。3つのルートがあります。");
+        setBubble(els.guide, "参加方法：作品、子ども実行委員、場を支える、遊びに行く。4つのルートがあります。");
       }
     },
     { t: 9200, run: function () {
@@ -187,8 +187,8 @@
         setState(els.guide, "");
         focusStaff(els.entry);
         setProgress("exhibit");
-        setBubble(els.entry, "出展案内：開催予定と募集内容を確認し、募集開始後に応募へ進みます。");
-        say("出展案内について、出展受付担当が出展ルートを説明します。");
+        setBubble(els.entry, "作品の参加：本・ZINE・漫画・写真など、好きな表現から始められます。");
+        say("ルート1です。出展受付担当が、作品を出す参加方法をご案内します。");
       }
     },
     { t: 18200, run: function () {
@@ -197,13 +197,14 @@
         setState(els.works, "walking");
         moveTo(els.entry, POS.entry);
         moveTo(els.works, POS.safeCenter);
-        say("作品案内担当が、出展できる作品の情報を整理します。");
+        say("ルート2に進みます。子ども実行委員の案内担当が前へ出ます。");
       }
     },
     { t: 23200, run: function () {
         focusStaff(els.works);
-        setBubble(els.works, "作品案内：本・ZINE・漫画・地域文化など、出展できる作品例を確認します。");
-        say("作品や展示物、当日の持ち物は、事務局からの案内を見ながら準備します。");
+        setProgress("children");
+        setBubble(els.works, "子ども実行委員：子どもが考え、選び、やってみる。大人が安全と大切な判断を支えます。");
+        say("全部やらなくて大丈夫。できることを、できる範囲で参加できます。");
       }
     },
     { t: 28600, run: function () {
@@ -213,13 +214,13 @@
         moveTo(els.works, POS.works);
         moveTo(els.volunteer, POS.safeRight);
         setProgress("volunteer");
-        say("支えるルートに進みます。役割例を見ながら考える流れをご案内します。");
+        say("ルート3に進みます。人が気持ちよく過ごせる場を一緒につくる参加です。");
       }
     },
     { t: 33200, run: function () {
         focusStaff(els.volunteer);
-        setBubble(els.volunteer, "ボランティア案内：できることを、できる範囲で。役割や時間帯は決まり次第お知らせします。");
-        say("ボランティア案内について、運営・ボランティア担当が支えるルートを説明します。");
+        setBubble(els.volunteer, "場を支える参加：受付、案内、清掃、片付け、場を整えることも大切な役割です。");
+        say("人前に立つことだけが役割ではありません。気づくこと、整えること、誰かにつなぐことも参加です。");
       }
     },
     { t: 39600, run: function () {
@@ -229,13 +230,13 @@
         moveTo(els.volunteer, POS.volunteer);
         moveTo(els.public, POS.safeCenter);
         setProgress("news");
-        say("開催情報の状況を確認します。広報担当が今の状況を案内します。");
+        say("ルート4に進みます。広報担当が、遊びに行く・読みに行く楽しみ方をご案内します。");
       }
     },
     { t: 45600, run: function () {
         focusStaff(els.public);
-        setBubble(els.public, "開催情報：2027年2月頃を予定し、田場公民館で開催企画中です。");
-        say("開催情報について、広報担当が現在の状況をご案内します。");
+        setBubble(els.public, "来場：作品、作者との会話、ワークショップ、猫をテーマにした展示などを検討しています。");
+        say("正式な日時と来場条件は、決まり次第お知らせします。");
       }
     },
     { t: 52000, run: function () {
@@ -250,7 +251,7 @@
     },
     { t: 55200, run: function () {
         focusStaff(els.guide);
-        setBubble(els.guide, "次のお知らせ：まだ募集開始前です。正式な日程や募集内容は、決まり次第お知らせします。");
+        setBubble(els.guide, "次のお知らせ：候補日は2027年2月6日または13日、会場は田場公民館の予定です。正式決定後にお知らせします。");
         say("次のお知らせについて、総合案内担当が確認方法を案内します。");
       }
     },
@@ -262,7 +263,7 @@
         moveTo(els.works, POS.finaleWorks);
         moveTo(els.public, POS.finalePublic);
         moveTo(els.volunteer, POS.finaleVolunteer);
-        say("つくる人も、読む人も、支える人も。一緒に沖縄文芸フリマをつくりませんか？");
+        say("好きなことから、自分に合う参加方法を選べます。一緒に沖縄文芸フリマ vol.3をつくりませんか。");
       }
     },
     { t: 63800, run: function () {
