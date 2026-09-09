@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>沖縄文芸フリマ - 子どもも大人も一緒に楽しむ</title>
+    <title>沖縄文芸フリマ vol.3｜2027年2月開催企画中</title>
+    <meta name="description" content="沖縄文芸フリマ vol.3は、猫・本・作品・人との出会いを楽しむ文化イベントです。2026年度プロジェクトとして、2027年2月に田場公民館（予定）での開催を企画しています。">
     <style>
         :root {
             --color-primary: #2c3e50;
@@ -851,6 +852,9 @@
             position: absolute;
             top: 20px;
             right: 35px;
+            padding: 4px 12px;
+            border: 0;
+            background: transparent;
             color: #f1f1f1;
             font-size: 40px;
             font-weight: bold;
@@ -904,6 +908,135 @@
                 opacity: 1;
             }
         }
+
+        /* 第3回案内 */
+        .hero__text-content {
+            max-width: 680px;
+        }
+
+        .hero-status,
+        .hero-location {
+            font-weight: 700;
+            letter-spacing: .04em;
+        }
+
+        .hero-theme {
+            margin: 0 0 8px;
+            font-size: clamp(1.55rem, 4vw, 2.35rem);
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .hero-tagline {
+            margin-bottom: 22px;
+            font-size: clamp(1rem, 2.4vw, 1.2rem);
+        }
+
+        .hero-status,
+        .hero-location {
+            margin: 4px 0;
+            font-size: 1.05rem;
+        }
+
+        .hero-description {
+            max-width: 620px;
+            margin: 24px auto 0;
+            font-size: clamp(1.05rem, 2.7vw, 1.25rem);
+            line-height: 1.8;
+        }
+
+        .cta-button--outline {
+            background: rgba(255, 255, 255, .13);
+            border: 2px solid rgba(255, 255, 255, .88);
+        }
+
+        .vol3-intro {
+            background: rgba(255, 255, 255, .94);
+        }
+
+        .vol3-lead {
+            max-width: 800px;
+            margin: 0 auto 36px;
+            text-align: center;
+            font-size: 1.08rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .feature-card {
+            padding: 24px;
+            border: 1px solid rgba(44, 62, 80, .16);
+            border-radius: 16px;
+            background: var(--bg-light);
+            box-shadow: var(--box-shadow);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+
+        .feature-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            margin-bottom: 12px;
+            border-radius: 50%;
+            background: #8f3521;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .feature-quote {
+            margin-top: 12px;
+            padding: 12px 14px;
+            border-left: 4px solid #57bbbb;
+            background: rgba(87, 187, 187, .1);
+            font-weight: 700;
+        }
+
+        .cat-flow {
+            margin-top: 14px;
+            color: #8f3521;
+            font-weight: 700;
+        }
+
+        .legacy-bridge {
+            max-width: 840px;
+            margin: 0 auto 42px;
+            padding: 22px 24px;
+            border: 2px solid rgba(87, 187, 187, .55);
+            border-radius: 16px;
+            background: var(--bg-light);
+            text-align: center;
+        }
+
+        .legacy-bridge h2 {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 56px 0;
+            }
+
+            .hero-buttons .cta-button {
+                width: 100%;
+                max-width: 360px;
+            }
+        }
     </style>
 </head>
 
@@ -918,13 +1051,18 @@
                     <div class="subtitle">子どもも大人も一緒に楽しむ</div>
                 </div>
                 <!-- 色選択ボタン省略せず残します -->
-                <div class="color-selector">
-                    <label>色設定:</label>
-                    <button class="color-btn default-color active" data-theme="default" title="標準"></button>
-                    <button class="color-btn yamabuki-color" data-theme="yamabuki" title="山吹色系"></button>
-                    <button class="color-btn mizuiro-color" data-theme="mizuiro" title="水色系"></button>
-                    <button class="color-btn uguisu-color" data-theme="uguisu" title="うぐいす色系"></button>
-                    <button class="color-btn mono-color" data-theme="monochrome" title="白黒系"></button>
+                <div class="color-selector" role="group" aria-labelledby="color-setting-label">
+                    <span id="color-setting-label">色設定:</span>
+                    <button class="color-btn default-color active" data-theme="default" title="標準"
+                        aria-label="標準の色にする" aria-pressed="true"></button>
+                    <button class="color-btn yamabuki-color" data-theme="yamabuki" title="山吹色系"
+                        aria-label="山吹色系にする" aria-pressed="false"></button>
+                    <button class="color-btn mizuiro-color" data-theme="mizuiro" title="水色系"
+                        aria-label="水色系にする" aria-pressed="false"></button>
+                    <button class="color-btn uguisu-color" data-theme="uguisu" title="うぐいす色系"
+                        aria-label="うぐいす色系にする" aria-pressed="false"></button>
+                    <button class="color-btn mono-color" data-theme="monochrome" title="白黒系"
+                        aria-label="白黒系にする" aria-pressed="false"></button>
                 </div>
             </div>
         </div>
@@ -932,32 +1070,22 @@
 
     <main>
 
-        <!-- ヒーロー (リニューアル版) -->
+        <!-- 沖縄文芸フリマ vol.3 -->
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
                     <div class="hero__text-content">
-                        <h1>第２回開催御礼！<br>ありがとうございました</h1>
-                        <p class="hero-subtitle">12月13日(土)、田場区公民館にて<br>たくさんの笑顔と表現に出会えました。</p>
-                        <p class="hero-subtitle" style="font-size: 1.2rem; margin-top:20px;">次回開催は 2027年2月頃、
-                            田場公民館で企画中です。<br>またお会いできる日を楽しみにしています。</p>
+                        <h1>沖縄文芸フリマ vol.3</h1>
+                        <p class="hero-theme">猫がつなぐ、好きとご縁。</p>
+                        <p class="hero-tagline">― 好きからはじまる、やさしさの伝染 ―</p>
+                        <p class="hero-status">2026年度プロジェクト｜2027年2月開催企画中</p>
+                        <p class="hero-location">田場公民館（予定）</p>
+                        <p class="hero-description">つくる・伝える・つながる。<br>地域にひらく表現と社会参加の場。</p>
 
                         <div class="hero-buttons">
-                            <a href="#report" class="cta-button">当日の様子を見る</a>
-                            <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer"
-                                class="cta-button instagram-button">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
-                                    alt="Instagram" class="icon-instagram">公式インスタグラム
-                            </a>
+                            <a href="#vol3" class="cta-button">第3回について知る</a>
+                            <a href="./ai-editor/" class="cta-button cta-button--outline">参加方法を見る</a>
                         </div>
-
-                        <a class="ai-editor-card" href="./ai-editor/">
-                            <span class="ai-editor-card__title">オンライン事務局を見る</span>
-                            <span class="ai-editor-card__text">
-                                沖縄文芸フリマへの出展や、ボランティア参加までの流れをご案内します。
-                                2027年2月頃、田場公民館で次回開催を企画中です。
-                            </span>
-                        </a>
                     </div>
                     <!-- ヒーロー右側：スライドショー -->
                     <div class="flyer-card">
@@ -965,6 +1093,47 @@
                         <img id="heroSlideshowImage" class="slideshow-image" src="./photo/251213/001.jpg"
                             alt="イベントの様子">
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section vol3-intro" id="vol3">
+            <div class="container">
+                <h2 class="section-title fade-in">沖縄文芸フリマ vol.3の4つの特徴</h2>
+                <p class="vol3-lead">本・作品・猫・人との出会いを楽しみながら、「好きだからやってみたい」を地域へひらく企画です。</p>
+                <div class="feature-grid">
+                    <article class="feature-card fade-in">
+                        <span class="feature-number" aria-hidden="true">1</span>
+                        <h3>好き・得意から始める</h3>
+                        <p>本、絵、漫画、写真、手仕事、猫、地域文化など。「好きだからやってみたい」という気持ちが入口です。</p>
+                    </article>
+                    <article class="feature-card fade-in">
+                        <span class="feature-number" aria-hidden="true">2</span>
+                        <h3>子どもも一緒につくる</h3>
+                        <p>第3回から「子ども実行委員」を位置づけます。</p>
+                        <p class="feature-quote">子どもが考える。子どもが選ぶ。子どもがやってみる。大人が支える。</p>
+                    </article>
+                    <article class="feature-card fade-in">
+                        <span class="feature-number" aria-hidden="true">3</span>
+                        <h3>目立たない仕事も大切な役割</h3>
+                        <p>受付、案内、掃除、片付け、椅子や通路を整えること。誰かが気持ちよく過ごせるようにすることも、この場所を一緒につくる大切な参加です。</p>
+                        <p class="feature-quote">人前に立つことだけが、役割ではありません。</p>
+                    </article>
+                    <article class="feature-card fade-in">
+                        <span class="feature-number" aria-hidden="true">4</span>
+                        <h3>猫から、地域や命について考える</h3>
+                        <p>猫をテーマにした作品、写真、文章、ZINE、展示に加え、「猫が好き」を入口に、ペット防災を調べて伝える小さな企画も検討しています。</p>
+                        <p class="cat-flow">好き → 調べる → つくる → 伝える → 誰かの役に立つ</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="history-bridge-heading">
+            <div class="container">
+                <div class="legacy-bridge fade-in">
+                    <h2 id="history-bridge-heading">第1回・第2回で生まれた出会いを、第3回へ。</h2>
+                    <p>子どもの作品展示、地域との交流、誰かに作品を見てもらう経験を重ねてきました。第3回は「参加する人」から「一緒につくる人」へ、参加の形を広げます。</p>
                 </div>
             </div>
         </section>
@@ -1031,7 +1200,7 @@
                                 <div class="episode-subtitle">「子どもの社会参加」が、小さな自信へ。</div>
                             </div>
                             <div class="episode-content">
-                                <p>週に一度ほど小学校へ通っている小5の息子さん。前日は初めての経験に不安で泣いていたそうですが、会場の温かな雰囲気に包まれ、安心して過ごすことができました。</p>
+                                <p>初めて作品を出すことに不安もあったお子さんが、会場の温かな雰囲気に包まれ、安心して過ごすことができました。</p>
 
                                 <p>「すごいね」「描き続けてね」という大人たちからの言葉。帰り道、彼が漏らした一言は、主催者一同の心に深く刻まれました。</p>
 
@@ -1050,13 +1219,13 @@
                         <!-- エピソード2 -->
                         <div class="episode-card">
                             <div class="episode-header">
-                                <div class="episode-title">✨ 優しい世界とVR花火：母娘の喜び</div>
+                                <div class="episode-title">✨ 優しい世界とVR花火</div>
                                 <div class="episode-subtitle">苦手だった花火が、VRで「最高の思い出」に。</div>
                             </div>
                             <div class="episode-content">
                                 <p>穏やかで温かな空間。出展者やスタッフ、来場者の皆さんの優しさに包まれ、緊張せずに過ごせたひとときでした。</p>
 
-                                <p>娘さんは花火の音が大きくて怖がるため、これまで花火大会を避けてきました。しかし、VRでの花火体験は音も心地よく、素晴らしい感動を与えてくれました。</p>
+                                <p>大きな音に不安を感じる方も、VR花火では心地よく楽しむことができました。表現や体験の方法を選べることが、新しい喜びにつながりました。</p>
 
                                 <div class="text-center">
                                     <span class="highlight-quote">「楽しかった〜🌈」</span>
@@ -1159,17 +1328,17 @@
         <section class="section" id="about">
             <div class="container">
                 <a class="ai-editor-card ai-editor-card--section" href="./ai-editor/">
-                    <span class="ai-editor-card__title">オンライン事務局を見る</span>
+                    <span class="ai-editor-card__title">4つの参加方法を見る</span>
                     <span class="ai-editor-card__text">
-                        沖縄文芸フリマへの出展や、ボランティア参加までの流れをご案内します。
-                        2027年2月頃、田場公民館で次回開催を企画中です。
+                        作品を出す、子ども実行委員になる、場を支える、遊びに行く。
+                        オンライン事務局で、自分に合う入口を選べます。
                     </span>
                 </a>
                 <h2 class="section-title fade-in">🌸 沖縄文芸フリマとは？</h2>
                 <div>
                     <p class="section-description text-center">
-                        人の想いや創造力が静かにきらめく文化の場を、沖縄で始めます。<br>
-                        子どもから大人までが表現できる新たな試み──それが「沖縄文芸フリマ」です。
+                        人の想いや創造力がきらめく文化の場を、沖縄で育ててきました。<br>
+                        子どもから大人までが、それぞれの好きや得意を持ち寄れる場所です。
                     </p>
                     <div class="content-grid">
                         <div class="card">
@@ -1210,17 +1379,16 @@
             </div>
         </section>
 
-        <!-- 次回予告 -->
+        <!-- 第3回予告 -->
         <section class="section">
             <div class="container text-center">
-                <h2 class="section-title">🔜 次回は 2027年2月頃！</h2>
+                <h2 class="section-title">沖縄文芸フリマ vol.3｜開催企画中</h2>
                 <p>
-                    田場公民館での開催を企画中です。詳細が決まり次第、公式サイトやinstagramでお知らせします。<br>
-                    「次は出展してみたい！」という方、制作期間はたっぷりあります✨<br>
-                    あなたの表現に出会えるのを楽しみにしています。
+                    2026年度プロジェクトとして、2027年2月6日（土）または2月13日（土）を候補日に、<br>
+                    田場公民館での開催を企画しています。正式な日程・会場は、田場自治会審議会の決定後にお知らせします。
                 </p>
                 <div class="social-links">
-                    <a href="./ai-editor/" class="cta-button">オンライン事務局へ</a>
+                    <a href="./ai-editor/" class="cta-button">参加方法を見る</a>
                     <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer"
                         class="cta-button instagram-button">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
@@ -1290,16 +1458,17 @@
                     </svg>
                 </a>
             </div>
-            <p class="copyright">© 2025 沖縄文芸フリマ. All rights reserved.</p>
+            <p class="copyright">© 2026 沖縄文芸フリマ. All rights reserved.</p>
         </div>
 
     </footer>
 
     <!-- 画像拡大用モーダル -->
-    <div id="imageModal" class="modal">
-        <span class="modal-close">&times;</span>
+    <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-label="写真の拡大表示"
+        aria-hidden="true">
+        <button type="button" class="modal-close" aria-label="拡大表示を閉じる">&times;</button>
         <div style="text-align: center; width: 100%;">
-            <img class="modal-content" id="modalImg">
+            <img class="modal-content" id="modalImg" alt="">
             <div id="modalCaption"></div>
         </div>
     </div>
@@ -1560,20 +1729,31 @@
                 const body = document.body;
                 const themeKey = 'okinawa-bungei-theme';
                 const themes = ['yamabuki', 'mizuiro', 'uguisu', 'monochrome'];
+                const updatePressedState = activeButton => {
+                    colorButtons.forEach(btn => {
+                        btn.setAttribute('aria-pressed', btn === activeButton ? 'true' : 'false');
+                    });
+                };
                 const savedTheme = localStorage.getItem(themeKey);
                 if (savedTheme) {
                     body.classList.add(savedTheme);
                     colorButtons.forEach(btn => btn.classList.remove('active'));
                     const activeBtn = document.querySelector(`[data-theme="${savedTheme}"]`);
-                    if (activeBtn) activeBtn.classList.add('active');
+                    if (activeBtn) {
+                        activeBtn.classList.add('active');
+                        updatePressedState(activeBtn);
+                    }
                 } else {
-                    document.querySelector('[data-theme="default"]').classList.add('active');
+                    const defaultButton = document.querySelector('[data-theme="default"]');
+                    defaultButton.classList.add('active');
+                    updatePressedState(defaultButton);
                 }
                 colorButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         const theme = button.dataset.theme;
                         colorButtons.forEach(btn => btn.classList.remove('active'));
                         button.classList.add('active');
+                        updatePressedState(button);
                         body.classList.remove(...themes);
                         if (theme !== 'default') body.classList.add(theme);
                         localStorage.setItem(themeKey, theme);
@@ -1586,10 +1766,32 @@
                 const modal = document.getElementById('imageModal');
                 const modalImg = document.getElementById('modalImg');
                 const closeBtn = document.querySelector('.modal-close');
+                let openingImage = null;
                 // class="gallery-item" 内の img を対象にする
                 const galleryImages = document.querySelectorAll('.gallery-item img');
 
+                const openModal = img => {
+                    openingImage = img;
+                    modal.classList.add('active');
+                    modal.setAttribute('aria-hidden', 'false');
+                    modalImg.src = img.src;
+                    modalImg.alt = img.alt;
+                    const captionText = img.getAttribute('data-caption');
+                    const modalCaption = document.getElementById('modalCaption');
+                    modalCaption.textContent = captionText || '';
+                    closeBtn.focus();
+                };
+
+                const closeModal = () => {
+                    modal.classList.remove('active');
+                    modal.setAttribute('aria-hidden', 'true');
+                    if (openingImage) openingImage.focus();
+                };
+
                 galleryImages.forEach(img => {
+                    img.tabIndex = 0;
+                    img.setAttribute('role', 'button');
+                    img.setAttribute('aria-label', `${img.alt}を拡大表示`);
                     // キャプション（data-caption）があればオーバーレイを追加
                     const captionText = img.getAttribute('data-caption');
                     if (captionText) {
@@ -1600,34 +1802,32 @@
                     }
 
                     img.addEventListener('click', () => {
-                        modal.classList.add('active');
-                        modalImg.src = img.src;
-                        // モーダルにキャプションを表示
-                        const modalCaption = document.getElementById('modalCaption');
-                        if (captionText) {
-                            modalCaption.textContent = captionText;
-                        } else {
-                            modalCaption.textContent = "";
+                        openModal(img);
+                    });
+                    img.addEventListener('keydown', event => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault();
+                            openModal(img);
                         }
                     });
                 });
 
                 // 閉じるボタン
                 closeBtn.addEventListener('click', () => {
-                    modal.classList.remove('active');
+                    closeModal();
                 });
 
                 // 背景クリックで閉じる
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {
-                        modal.classList.remove('active');
+                        closeModal();
                     }
                 });
 
                 // Escapeキーで閉じる
                 document.addEventListener('keydown', (e) => {
                     if ((e.key === 'Escape' || e.key === 'Esc') && modal.classList.contains('active')) {
-                        modal.classList.remove('active');
+                        closeModal();
                     }
                 });
             }

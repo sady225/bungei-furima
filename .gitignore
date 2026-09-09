@@ -3,5 +3,19 @@
 ftp_upload.sh
 
 # Local/archive copies kept out of the public repository by default.
-index251214*.html
-indexのコピー*.html
+/index251214*.html
+/indexのコピー*.html
+/luana-bungei.html
+
+# Private working materials must not be committed to this public repository.
+/成長ケア/
+/*.pdf
+/*.key
+/*.vrew
+/250622文芸フリマ.txt
+/250821　文芸フリマ.md
+/文芸フリマ.jpg
+/private-archive-*.zip
+
+# Generated GitHub Pages artifact.
+/_site/

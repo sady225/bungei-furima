@@ -426,16 +426,30 @@ button:focus-visible {
 
 .office-menu {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin: 16px 0 0;
 }
 
 .office-menu a {
+  flex-direction: column;
+  gap: 2px;
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--sea-deep);
   border-radius: 10px;
+}
+
+.office-menu a span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--sea);
+  color: #fff8ec;
+  font-size: 0.82rem;
 }
 
 .office-menu a:hover {
@@ -576,6 +590,29 @@ button:focus-visible {
   font-weight: 700;
 }
 
+.route-copy,
+.responsibility-note,
+.future-note {
+  margin: 12px 0 0;
+}
+
+.route-children {
+  border-top: 5px solid var(--gold);
+}
+
+.responsibility-note {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.future-note {
+  font-weight: 700;
+  color: var(--sea-deep);
+}
+
 .flow-list {
   counter-reset: flow;
   list-style: none;
@@ -651,6 +688,55 @@ button:focus-visible {
 .contact-method,
 .cta {
   max-width: 760px;
+}
+
+.cat-learning {
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px dashed var(--gold);
+  border-radius: var(--radius);
+  background: rgba(234, 217, 188, 0.45);
+}
+
+.daily-preparedness {
+  margin: 18px 0;
+  padding: 18px;
+  border-left: 4px solid var(--sea);
+  border-radius: 8px;
+  background: #eef7f4;
+}
+
+.daily-preparedness h3 {
+  margin: 0 0 8px;
+  color: var(--sea-deep);
+  font-family: var(--font-head);
+}
+
+.daily-preparedness p {
+  margin: 0;
+}
+
+.cat-learning h3 {
+  margin: 0 0 8px;
+  color: var(--roof-deep);
+  font-family: var(--font-head);
+}
+
+.cat-learning p {
+  margin: 8px 0 0;
+}
+
+.cat-learning__flow {
+  color: var(--roof-deep);
+  font-weight: 700;
+}
+
+.kindness-section {
+  border-left: 6px solid var(--roof);
+}
+
+.prep-section {
+  border-left: 6px solid var(--leaf);
 }
 
 .detail-section {
