@@ -171,8 +171,16 @@
   var actions = document.getElementById("guidance-actions");
   var icon = document.getElementById("guidance-icon");
   var stageStatus = document.getElementById("stage-status");
+  var voiceToggle = document.getElementById("voice-toggle");
+  var voiceReplay = document.getElementById("voice-replay");
+  var voiceStop = document.getElementById("voice-stop");
+  var voiceStatus = document.getElementById("voice-status");
+  var guideAudio = document.getElementById("guide-audio");
+  var voiceEnabled = false;
+  var currentVoiceKey = "welcome";
+  var currentVoiceLabel = "最初の案内";
 
-  if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus) return;
+  if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus || !voiceToggle || !voiceReplay || !voiceStop || !voiceStatus || !guideAudio) return;
 
   function buildTextElement(tagName, className, text) {
     var element = document.createElement(tagName);
@@ -189,6 +197,45 @@
       var bubble = character.querySelector(".staff-bubble");
       if (bubble) bubble.textContent = isActive ? bubbleText : "";
     });
+  }
+
+  function stopVoice(message) {
+    guideAudio.pause();
+    guideAudio.currentTime = 0;
+    if (message) voiceStatus.textContent = message;
+  }
+
+  function playVoice(voiceKey, voiceLabel) {
+    currentVoiceKey = voiceKey;
+    currentVoiceLabel = voiceLabel;
+    guideAudio.pause();
+    guideAudio.src = "assets/audio/" + voiceKey + ".mp3";
+    guideAudio.load();
+    voiceStatus.textContent = voiceLabel + "を読み込んでいます。";
+
+    var playback = guideAudio.play();
+    if (playback && typeof playback.catch === "function") {
+      playback.catch(function () {
+        voiceStatus.textContent = "音声を再生できませんでした。画面の案内文はそのまま読めます。";
+      });
+    }
+  }
+
+  function setVoiceEnabled(enabled) {
+    voiceEnabled = enabled;
+    voiceToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+    voiceToggle.textContent = enabled ? "音声案内をオフにする" : "音声案内をオンにする";
+    voiceReplay.disabled = !enabled;
+    voiceStop.disabled = !enabled;
+
+    if (enabled) {
+      playVoice(currentVoiceKey, currentVoiceLabel);
+      return;
+    }
+
+    stopVoice("音声案内はオフです。");
+    guideAudio.removeAttribute("src");
+    guideAudio.load();
   }
 
   function renderGuide(roleKey, moveFocus) {
@@ -218,6 +265,10 @@
 
     activateStaff(guide.staff, guide.bubble);
     stageStatus.textContent = guide.staffName + "が案内しています。詳しい事情は入力せず、下の固定案内をご覧ください。";
+    currentVoiceKey = roleKey;
+    currentVoiceLabel = guide.staffName + "の案内";
+
+    if (voiceEnabled) playVoice(currentVoiceKey, currentVoiceLabel);
 
     if (moveFocus) panel.focus({ preventScroll: true });
     panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -227,5 +278,29 @@
     button.addEventListener("click", function () {
       renderGuide(button.dataset.role, true);
     });
+  });
+
+  voiceToggle.addEventListener("click", function () {
+    setVoiceEnabled(!voiceEnabled);
+  });
+
+  voiceReplay.addEventListener("click", function () {
+    if (voiceEnabled) playVoice(currentVoiceKey, currentVoiceLabel);
+  });
+
+  voiceStop.addEventListener("click", function () {
+    if (voiceEnabled) stopVoice("音声を停止しました。入口を選ぶと、新しい案内を再生します。");
+  });
+
+  guideAudio.addEventListener("play", function () {
+    voiceStatus.textContent = currentVoiceLabel + "を再生しています。";
+  });
+
+  guideAudio.addEventListener("ended", function () {
+    voiceStatus.textContent = currentVoiceLabel + "の再生が終わりました。";
+  });
+
+  guideAudio.addEventListener("error", function () {
+    voiceStatus.textContent = "音声ファイルを読み込めませんでした。画面の案内文はそのまま読めます。";
   });
 })();

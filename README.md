@@ -11,6 +11,7 @@ GitHub Actionsで公開専用ファイルだけを組み立て、GitHub Pagesへ
 - `ai-editor/style.css`
 - `ai-editor/app.js`
 - `ai-editor/assets/office-background.png`
+- `ai-editor/assets/audio/*.mp3`（VOICEVOX:ずんだもんの固定案内音声）
 - `index.html` が実際に使用する開催写真
 - `CNAME`
 - `.nojekyll`
@@ -36,10 +37,16 @@ GitHub Actionsで公開専用ファイルだけを組み立て、GitHub Pagesへ
 
 `ai-editor/` は、8つの立場別入口、参加の6段階、作品棚、お店・出展者ギャラリー、やさしさの足あと、田場マップ／TABA ARCHIVEのUIを提供します。
 
-現段階では固定案内のみで、AI API、自由入力、外部通信、会話ログ保存は使用しません。
+現段階では固定案内とサイト内の固定音声のみで、AI API、自由入力、外部通信、会話ログ保存は使用しません。
 
 公開前の安全確認は次で実行します。
 
 ```bash
 bash scripts/check-site-safety.sh
+```
+
+ずんだもんの固定音声を再生成する場合は、ローカルのVOICEVOXエンジンを起動してから次を実行します。既定の話者IDは、ずんだもん「ノーマル」の `3` です。
+
+```bash
+bash scripts/generate-voicevox-audio.sh
 ```

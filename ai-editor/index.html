@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'none'; worker-src 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'self'; worker-src 'none'; upgrade-insecure-requests">
   <title>沖縄文芸フリマ｜町の案内所・デジタル職員室</title>
   <meta name="description" content="沖縄文芸フリマについて、子ども、保護者、学校、高校、福祉、行政、地域、いきもの好きなど、立場に合う参加方法を探せる町の案内所です。">
-  <link rel="stylesheet" href="style.css?v=phase-1-2-20260920">
-  <script src="app.js?v=phase-1-2-20260920" defer></script>
+  <link rel="stylesheet" href="style.css?v=voicevox-20260920">
+  <script src="app.js?v=voicevox-20260920" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#role-entrances">立場別の入口へ移動</a>
@@ -92,6 +92,20 @@
         </div>
       </div>
       <p class="stage-status" id="stage-status" role="status" aria-live="polite">下の入口から、今の立場に近いものを選んでください。</p>
+      <div class="voice-demo" aria-labelledby="voice-demo-title">
+        <div class="voice-demo-copy">
+          <p class="voice-demo-title" id="voice-demo-title">ずんだもん音声デモ</p>
+          <p>音声をオンにすると、入口を選ぶたびに固定の案内文を読み上げます。音声ファイルはこのサイト内から再生し、文章や個人情報を外部へ送りません。</p>
+        </div>
+        <div class="voice-controls">
+          <button type="button" class="voice-toggle" id="voice-toggle" aria-pressed="false">音声案内をオンにする</button>
+          <button type="button" class="voice-control" id="voice-replay" disabled>もう一度聞く</button>
+          <button type="button" class="voice-control" id="voice-stop" disabled>停止</button>
+        </div>
+        <p class="voice-status" id="voice-status" role="status" aria-live="polite">音声は自動再生されません。</p>
+        <p class="voice-credit">音声：<span>VOICEVOX:ずんだもん</span></p>
+        <audio id="guide-audio" preload="none"></audio>
+      </div>
     </section>
 
     <section class="role-section" id="role-entrances" aria-labelledby="role-heading">
