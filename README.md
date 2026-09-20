@@ -30,3 +30,16 @@ GitHub Actionsで公開専用ファイルだけを組み立て、GitHub Pagesへ
 - `ftp_upload.sh` や `.env` は `.gitignore` で除外しています。
 - 公開前は `bash scripts/build-public-site.sh` を実行し、公開物の内容、画像パス、外部リンクを確認してください。
 - 詳細な移行手順は `DEPLOY.md` を確認してください。
+- 町の案内所、画像公開、今後のAI接続に関する安全ルールは `SAFETY_AND_PUBLICATION.md` を正本とします。
+
+## 町の案内所 Phase 1〜2
+
+`ai-editor/` は、8つの立場別入口、参加の6段階、作品棚、お店・出展者ギャラリー、やさしさの足あと、田場マップ／TABA ARCHIVEのUIを提供します。
+
+現段階では固定案内のみで、AI API、自由入力、外部通信、会話ログ保存は使用しません。
+
+公開前の安全確認は次で実行します。
+
+```bash
+bash scripts/check-site-safety.sh
+```

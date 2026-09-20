@@ -1,321 +1,231 @@
-/* =========================================================
-   沖縄文芸フリマ オンライン事務局
-   Vanilla JS only. No storage, no network, no generated text.
-   ========================================================= */
+/*
+ * 沖縄文芸フリマ 町の案内所 / デジタル職員室 Phase 1-2
+ * 固定データだけを安全なDOM APIで表示する。通信・AI・ストレージは使わない。
+ */
 (function () {
   "use strict";
 
-  var els = {
-    guide: document.getElementById("staff-guide"),
-    entry: document.getElementById("staff-entry"),
-    works: document.getElementById("staff-works"),
-    public: document.getElementById("staff-public"),
-    volunteer: document.getElementById("staff-volunteer"),
-    now: document.getElementById("now-playing"),
-    progress: document.getElementById("progress"),
-    btnPlay: document.getElementById("btn-play"),
-    btnRestart: document.getElementById("btn-restart"),
-    btnStop: document.getElementById("btn-stop")
+  var guides = {
+    child: {
+      staff: "works",
+      staffName: "子ども・作品担当 えんぴつ",
+      icon: "🎨",
+      title: "好きなもの、何かある？",
+      summary: "絵、本、ゲーム、物語、写真、ものづくり。好きなものを入口に、自分で選べる参加があります。",
+      bubble: "見るだけも、作品だけもOKだよ。",
+      points: [
+        "見るだけ、作品だけ、途中で帰ることもできます。",
+        "どうして学校へ行きづらいのか、診断名などは聞きません。",
+        "次の段階へ進まなくても、その日の参加を大切にします。"
+      ],
+      actions: [
+        { label: "参加の6段階を見る", href: "#participation-levels" },
+        { label: "作品棚を見る", href: "#works-shelf" }
+      ]
+    },
+    parent: {
+      staff: "care",
+      staffName: "学校・保護者担当 なぎ",
+      icon: "🌿",
+      title: "学校復帰や継続参加を、目的にはしていません",
+      summary: "本人が選べる小さな社会参加と、家庭や学校以外で安心して顔を合わせられる大人との接点をつくります。",
+      bubble: "無理に勧めず、本人のペースを守ります。",
+      points: [
+        "参加しない、見学だけ、短時間だけという選択も尊重します。",
+        "家庭事情や学校内の記録を、案内のために収集しません。",
+        "個別相談が必要な場合は、AIではなく人間の担当者へつなぎます。"
+      ],
+      actions: [
+        { label: "参加の6段階を見る", href: "#participation-levels" },
+        { label: "人への引継ぎ方針", href: "#human-handoff" }
+      ]
+    },
+    school: {
+      staff: "care",
+      staffName: "学校・保護者担当 なぎ",
+      icon: "🏫",
+      title: "募集ではなく、本人が選べる選択肢としてご紹介ください",
+      summary: "先生・SSW・教育相談室の方が同行する見学も想定し、学校外の社会との接点を丁寧につくります。",
+      bubble: "参加人数だけでなく、関係の変化を見ます。",
+      points: [
+        "学校復帰を成果指標にはしません。",
+        "作品のみ、見学のみ、短時間など複数の入口を示します。",
+        "正式な学校連携や安全調整は、人間の担当者が対応します。"
+      ],
+      actions: [
+        { label: "作品だけの参加を見る", href: "#works-shelf" },
+        { label: "人間の担当者へ相談", href: "#contact" }
+      ]
+    },
+    highschool: {
+      staff: "youth",
+      staffName: "若者・伴走担当 そら",
+      icon: "📷",
+      title: "高校生は、少し年上の伴走者です",
+      summary: "支援する側とされる側に分けず、写真、展示、案内、デザインなど、自分の得意な部分だけで関われます。",
+      bubble: "得意な一つだけでも、立派な役割です。",
+      points: [
+        "写真・動画、受付補助、感想、インタビュー、SNSなどから選べます。",
+        "人前に立たない準備や片付けも大切な参加です。",
+        "金銭・契約・個人情報・安全管理の最終責任は大人が持ちます。"
+      ],
+      actions: [
+        { label: "小さな役割を見る", href: "#participation-levels" },
+        { label: "やさしさの足あと", href: "#kindness-board" }
+      ]
+    },
+    welfare: {
+      staff: "community",
+      staffName: "地域連携担当 ゆい",
+      icon: "🤝",
+      title: "支援関係になる前の、地域の顔見知りを増やします",
+      summary: "福祉教育、ボランティア、多世代交流、障がいのある人や高齢者の役割参加など、地域の接点を一緒に考えます。",
+      bubble: "支えるだけでなく、役割を持てる場へ。",
+      points: [
+        "防災や助成情報も、参加を支える仕組みとして扱います。",
+        "本人を診断・評価せず、できることや関心から役割を探します。",
+        "個別ケースの相談は公開画面に入力せず、人間同士で扱います。"
+      ],
+      actions: [
+        { label: "地域の情報ゾーンを見る", href: "#taba-archive" },
+        { label: "連携について相談", href: "#contact" }
+      ]
+    },
+    government: {
+      staff: "community",
+      staffName: "地域連携担当 ゆい",
+      icon: "🧭",
+      title: "学校外の小さな社会参加を、既存施策へつなぎます",
+      summary: "作品や好き・得意を媒介にした場として、情報提供から始め、関係部署や施策との接続を段階的に相談します。",
+      bubble: "最初から共催を求めず、接続から始めます。",
+      points: [
+        "情報提供、関係部署への橋渡し、既存施策、助成、成果共有の順で相談します。",
+        "成果は参加人数だけでなく、学校外の接点や再会も見ます。",
+        "共催・後援・契約・法的判断は、人間の担当者間で行います。"
+      ],
+      actions: [
+        { label: "やさしさの足あとを見る", href: "#kindness-board" },
+        { label: "正式な連携を相談", href: "#contact" }
+      ]
+    },
+    resident: {
+      staff: "community",
+      staffName: "地域連携担当 ゆい",
+      icon: "🏘️",
+      title: "難しい支援ではなく、小さな関わりから始められます",
+      summary: "作品を見る、感想を書く、あいさつする、昔の話を伝える。一つひとつが、地域に知っている大人を増やします。",
+      bubble: "あいさつや感想も、地域の役割です。",
+      points: [
+        "展示を一緒に直す、椅子を運ぶ、道具を貸すことも参加です。",
+        "誰かの性格や優しさを採点しません。",
+        "地域の話や写真は、公開範囲を確認して記録します。"
+      ],
+      actions: [
+        { label: "やさしさの足あとを見る", href: "#kindness-board" },
+        { label: "田場の記録を見る", href: "#taba-archive" }
+      ]
+    },
+    nature: {
+      staff: "nature",
+      staffName: "いきもの・地域文化担当 みなも",
+      icon: "🐟",
+      title: "いきものを、会話と地域記録の入口にします",
+      summary: "猫、犬、鳥、魚、昆虫、畑の生きもの、釣りやペットとの暮らしを、作品や地域の話へつなげます。",
+      bubble: "いきものから、地域の話へ広げよう。",
+      points: [
+        "いきものは企画全体ではなく、好きから始める入口の一つです。",
+        "写真、思い出、観察記録、マップ、ZINEなどへ発展できます。",
+        "個人宅や希少種の場所など、安全上公開すべきでない位置情報は載せません。"
+      ],
+      actions: [
+        { label: "作品棚を見る", href: "#works-shelf" },
+        { label: "田場マップ構想を見る", href: "#taba-archive" }
+      ]
+    },
+    unknown: {
+      staff: "guide",
+      staffName: "総合案内担当 まどか",
+      icon: "☕",
+      title: "まだ決めなくても大丈夫。一緒に入口だけ眺めましょう",
+      summary: "作品を見る、遊びに行く、短時間だけ過ごすなど、詳しい事情を話さなくても選べる入口があります。",
+      bubble: "分からないまま来ても、大丈夫です。",
+      points: [
+        "参加しないという選択も尊重します。",
+        "名前、学校、住所、診断名などは尋ねません。",
+        "正式な申込みや個別相談だけ、人間の担当者へつなぎます。"
+      ],
+      actions: [
+        { label: "参加の6段階を見る", href: "#participation-levels" },
+        { label: "案内所の中を見る", href: "#works-shelf" }
+      ]
+    }
   };
 
-  if (!els.guide || !els.now || !els.progress) { return; }
+  var roleButtons = Array.prototype.slice.call(document.querySelectorAll(".role-card[data-role]"));
+  var staffCharacters = Array.prototype.slice.call(document.querySelectorAll(".staff-character[data-staff-key]"));
+  var panel = document.getElementById("guidance-panel");
+  var title = document.getElementById("guidance-title");
+  var label = document.getElementById("guidance-label");
+  var summary = document.getElementById("guidance-summary");
+  var points = document.getElementById("guidance-points");
+  var actions = document.getElementById("guidance-actions");
+  var icon = document.getElementById("guidance-icon");
+  var stageStatus = document.getElementById("stage-status");
 
-  var POS = {
-    entranceGuide: { x: 9, y: 88 },
-    entranceEntry: { x: 13, y: 88 },
-    entranceWorks: { x: 17, y: 88 },
-    entrancePublic: { x: 21, y: 88 },
-    entranceVolunteer: { x: 25, y: 88 },
-    guide: { x: 50, y: 58 },
-    guideLeft: { x: 43, y: 58 },
-    guideRight: { x: 57, y: 58 },
-    entry: { x: 18, y: 76 },
-    works: { x: 31, y: 48 },
-    public: { x: 68, y: 47 },
-    volunteer: { x: 84, y: 30 },
-    display: { x: 74, y: 77 },
-    safeCenter: { x: 50, y: 70 },
-    safeRight: { x: 65, y: 62 },
-    safeLeft: { x: 35, y: 66 },
-    finaleGuide: { x: 44, y: 63 },
-    finaleEntry: { x: 36, y: 68 },
-    finaleWorks: { x: 52, y: 66 },
-    finalePublic: { x: 60, y: 63 },
-    finaleVolunteer: { x: 68, y: 68 }
-  };
+  if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus) return;
 
-  var timers = [];
-  var isRunning = false;
-
-  function schedule(delayMs, fn) {
-    var id = window.setTimeout(fn, delayMs);
-    timers.push(id);
-    return id;
+  function buildTextElement(tagName, className, text) {
+    var element = document.createElement(tagName);
+    if (className) element.className = className;
+    element.textContent = text;
+    return element;
   }
 
-  function clearAllTimers() {
-    timers.forEach(function (id) {
-      window.clearTimeout(id);
-    });
-    timers = [];
-  }
-
-  function staffList() {
-    return [els.guide, els.entry, els.works, els.public, els.volunteer];
-  }
-
-  function moveTo(el, pos) {
-    el.style.setProperty("--x", pos.x);
-    el.style.setProperty("--y", pos.y);
-  }
-
-  function setState(el, state) {
-    el.classList.remove("working", "walking", "waving");
-    if (state) { el.classList.add(state); }
-  }
-
-  function setBubble(el, text) {
-    var bubble = el.querySelector(".bubble");
-    if (!bubble) { return; }
-    if (!text) {
-      el.classList.remove("show-bubble");
-      bubble.textContent = "";
-      return;
-    }
-    bubble.textContent = text;
-    el.classList.add("show-bubble");
-  }
-
-  function clearBubbles() {
-    staffList().forEach(function (el) {
-      setBubble(el, "");
+  function activateStaff(staffKey, bubbleText) {
+    staffCharacters.forEach(function (character) {
+      var isActive = character.dataset.staffKey === staffKey;
+      character.classList.toggle("is-active", isActive);
+      character.classList.toggle("is-muted", !isActive);
+      var bubble = character.querySelector(".staff-bubble");
+      if (bubble) bubble.textContent = isActive ? bubbleText : "";
     });
   }
 
-  function say(text) {
-    els.now.textContent = text;
-  }
+  function renderGuide(roleKey, moveFocus) {
+    var guide = guides[roleKey];
+    if (!guide) return;
 
-  function setProgress(stepKey) {
-    var items = els.progress.querySelectorAll("li");
-    var reached = false;
-    items.forEach(function (li) {
-      var key = li.getAttribute("data-step");
-      li.classList.remove("active", "done");
-      if (key === stepKey) {
-        li.classList.add("active");
-        reached = true;
-      } else if (!reached) {
-        li.classList.add("done");
-      }
+    roleButtons.forEach(function (button) {
+      button.setAttribute("aria-pressed", button.dataset.role === roleKey ? "true" : "false");
     });
-  }
 
-  function focusStaff(activeEl) {
-    staffList().forEach(function (el) {
-      setState(el, el === activeEl ? "working" : "");
-      if (el !== activeEl) { setBubble(el, ""); }
+    label.textContent = guide.staffName;
+    title.textContent = guide.title;
+    summary.textContent = guide.summary;
+    icon.textContent = guide.icon;
+
+    var pointNodes = guide.points.map(function (point) {
+      return buildTextElement("li", "", point);
     });
-  }
+    points.replaceChildren.apply(points, pointNodes);
 
-  function resetProgress() {
-    els.progress.querySelectorAll("li").forEach(function (li) {
-      li.classList.remove("active", "done");
+    var actionNodes = guide.actions.map(function (action) {
+      var link = buildTextElement("a", "", action.label);
+      link.href = action.href;
+      return link;
     });
+    actions.replaceChildren.apply(actions, actionNodes);
+
+    activateStaff(guide.staff, guide.bubble);
+    stageStatus.textContent = guide.staffName + "が案内しています。詳しい事情は入力せず、下の固定案内をご覧ください。";
+
+    if (moveFocus) panel.focus({ preventScroll: true });
+    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  function clearMotion() {
-    staffList().forEach(function (el) {
-      setState(el, "");
+  roleButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      renderGuide(button.dataset.role, true);
     });
-  }
-
-  function resetVisuals() {
-    moveTo(els.guide, POS.entranceGuide);
-    moveTo(els.entry, POS.entranceEntry);
-    moveTo(els.works, POS.entranceWorks);
-    moveTo(els.public, POS.entrancePublic);
-    moveTo(els.volunteer, POS.entranceVolunteer);
-    clearMotion();
-    clearBubbles();
-    resetProgress();
-    say("ボタンを押すと、参加ルートの案内デモが始まります。");
-  }
-
-  function setButtons() {
-    els.btnPlay.disabled = isRunning;
-    els.btnStop.disabled = !isRunning;
-  }
-
-  var timeline = [
-    { t: 0, run: function () {
-        say("古民家の案内所に、スタッフが順番に配置につきます。");
-        staffList().forEach(function (el) { setState(el, "walking"); });
-        moveTo(els.guide, POS.guide);
-        moveTo(els.entry, POS.entry);
-        moveTo(els.works, POS.works);
-        moveTo(els.public, POS.public);
-        moveTo(els.volunteer, POS.volunteer);
-      }
-    },
-    { t: 1800, run: function () {
-        clearMotion();
-        setProgress("contact");
-        focusStaff(els.guide);
-        say("お問い合わせを受け付けました。総合案内担当が最初に対応します。");
-        setBubble(els.guide, "問い合わせ：作品、子ども実行委員、場を支える参加、来場についてご案内します。");
-      }
-    },
-    { t: 5200, run: function () {
-        clearBubbles();
-        setProgress("choice");
-        focusStaff(els.guide);
-        say("参加方法のルートを確認します。総合案内担当が入口を整理します。");
-        setBubble(els.guide, "参加方法：作品、子ども実行委員、場を支える、遊びに行く。4つのルートがあります。");
-      }
-    },
-    { t: 9200, run: function () {
-        clearBubbles();
-        setState(els.guide, "walking");
-        setState(els.entry, "walking");
-        moveTo(els.guide, POS.safeLeft);
-        moveTo(els.entry, POS.safeCenter);
-        say("出展ルートに進みます。まず募集内容の確認をご案内します。");
-      }
-    },
-    { t: 12800, run: function () {
-        setState(els.guide, "");
-        focusStaff(els.entry);
-        setProgress("exhibit");
-        setBubble(els.entry, "作品の参加：本・ZINE・漫画・写真など、好きな表現から始められます。");
-        say("ルート1です。出展受付担当が、作品を出す参加方法をご案内します。");
-      }
-    },
-    { t: 18200, run: function () {
-        clearBubbles();
-        setState(els.entry, "walking");
-        setState(els.works, "walking");
-        moveTo(els.entry, POS.entry);
-        moveTo(els.works, POS.safeCenter);
-        say("ルート2に進みます。子ども実行委員の案内担当が前へ出ます。");
-      }
-    },
-    { t: 23200, run: function () {
-        focusStaff(els.works);
-        setProgress("children");
-        setBubble(els.works, "子ども実行委員：子どもが考え、選び、やってみる。大人が安全と大切な判断を支えます。");
-        say("全部やらなくて大丈夫。できることを、できる範囲で参加できます。");
-      }
-    },
-    { t: 28600, run: function () {
-        clearBubbles();
-        setState(els.works, "walking");
-        setState(els.volunteer, "walking");
-        moveTo(els.works, POS.works);
-        moveTo(els.volunteer, POS.safeRight);
-        setProgress("volunteer");
-        say("ルート3に進みます。人が気持ちよく過ごせる場を一緒につくる参加です。");
-      }
-    },
-    { t: 33200, run: function () {
-        focusStaff(els.volunteer);
-        setBubble(els.volunteer, "場を支える参加：受付、案内、清掃、片付け、場を整えることも大切な役割です。");
-        say("人前に立つことだけが役割ではありません。気づくこと、整えること、誰かにつなぐことも参加です。");
-      }
-    },
-    { t: 39600, run: function () {
-        clearBubbles();
-        setState(els.volunteer, "walking");
-        setState(els.public, "walking");
-        moveTo(els.volunteer, POS.volunteer);
-        moveTo(els.public, POS.safeCenter);
-        setProgress("news");
-        say("ルート4に進みます。広報担当が、遊びに行く・読みに行く楽しみ方をご案内します。");
-      }
-    },
-    { t: 45600, run: function () {
-        focusStaff(els.public);
-        setBubble(els.public, "来場：作品、作者との会話、ワークショップ、猫をテーマにした展示などを検討しています。");
-        say("正式な日時と来場条件は、決まり次第お知らせします。");
-      }
-    },
-    { t: 52000, run: function () {
-        clearBubbles();
-        setState(els.public, "walking");
-        setState(els.guide, "walking");
-        moveTo(els.public, POS.public);
-        moveTo(els.guide, POS.safeCenter);
-        setProgress("next");
-        say("次のお知らせルートに進みます。情報を受け取りたい方はお問い合わせからご連絡ください。");
-      }
-    },
-    { t: 55200, run: function () {
-        focusStaff(els.guide);
-        setBubble(els.guide, "次のお知らせ：候補日は2027年2月6日または13日、会場は田場公民館の予定です。正式決定後にお知らせします。");
-        say("次のお知らせについて、総合案内担当が確認方法を案内します。");
-      }
-    },
-    { t: 59200, run: function () {
-        clearBubbles();
-        clearMotion();
-        moveTo(els.guide, POS.finaleGuide);
-        moveTo(els.entry, POS.finaleEntry);
-        moveTo(els.works, POS.finaleWorks);
-        moveTo(els.public, POS.finalePublic);
-        moveTo(els.volunteer, POS.finaleVolunteer);
-        say("好きなことから、自分に合う参加方法を選べます。一緒に沖縄文芸フリマ vol.3をつくりませんか。");
-      }
-    },
-    { t: 63800, run: function () {
-        staffList().forEach(function (el) {
-          setState(el, "waving");
-        });
-      }
-    },
-    { t: 70000, run: function () {
-        finishDemo();
-      }
-    }
-  ];
-
-  function finishDemo() {
-    clearAllTimers();
-    clearMotion();
-    isRunning = false;
-    setButtons();
-  }
-
-  function playDemo() {
-    if (isRunning) { return; }
-    clearAllTimers();
-    resetVisuals();
-    isRunning = true;
-    setButtons();
-    timeline.forEach(function (step) {
-      schedule(step.t, step.run);
-    });
-  }
-
-  function stopDemo() {
-    clearAllTimers();
-    clearMotion();
-    isRunning = false;
-    setButtons();
-    say("デモを止めました。「案内デモを見る」または「最初から見る」で再開できます。");
-  }
-
-  function restartDemo() {
-    clearAllTimers();
-    isRunning = false;
-    setButtons();
-    resetVisuals();
-    playDemo();
-  }
-
-  els.btnPlay.addEventListener("click", playDemo);
-  els.btnRestart.addEventListener("click", restartDemo);
-  els.btnStop.addEventListener("click", stopDemo);
-
-  resetVisuals();
-  setButtons();
+  });
 })();

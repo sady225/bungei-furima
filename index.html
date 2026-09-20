@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.instagram.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pbs.twimg.com; frame-src https://www.instagram.com; connect-src https://www.instagram.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'none'; worker-src 'none'; upgrade-insecure-requests">
     <title>沖縄文芸フリマ vol.3｜2027年2月開催企画中</title>
     <meta name="description" content="沖縄文芸フリマ vol.3は、猫・本・作品・人との出会いを楽しむ文化イベントです。2026年度プロジェクトとして、2027年2月に田場公民館（予定）での開催を企画しています。">
     <style>
@@ -437,6 +439,32 @@
             gap: 20px;
             margin-top: 40px;
             justify-items: center;
+        }
+
+        .external-content-consent {
+            max-width: 720px;
+            margin: 0 auto 24px;
+            padding: 20px;
+            border: 1px solid rgba(44, 62, 80, .18);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .88);
+        }
+
+        .external-content-consent p {
+            margin-bottom: 14px;
+        }
+
+        .external-content-consent button:disabled {
+            cursor: wait;
+            opacity: .72;
+        }
+
+        .exhibitor-card__placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e5e7eb;
+            color: #4b5563;
         }
 
         /* ギャラリー用のスタイル追加 */
@@ -1303,23 +1331,11 @@
                         第1回目の出展者さんの紹介や、当日のリール動画などをInstagramで発信しています。<br>
                         次回の募集開始も見逃さないように、フォローをお願いします🕊
                     </p>
-                    <div class="instagram-grid">
-                        <blockquote class="instagram-media" data-instgrm-captioned
-                            data-instgrm-permalink="https://www.instagram.com/p/DOhd0iXEg9t/" data-instgrm-version="14">
-                        </blockquote>
-                        <blockquote class="instagram-media" data-instgrm-captioned
-                            data-instgrm-permalink="https://www.instagram.com/p/DO2DhFyEuU_/" data-instgrm-version="14">
-                        </blockquote>
-                        <blockquote class="instagram-media" data-instgrm-captioned
-                            data-instgrm-permalink="https://www.instagram.com/p/DOxbkNSkspb/" data-instgrm-version="14">
-                        </blockquote>
-                        <blockquote class="instagram-media" data-instgrm-captioned
-                            data-instgrm-permalink="https://www.instagram.com/p/DOvn0ubErTT/" data-instgrm-version="14">
-                        </blockquote>
-                        <blockquote class="instagram-media" data-instgrm-captioned
-                            data-instgrm-permalink="https://www.instagram.com/p/DOqbcVpEk-B/" data-instgrm-version="14">
-                        </blockquote>
+                    <div class="external-content-consent">
+                        <p>Instagramの投稿は、表示ボタンを押すまで外部通信を行いません。表示するとInstagramへ接続します。</p>
+                        <button type="button" id="loadInstagram" class="cta-button">Instagramの投稿を表示する</button>
                     </div>
+                    <div class="instagram-grid" id="instagramGrid" aria-live="polite"></div>
                 </div>
             </div>
         </section>
@@ -1328,10 +1344,10 @@
         <section class="section" id="about">
             <div class="container">
                 <a class="ai-editor-card ai-editor-card--section" href="./ai-editor/">
-                    <span class="ai-editor-card__title">4つの参加方法を見る</span>
+                    <span class="ai-editor-card__title">町の案内所で、自分の入口を探す</span>
                     <span class="ai-editor-card__text">
-                        作品を出す、子ども実行委員になる、場を支える、遊びに行く。
-                        オンライン事務局で、自分に合う入口を選べます。
+                        子ども、保護者、学校、高校、福祉、行政、地域、いきもの好き。
+                        名前や相談内容を入力せず、立場に合う案内を選べます。
                     </span>
                 </a>
                 <h2 class="section-title fade-in">🌸 沖縄文芸フリマとは？</h2>
@@ -1391,8 +1407,7 @@
                     <a href="./ai-editor/" class="cta-button">参加方法を見る</a>
                     <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer"
                         class="cta-button instagram-button">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
-                            alt="Instagram" class="icon-instagram">公式インスタグラムをフォロー
+                        <span class="icon-instagram" aria-hidden="true">◎</span>公式インスタグラムをフォロー
                     </a>
                 </div>
             </div>
@@ -1473,7 +1488,6 @@
         </div>
     </div>
 
-    <script async src="https://www.instagram.com/embed.js"></script>
     <script>
         const EXHIBITORS = [
             {
@@ -1613,6 +1627,7 @@
                 initPetalAnimation();
                 initThemeSwitcher();
                 initImageModal();
+                initInstagramEmbeds();
             }
 
             // 出展者紹介の自動生成
@@ -1624,14 +1639,81 @@
                     const card = document.createElement('div');
                     card.className = 'exhibitor-card fade-in';
 
-                    card.innerHTML = `
-                        ${ex.imageUrl ? `<img src="${ex.imageUrl}" class="exhibitor-card__image" alt="${ex.name}" style="${ex.imagePosition ? `object-position: ${ex.imagePosition};` : ''}">` : '<div class="exhibitor-card__image" style="background:#ddd; display:flex; align-items:center; justify-content:center;">No Image</div>'}
-                        <div class="exhibitor-card__name">${ex.name}</div>
-                        <div class="exhibitor-card__content">${ex.content}</div>
-                        <div class="exhibitor-card__intro">${ex.activity_intro}</div>
-                    `;
+                    if (ex.imageUrl) {
+                        const image = document.createElement('img');
+                        image.src = ex.imageUrl;
+                        image.className = 'exhibitor-card__image';
+                        image.alt = ex.name;
+                        image.loading = 'lazy';
+                        image.referrerPolicy = 'no-referrer';
+                        if (ex.imagePosition) image.style.objectPosition = ex.imagePosition;
+                        card.appendChild(image);
+                    } else {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'exhibitor-card__image exhibitor-card__placeholder';
+                        placeholder.textContent = 'No Image';
+                        card.appendChild(placeholder);
+                    }
+
+                    const name = document.createElement('div');
+                    name.className = 'exhibitor-card__name';
+                    name.textContent = ex.name;
+                    card.appendChild(name);
+
+                    const content = document.createElement('div');
+                    content.className = 'exhibitor-card__content';
+                    content.textContent = ex.content;
+                    card.appendChild(content);
+
+                    const intro = document.createElement('div');
+                    intro.className = 'exhibitor-card__intro';
+                    intro.textContent = ex.activity_intro;
+                    card.appendChild(intro);
 
                     exhibitorGrid.appendChild(card);
+                });
+            }
+
+            // 外部埋め込みは、来訪者が明示的に選んだ後だけ読み込む。
+            function initInstagramEmbeds() {
+                const button = document.getElementById('loadInstagram');
+                const grid = document.getElementById('instagramGrid');
+                if (!button || !grid) return;
+
+                const postUrls = [
+                    'https://www.instagram.com/p/DOhd0iXEg9t/',
+                    'https://www.instagram.com/p/DO2DhFyEuU_/',
+                    'https://www.instagram.com/p/DOxbkNSkspb/',
+                    'https://www.instagram.com/p/DOvn0ubErTT/',
+                    'https://www.instagram.com/p/DOqbcVpEk-B/'
+                ];
+
+                button.addEventListener('click', () => {
+                    button.disabled = true;
+                    button.textContent = 'Instagramに接続しています…';
+
+                    postUrls.forEach(url => {
+                        const embed = document.createElement('blockquote');
+                        embed.className = 'instagram-media';
+                        embed.dataset.instgrmCaptioned = '';
+                        embed.dataset.instgrmPermalink = url;
+                        embed.dataset.instgrmVersion = '14';
+                        grid.appendChild(embed);
+                    });
+
+                    const script = document.createElement('script');
+                    script.src = 'https://www.instagram.com/embed.js';
+                    script.async = true;
+                    script.addEventListener('load', () => {
+                        button.textContent = 'Instagramの投稿を表示しました';
+                    });
+                    script.addEventListener('error', () => {
+                        button.disabled = false;
+                        button.textContent = '読み込めませんでした。もう一度試す';
+                        grid.replaceChildren();
+                        script.remove();
+                    });
+                    document.body.appendChild(script);
                 });
             }
 
