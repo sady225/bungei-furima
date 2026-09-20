@@ -12,7 +12,9 @@
 
 ## 2. 外部通信とCSP
 
-`ai-editor/` は Phase 1〜2 では外部通信を行わない。CSPの `connect-src` と `frame-src` は `none` とする。
+`ai-editor/` は Phase 1〜2 では外部通信を行わない。CSPの `connect-src` と `frame-src` は `none` とする。音声案内は公開成果物に含めた同一オリジンの固定音声だけを利用し、`media-src` は `self` に限定する。
+
+ずんだもん音声を掲載する場合は、利用箇所の近くに `VOICEVOX:ずんだもん` と表示する。音声は自動再生せず、利用者の明示操作後だけ再生する。
 
 トップページで許可する外部通信先は次に限定する。
 

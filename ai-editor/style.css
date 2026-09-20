@@ -303,6 +303,28 @@ main { padding-bottom: 42px; }
 
 .stage-status { margin: 14px auto 0; padding: 10px 16px; border-radius: 999px; background: rgba(255,250,240,.92); color: var(--roof-deep); text-align: center; font-weight: 800; }
 
+.voice-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 20px;
+  margin: 16px auto 0;
+  padding: 18px 20px;
+  border: 1px solid #9fc6bd;
+  border-radius: 16px;
+  background: #eff8f5;
+}
+.voice-demo-copy p { margin: 0; }
+.voice-demo-title { color: var(--sea-deep); font-weight: 900; }
+.voice-demo-copy p + p { margin-top: 4px; font-size: .9rem; }
+.voice-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.voice-controls button { min-height: 44px; padding: 8px 15px; border: 2px solid var(--sea); border-radius: 999px; background: var(--surface-bright); color: var(--sea-deep); font: inherit; font-weight: 800; cursor: pointer; }
+.voice-controls .voice-toggle { background: var(--sea); color: #fff; }
+.voice-controls .voice-toggle[aria-pressed="true"] { border-color: var(--roof-deep); background: var(--roof); }
+.voice-controls button:disabled { border-color: #b9b2a8; background: #e8e4dd; color: #766f67; cursor: not-allowed; }
+.voice-status { margin: 0; color: var(--roof-deep); font-weight: 800; }
+.voice-credit { margin: 0; align-self: end; color: var(--muted); text-align: right; font-size: .82rem; }
+.voice-credit span { white-space: nowrap; font-weight: 800; }
+
 .role-section,
 .participation-section,
 .town-section,
@@ -443,6 +465,9 @@ main { padding-bottom: 42px; }
   .event-info,
   .contact-section { padding: 22px 16px; }
   .role-card { min-height: 132px; }
+  .voice-demo { grid-template-columns: 1fr; padding: 16px; }
+  .voice-controls { justify-content: flex-start; }
+  .voice-credit { text-align: left; }
   .guidance-panel { grid-template-columns: 1fr; padding: 20px; }
   .guidance-staff { width: 58px; height: 58px; }
   .level-list { grid-template-columns: 1fr 1fr; }
@@ -467,6 +492,7 @@ main { padding-bottom: 42px; }
   .role-grid { grid-template-columns: 1fr; }
   .role-card-wide { grid-column: span 1; }
   .role-card { min-height: 112px; }
+  .voice-controls button { width: 100%; }
   .level-list { grid-template-columns: 1fr; }
   .level-list li { min-height: auto; }
   .gallery-preview { grid-template-columns: 1fr; }
