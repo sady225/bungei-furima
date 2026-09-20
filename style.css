@@ -390,6 +390,32 @@ header {
     justify-items: center;
 }
 
+.external-content-consent {
+    max-width: 720px;
+    margin: 0 auto 24px;
+    padding: 20px;
+    border: 1px solid rgba(44, 62, 80, .18);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .88);
+}
+
+.external-content-consent p {
+    margin-bottom: 14px;
+}
+
+.external-content-consent button:disabled {
+    cursor: wait;
+    opacity: .72;
+}
+
+.exhibitor-card__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #4b5563;
+}
+
 /* ギャラリー用のスタイル追加 */
 .gallery-grid {
     display: grid;

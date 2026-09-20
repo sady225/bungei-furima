@@ -136,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initPetalAnimation();
         initThemeSwitcher();
         initImageModal();
+        initInstagramEmbeds();
     }
 
     // 出展者紹介の自動生成
@@ -147,14 +148,80 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'exhibitor-card fade-in';
 
-            card.innerHTML = `
-                ${ex.imageUrl ? `<img src="${ex.imageUrl}" class="exhibitor-card__image" alt="${ex.name}" style="${ex.imagePosition ? `object-position: ${ex.imagePosition};` : ''}">` : '<div class="exhibitor-card__image" style="background:#ddd; display:flex; align-items:center; justify-content:center;">No Image</div>'}
-                <div class="exhibitor-card__name">${ex.name}</div>
-                <div class="exhibitor-card__content">${ex.content}</div>
-                <div class="exhibitor-card__intro">${ex.activity_intro}</div>
-            `;
+            if (ex.imageUrl) {
+                const image = document.createElement('img');
+                image.src = ex.imageUrl;
+                image.className = 'exhibitor-card__image';
+                image.alt = ex.name;
+                image.loading = 'lazy';
+                image.referrerPolicy = 'no-referrer';
+                if (ex.imagePosition) image.style.objectPosition = ex.imagePosition;
+                card.appendChild(image);
+            } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'exhibitor-card__image exhibitor-card__placeholder';
+                placeholder.textContent = 'No Image';
+                card.appendChild(placeholder);
+            }
+
+            const name = document.createElement('div');
+            name.className = 'exhibitor-card__name';
+            name.textContent = ex.name;
+            card.appendChild(name);
+
+            const content = document.createElement('div');
+            content.className = 'exhibitor-card__content';
+            content.textContent = ex.content;
+            card.appendChild(content);
+
+            const intro = document.createElement('div');
+            intro.className = 'exhibitor-card__intro';
+            intro.textContent = ex.activity_intro;
+            card.appendChild(intro);
 
             exhibitorGrid.appendChild(card);
+        });
+    }
+
+    function initInstagramEmbeds() {
+        const button = document.getElementById('loadInstagram');
+        const grid = document.getElementById('instagramGrid');
+        if (!button || !grid) return;
+
+        const postUrls = [
+            'https://www.instagram.com/p/DOhd0iXEg9t/',
+            'https://www.instagram.com/p/DO2DhFyEuU_/',
+            'https://www.instagram.com/p/DOxbkNSkspb/',
+            'https://www.instagram.com/p/DOvn0ubErTT/',
+            'https://www.instagram.com/p/DOqbcVpEk-B/'
+        ];
+
+        button.addEventListener('click', () => {
+            button.disabled = true;
+            button.textContent = 'Instagramに接続しています…';
+
+            postUrls.forEach(url => {
+                const embed = document.createElement('blockquote');
+                embed.className = 'instagram-media';
+                embed.dataset.instgrmCaptioned = '';
+                embed.dataset.instgrmPermalink = url;
+                embed.dataset.instgrmVersion = '14';
+                grid.appendChild(embed);
+            });
+
+            const script = document.createElement('script');
+            script.src = 'https://www.instagram.com/embed.js';
+            script.async = true;
+            script.addEventListener('load', () => {
+                button.textContent = 'Instagramの投稿を表示しました';
+            });
+            script.addEventListener('error', () => {
+                button.disabled = false;
+                button.textContent = '読み込めませんでした。もう一度試す';
+                grid.replaceChildren();
+                script.remove();
+            });
+            document.body.appendChild(script);
         });
     }
 

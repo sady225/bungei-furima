@@ -1,339 +1,225 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>沖縄文芸フリマ vol.3｜オンライン事務局</title>
-<meta name="description" content="沖縄文芸フリマ vol.3への参加方法を、作品、子ども実行委員、場を支える、来場の4つのルートから選べるオンライン事務局です。">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; frame-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'none'; worker-src 'none'; upgrade-insecure-requests">
+  <title>沖縄文芸フリマ｜町の案内所・デジタル職員室</title>
+  <meta name="description" content="沖縄文芸フリマについて、子ども、保護者、学校、高校、福祉、行政、地域、いきもの好きなど、立場に合う参加方法を探せる町の案内所です。">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
+  <a class="skip-link" href="#role-entrances">立場別の入口へ移動</a>
 
-<header class="site-header">
-  <div class="header-inner">
-    <p class="eyebrow">2026年度プロジェクト｜2027年2月開催企画中</p>
-    <h1>
-      <span class="h1-sub">沖縄文芸フリマ vol.3</span>
-      <span class="h1-main">沖縄文芸フリマ オンライン事務局</span>
-    </h1>
-    <p class="lead">「私はどう参加できる？」を見つける、小さな案内所です。</p>
-    <p class="header-copy">作品を出すことだけが参加ではありません。好きなこと、得意なこと、やってみたいことから、自分に合う入口を選べます。</p>
-    <div class="hero-actions">
-      <a class="primary-link" href="#office-stage">案内所を見る</a>
-      <a class="back-link" href="../index.html">沖縄文芸フリマ公式サイトへ戻る</a>
-    </div>
-    <p class="demo-sub">田場公民館（予定）｜正式な日程・会場は田場自治会審議会の決定後にお知らせします。</p>
-  </div>
-</header>
-
-<main>
-
-  <section class="demo-notice" aria-labelledby="notice-heading">
-    <h2 id="notice-heading">この案内所でできること</h2>
-    <p>4つの参加ルートと、現在検討している内容を紹介します。募集と申込みはまだ始まっていません。正式な条件は、決まり次第お知らせします。</p>
-  </section>
-
-  <section class="stage-section" id="office-stage" aria-labelledby="stage-heading">
-    <div class="section-heading">
-      <p class="section-kicker">古民家の案内所</p>
-      <h2 id="stage-heading">参加ルートをご案内します</h2>
-    </div>
-
-    <div class="stage-wrap">
-      <div class="stage" id="stage" aria-label="古民家風のオンライン事務局ステージ">
-        <p class="visually-hidden">沖縄の古民家風のオンライン事務局で、4つの参加ルートを案内するデモです。</p>
-        <div class="console-overlay" aria-hidden="true">
-          <span>案内所</span>
-          <span>募集準備中</span>
-          <span>次のお知らせを準備中</span>
-        </div>
-
-        <div class="spot spot-entry" style="--x:18; --y:76;"><span>出展受付</span></div>
-        <div class="spot spot-works" style="--x:31; --y:48;"><span>子ども実行委員案内</span></div>
-        <div class="spot spot-guide" style="--x:50; --y:58;"><span>総合案内</span></div>
-        <div class="spot spot-public" style="--x:68; --y:47;"><span>広報・来場案内</span></div>
-        <div class="spot spot-display" style="--x:74; --y:77;"><span>猫・展示案内</span></div>
-        <div class="spot spot-volunteer" style="--x:84; --y:30;"><span>場を支える案内</span></div>
-
-        <div class="character" id="staff-guide" data-name="総合案内担当" data-role="参加方法の入口案内" style="--x:50; --y:58;">
-          <div class="bubble" aria-hidden="true"></div>
-          <div class="dotfig guide"><span class="eye"></span><span class="eye eye2"></span></div>
-          <p class="char-label">総合案内担当</p>
-        </div>
-
-        <div class="character" id="staff-entry" data-name="出展受付担当" data-role="出展応募までの流れ案内" style="--x:18; --y:76;">
-          <div class="bubble" aria-hidden="true"></div>
-          <div class="dotfig entry"><span class="eye"></span><span class="eye eye2"></span></div>
-          <p class="char-label">出展受付担当</p>
-        </div>
-
-        <div class="character" id="staff-works" data-name="子ども実行委員案内" data-role="子ども・若者の参加案内" style="--x:31; --y:48;">
-          <div class="bubble" aria-hidden="true"></div>
-          <div class="dotfig works"><span class="eye"></span><span class="eye eye2"></span></div>
-          <p class="char-label">子ども実行委員案内</p>
-        </div>
-
-        <div class="character" id="staff-public" data-name="広報担当" data-role="開催情報と来場案内" style="--x:68; --y:47;">
-          <div class="bubble" aria-hidden="true"></div>
-          <div class="dotfig public"><span class="eye"></span><span class="eye eye2"></span></div>
-          <p class="char-label">広報担当</p>
-        </div>
-
-        <div class="character" id="staff-volunteer" data-name="場を支える案内" data-role="会場を一緒につくる参加案内" style="--x:84; --y:30;">
-          <div class="bubble" aria-hidden="true"></div>
-          <div class="dotfig volunteer"><span class="eye"></span><span class="eye eye2"></span></div>
-          <p class="char-label">場を支える案内</p>
-        </div>
+  <header class="site-header">
+    <div class="header-inner">
+      <p class="eyebrow">沖縄文芸フリマ vol.3｜2026年度プロジェクト</p>
+      <h1>
+        <span class="h1-main">町の案内所</span>
+        <span class="h1-sub">デジタル職員室</span>
+      </h1>
+      <p class="lead">作品や「好き・得意」から、地域とゆるやかにつながる入口を探せます。</p>
+      <p class="header-copy">見るだけ、作品だけ、短い時間だけでも参加です。次の段階へ進むことをゴールにはしません。</p>
+      <div class="hero-actions">
+        <a class="primary-link" href="#role-entrances">自分に合う入口を探す</a>
+        <a class="back-link" href="../index.html">公式サイトへ戻る</a>
       </div>
     </div>
+  </header>
 
-    <nav class="office-menu" aria-label="オンライン事務局メニュー">
-      <a href="#exhibit-flow"><span>1</span>作品を出してみたい</a>
-      <a href="#children-flow"><span>2</span>子ども実行委員</a>
-      <a href="#volunteer-flow"><span>3</span>場を支えたい</a>
-      <a href="#visitor-info"><span>4</span>遊びに行きたい</a>
-    </nav>
-
-    <div class="controls">
-      <button type="button" id="btn-play">案内デモを見る</button>
-      <button type="button" id="btn-restart">最初から見る</button>
-      <button type="button" id="btn-stop">デモを止める</button>
-    </div>
-
-    <p class="now-playing" id="now-playing" role="status" aria-live="polite">
-      ボタンを押すと、参加ルートの案内デモが始まります。
-    </p>
-
-    <ol class="progress" id="progress" aria-label="案内の進行状況">
-      <li data-step="contact"><span class="dot" aria-hidden="true"></span>案内開始</li>
-      <li data-step="choice"><span class="dot" aria-hidden="true"></span>4つの入口</li>
-      <li data-step="exhibit"><span class="dot" aria-hidden="true"></span>作品</li>
-      <li data-step="children"><span class="dot" aria-hidden="true"></span>子ども実行委員</li>
-      <li data-step="volunteer"><span class="dot" aria-hidden="true"></span>場を支える</li>
-      <li data-step="news"><span class="dot" aria-hidden="true"></span>来場</li>
-      <li data-step="next"><span class="dot" aria-hidden="true"></span>次のお知らせ</li>
-    </ol>
-
-    <noscript>
-      <p class="noscript-note">JavaScriptが無効なため、案内デモは動きません。下にある4つの参加ルートは、そのままお読みいただけます。</p>
-    </noscript>
-  </section>
-
-  <section class="flow-section" id="exhibit-flow" aria-labelledby="exhibit-heading">
-    <div class="section-heading">
-      <p class="section-kicker">ルート1｜作品を出してみたい</p>
-      <h2 id="exhibit-heading">好きな表現を、誰かに届ける</h2>
-    </div>
-    <p class="status-note">現在は開催企画中です。出展募集はまだ始まっていません。</p>
-    <ol class="flow-list">
-      <li>開催予定と募集内容を確認する</li>
-      <li>出展できる作品の例を見る</li>
-      <li>出展方法と必要な準備を確認する</li>
-      <li>募集開始後、申込みフォームから応募する</li>
-      <li>事務局からの案内を確認する</li>
-      <li>作品、展示物、当日の持ち物を準備する</li>
-      <li>文芸フリマ当日に参加する</li>
-    </ol>
-    <div class="example-panel">
-      <h3>出展できる作品の例</h3>
-      <ul class="tag-list">
-        <li>本・冊子・ZINE</li>
-        <li>小説</li>
-        <li>エッセイ</li>
-        <li>詩・短歌・俳句</li>
-        <li>漫画</li>
-        <li>イラスト</li>
-        <li>写真</li>
-        <li>自分史</li>
-        <li>地域文化</li>
-        <li>平和学習</li>
-        <li>子どもの作品</li>
-        <li>その他の表現</li>
+  <main>
+    <section class="safety-banner" aria-labelledby="safety-title">
+      <div>
+        <p class="section-kicker">安心して使うために</p>
+        <h2 id="safety-title">このページは相談内容を入力する場所ではありません</h2>
+      </div>
+      <ul>
+        <li>AI・外部通信は未接続</li>
+        <li>会話ログ・個人情報を保存しない</li>
+        <li>学校名・住所・診断名などを聞かない</li>
+        <li>公開許可を確認した画像だけ掲載</li>
       </ul>
-    </div>
-    <a class="card-button" href="#contact">出展情報を受け取りたい</a>
-  </section>
+    </section>
 
-  <section class="flow-section route-children" id="children-flow" aria-labelledby="children-heading">
-    <div class="section-heading">
-      <p class="section-kicker">ルート2｜子ども実行委員として一緒につくりたい</p>
-      <h2 id="children-heading">子どもも一緒につくるイベントへ</h2>
-    </div>
-    <p class="route-copy">小学生から高校生を中心とする子ども・若者が、自分で考え、選び、できる範囲で挑戦する参加方法です。大人は、安全や大切な判断を支えます。</p>
-    <p class="status-note">全部やらなくて大丈夫。できることを、できる範囲で。</p>
-    <div class="example-panel">
-      <h3>役割の例</h3>
-      <ul class="tag-list">
-        <li>企画ミーティング</li>
-        <li>猫企画</li>
-        <li>ポスター・イラスト</li>
-        <li>SNS</li>
-        <li>会場装飾</li>
-        <li>受付・案内の補助</li>
-        <li>写真・動画</li>
-        <li>取材</li>
-        <li>アンケート</li>
-        <li>準備・片付け</li>
-        <li>振り返り</li>
+    <section class="stage-section" aria-labelledby="stage-heading">
+      <div class="section-heading">
+        <p class="section-kicker">古民家の案内所</p>
+        <h2 id="stage-heading">町のスタッフが待っています</h2>
+        <p>入口を選ぶと、担当スタッフが固定の案内文でご案内します。</p>
+      </div>
+
+      <div class="stage-wrap">
+        <div class="stage" id="office-stage" aria-label="古民家風の案内所に6人のスタッフがいるイラスト">
+          <div class="stage-sign" aria-hidden="true">
+            <span>町の案内所</span>
+            <span>見るだけOK</span>
+            <span>相談入力なし</span>
+          </div>
+          <div class="counter" aria-hidden="true"><span>お話は、必要な分だけ。</span></div>
+
+          <div class="staff-character staff-guide" data-staff-key="guide" aria-label="総合案内担当 まどか">
+            <div class="staff-bubble" aria-hidden="true"></div>
+            <div class="staff-avatar avatar-guide" aria-hidden="true"><span class="hair"></span><span class="face"><i></i><i></i><b></b></span><span class="body"></span><span class="accessory">📋</span></div>
+            <p><strong>まどか</strong><span>総合案内</span></p>
+          </div>
+          <div class="staff-character staff-works" data-staff-key="works" aria-label="子ども・作品担当 えんぴつ">
+            <div class="staff-bubble" aria-hidden="true"></div>
+            <div class="staff-avatar avatar-works" aria-hidden="true"><span class="hair"></span><span class="face"><i></i><i></i><b></b></span><span class="body"></span><span class="accessory">🎨</span></div>
+            <p><strong>えんぴつ</strong><span>子ども・作品</span></p>
+          </div>
+          <div class="staff-character staff-care" data-staff-key="care" aria-label="学校・保護者担当 なぎ">
+            <div class="staff-bubble" aria-hidden="true"></div>
+            <div class="staff-avatar avatar-care" aria-hidden="true"><span class="hair"></span><span class="face"><i></i><i></i><b></b></span><span class="body"></span><span class="accessory">🌿</span></div>
+            <p><strong>なぎ</strong><span>学校・保護者</span></p>
+          </div>
+          <div class="staff-character staff-youth" data-staff-key="youth" aria-label="若者・伴走担当 そら">
+            <div class="staff-bubble" aria-hidden="true"></div>
+            <div class="staff-avatar avatar-youth" aria-hidden="true"><span class="hair"></span><span class="face"><i></i><i></i><b></b></span><span class="body"></span><span class="accessory">📷</span></div>
+            <p><strong>そら</strong><span>若者・伴走</span></p>
+          </div>
+          <div class="staff-character staff-community" data-staff-key="community" aria-label="地域連携担当 ゆい">
+            <div class="staff-bubble" aria-hidden="true"></div>
+            <div class="staff-avatar avatar-community" aria-hidden="true"><span class="hair"></span><span class="face"><i></i><i></i><b></b></span><span class="body"></span><span class="accessory">🤝</span></div>
+            <p><strong>ゆい</strong><span>地域連携</span></p>
+          </div>
+          <div class="staff-character staff-nature" data-staff-key="nature" aria-label="いきもの・地域文化担当 みなも">
+            <div class="staff-bubble" aria-hidden="true"></div>
+            <div class="staff-avatar avatar-nature" aria-hidden="true"><span class="hair"></span><span class="face"><i></i><i></i><b></b></span><span class="body"></span><span class="accessory">🐟</span></div>
+            <p><strong>みなも</strong><span>いきもの・文化</span></p>
+          </div>
+        </div>
+      </div>
+      <p class="stage-status" id="stage-status" role="status" aria-live="polite">下の入口から、今の立場に近いものを選んでください。</p>
+    </section>
+
+    <section class="role-section" id="role-entrances" aria-labelledby="role-heading">
+      <div class="section-heading">
+        <p class="section-kicker">立場別の入口</p>
+        <h2 id="role-heading">どんな立場で知りたいですか？</h2>
+        <p>名前や相談内容は入力しません。近い入口を一つ選ぶだけです。</p>
+      </div>
+      <div class="role-grid" role="group" aria-label="案内する立場を選ぶ">
+        <button type="button" class="role-card" data-role="child" aria-pressed="false"><span aria-hidden="true">🎈</span><strong>子ども</strong><small>好きなものから探す</small></button>
+        <button type="button" class="role-card" data-role="parent" aria-pressed="false"><span aria-hidden="true">🏠</span><strong>保護者</strong><small>無理のない参加を知る</small></button>
+        <button type="button" class="role-card" data-role="school" aria-pressed="false"><span aria-hidden="true">🏫</span><strong>学校・SSW・<br>教育相談室</strong><small>選択肢として紹介する</small></button>
+        <button type="button" class="role-card" data-role="highschool" aria-pressed="false"><span aria-hidden="true">📷</span><strong>高校生・高校</strong><small>得意で伴走する</small></button>
+        <button type="button" class="role-card" data-role="welfare" aria-pressed="false"><span aria-hidden="true">🌱</span><strong>社協・福祉</strong><small>顔見知りを増やす</small></button>
+        <button type="button" class="role-card" data-role="government" aria-pressed="false"><span aria-hidden="true">🧭</span><strong>行政</strong><small>既存施策とつなぐ</small></button>
+        <button type="button" class="role-card" data-role="resident" aria-pressed="false"><span aria-hidden="true">🏘️</span><strong>田場区民・地域住民</strong><small>小さな関わりから</small></button>
+        <button type="button" class="role-card" data-role="nature" aria-pressed="false"><span aria-hidden="true">🐾</span><strong>いきもの好き</strong><small>地域の話へ広げる</small></button>
+        <button type="button" class="role-card role-card-wide" data-role="unknown" aria-pressed="false"><span aria-hidden="true">☕</span><strong>どれにも当てはまらない・よく分からない</strong><small>総合案内と一緒に探す</small></button>
+      </div>
+
+      <article class="guidance-panel" id="guidance-panel" aria-labelledby="guidance-title" tabindex="-1">
+        <div class="guidance-staff" aria-hidden="true"><span id="guidance-icon">☕</span></div>
+        <div>
+          <p class="guidance-label" id="guidance-label">総合案内</p>
+          <h3 id="guidance-title">入口を選ぶと、ここに案内が表示されます</h3>
+          <p id="guidance-summary">自由入力はありません。個人情報や詳しい事情を尋ねず、今ある参加方法だけをご案内します。</p>
+          <ul id="guidance-points" class="guidance-points"></ul>
+          <div id="guidance-actions" class="guidance-actions"></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="participation-section" id="participation-levels" aria-labelledby="levels-heading">
+      <div class="section-heading">
+        <p class="section-kicker">参加の6段階</p>
+        <h2 id="levels-heading">どこにいても、その人の参加です</h2>
+        <p>上へ進むための階段ではありません。その日に選べる形を並べています。</p>
+      </div>
+      <ol class="level-list">
+        <li><span>0</span><strong>見る・知る</strong><small>サイトを見る、話を聞く</small></li>
+        <li><span>1</span><strong>作品だけ</strong><small>会場に来なくても作品で参加</small></li>
+        <li><span>2</span><strong>ワークショップ</strong><small>好きな体験だけ選ぶ</small></li>
+        <li><span>3</span><strong>短時間</strong><small>途中から・途中まででもOK</small></li>
+        <li><span>4</span><strong>小さな役割</strong><small>飾る、運ぶ、案内する</small></li>
+        <li><span>5</span><strong>企画・運営</strong><small>考えるところから関わる</small></li>
+      </ol>
+    </section>
+
+    <section class="town-section" aria-labelledby="town-heading">
+      <div class="section-heading">
+        <p class="section-kicker">デジタル公民館</p>
+        <h2 id="town-heading">人・作品・得意・地域の話が見える場所</h2>
+      </div>
+      <div class="town-grid">
+        <article class="town-card works-shelf" id="works-shelf">
+          <div class="town-card-heading"><span aria-hidden="true">📚</span><div><p>作品棚</p><h3>好きな表現を置ける棚</h3></div></div>
+          <div class="shelf" aria-label="掲載予定の作品ジャンル"><span>本・ZINE</span><span>絵・漫画</span><span>写真</span><span>物語</span><span>ものづくり</span><span>地域の記録</span></div>
+          <p>作品だけの参加もできます。作者名や学校名は、公開範囲を本人・保護者と確認してから掲載します。</p>
+        </article>
+
+        <article class="town-card gallery-card" id="shop-gallery">
+          <div class="town-card-heading"><span aria-hidden="true">🖼️</span><div><p>お店・出展者ギャラリー</p><h3>来る前に雰囲気を見られる壁</h3></div></div>
+          <div class="gallery-preview">
+            <figure><div class="gallery-art art-books" role="img" aria-label="本としおりのイラスト"></div><figcaption>本・作品を見る</figcaption></figure>
+            <figure><div class="gallery-art art-craft" role="img" aria-label="手仕事の道具のイラスト"></div><figcaption>つくる体験</figcaption></figure>
+            <figure><div class="gallery-art art-talk" role="img" aria-label="二つの椅子のイラスト"></div><figcaption>話を聞く</figcaption></figure>
+          </div>
+          <p class="permission-note">現在はイラストの仮表示です。店舗・作品・子どもの写真は、公開許可の確認後に差し替えます。</p>
+        </article>
+
+        <article class="town-card kindness-card" id="kindness-board">
+          <div class="town-card-heading"><span aria-hidden="true">👣</span><div><p>今日のやさしさの足あと</p><h3>人ではなく、出来事を残す掲示板</h3></div></div>
+          <ul class="kindness-notes"><li>椅子を一緒に運びました</li><li>作品の話を最後まで聞きました</li><li>初めて来た人を受付へ案内しました</li><li>道具を貸し合いました</li></ul>
+          <p>名前や「優しい子」という評価は残しません。匿名・集計で、その場に生まれた関わりだけを記録します。</p>
+        </article>
+
+        <article class="town-card archive-card" id="taba-archive">
+          <div class="town-card-heading"><span aria-hidden="true">🗺️</span><div><p>田場マップ・TABA ARCHIVE</p><h3>地域の話を、次の人へ</h3></div></div>
+          <ul class="archive-tags"><li>いきもの</li><li>昔の写真</li><li>音声</li><li>ZINE</li><li>防災</li><li>得意な人</li></ul>
+          <p>公開情報が整ってから順次追加します。個人宅の位置や、子どもの行動範囲につながる情報は公開しません。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="policy-section" id="image-policy" aria-labelledby="policy-heading">
+      <div class="section-heading">
+        <p class="section-kicker">画像と記録の公開ルール</p>
+        <h2 id="policy-heading">「撮れた」ではなく「公開してよい」を確認します</h2>
+      </div>
+      <div class="policy-grid">
+        <article><span>1</span><h3>目的を伝える</h3><p>どのページで、何のために、いつまで公開するかを伝えます。</p></article>
+        <article><span>2</span><h3>本人の意思も確認</h3><p>子どもは保護者同意だけでなく本人の意思も確認します。断っても不利益はありません。</p></article>
+        <article><span>3</span><h3>写り込みを減らす</h3><p>作品中心、後ろ姿、顔の分からない構図を優先し、学校名札などを確認します。</p></article>
+        <article><span>4</span><h3>撤回できる</h3><p>公開後でも取り下げを受け付け、事務局が速やかに非公開化します。</p></article>
+      </div>
+    </section>
+
+    <section class="handoff-section" id="human-handoff" aria-labelledby="handoff-heading">
+      <div class="section-heading">
+        <p class="section-kicker">人が対応すること</p>
+        <h2 id="handoff-heading">大切な相談や正式な手続きは、AIだけで扱いません</h2>
+      </div>
+      <ul>
+        <li>不登校、家庭、福祉、医療、いじめ、虐待、自傷他害などの個別相談</li>
+        <li>子どもの安全、会場管理、緊急性のある相談</li>
+        <li>正式申込み、学校連携、取材・撮影・写真利用</li>
+        <li>協賛、寄付、金銭、契約、共催・後援</li>
       </ul>
-    </div>
-    <p class="responsibility-note">子どもに安全管理、金銭管理、契約、介助、緊急対応、個人情報管理の最終責任を任せることはありません。</p>
-    <a class="card-button" href="#contact">子ども実行委員の情報を受け取りたい</a>
-  </section>
+      <p class="boundary-note">Phase 1〜2ではAI APIを接続していません。今後接続する場合も、APIキーはサーバー側だけに置き、初期案内のログは原則保存しない設計にします。</p>
+    </section>
 
-  <section class="flow-section" id="volunteer-flow" aria-labelledby="volunteer-heading">
-    <div class="section-heading">
-      <p class="section-kicker">ルート3｜場を支えたい</p>
-      <h2 id="volunteer-heading">人が気持ちよく過ごせる場を、一緒につくる</h2>
-    </div>
-    <p class="route-copy">人前に立つことだけが、役割ではありません。気づくこと、整えること、誰かにつなぐことも、大切な参加です。</p>
-    <p class="status-note">できることを、できる範囲で。</p>
-    <p class="status-note">詳しい参加方法や時間帯は、募集内容が決まり次第お知らせします。</p>
-    <ol class="flow-list">
-      <li>場を支える役割例を見る</li>
-      <li>自分にできそうなことを考える</li>
-      <li>募集開始後、関心登録または申込みをする</li>
-      <li>事務局から説明や役割案内を受ける</li>
-      <li>必要に応じて事前説明や打合せに参加する</li>
-      <li>当日、案内された役割を担当する</li>
-      <li>終了後、振り返りや片付けに協力する</li>
-    </ol>
-    <div class="example-panel">
-      <h3>役割例</h3>
-      <ul class="tag-list">
-        <li>会場準備</li>
-        <li>受付</li>
-        <li>出展者案内</li>
-        <li>来場者案内</li>
-        <li>清掃・片付け</li>
-        <li>机・椅子・通路を整える</li>
-        <li>写真・動画記録</li>
-        <li>SNS発信</li>
-        <li>休憩場所への案内</li>
-        <li>困っている人を担当者につなぐ</li>
-      </ul>
-    </div>
-    <div class="daily-preparedness">
-      <h3>運営の経験が、地域の備えにもつながる</h3>
-      <p>受付、案内、休憩場所づくり、清掃、役割分担、公民館の動線を知ること。文芸フリマを丁寧に運営する経験は、結果として、いざという時にも支え合える地域づくりにつながります。</p>
-    </div>
-    <p class="future-note">希望する方への活動記録・活動証明の仕組みも検討しています。</p>
-    <a class="card-button" href="#contact">場を支える参加情報を受け取りたい</a>
-  </section>
+    <section class="event-info" aria-labelledby="event-heading">
+      <div class="section-heading"><p class="section-kicker">開催企画中</p><h2 id="event-heading">沖縄文芸フリマ vol.3</h2></div>
+      <p>2027年2月の開催を企画しています。会場は田場公民館を予定しています。正式な日程・募集内容・申込方法は、決まり次第お知らせします。</p>
+    </section>
 
-  <section class="info-section" id="visitor-info" aria-labelledby="visitor-heading">
-    <div class="section-heading">
-      <p class="section-kicker">ルート4｜遊びに行きたい・読みに行きたい</p>
-      <h2 id="visitor-heading">作品と人に会いに行く</h2>
-    </div>
-    <p>作品を見る、作者と話す、ワークショップを楽しむ。猫をテーマにした展示や、子どもたち・地域の人の作品と活動にも出会える場を検討しています。</p>
-    <div class="cat-learning">
-      <h3>猫から広がる、小さな学び</h3>
-      <p>「猫が好き」を入口に、ペット用の水・フード・トイレ用品、避難時に必要な情報、ペットとの避難、飼い主同士の助け合いなどを調べて伝える展示やワークショップを検討しています。</p>
-      <p class="cat-learning__flow">好き → 調べる → つくる → 伝える → 誰かの役に立つ</p>
-    </div>
-    <p class="status-note">正式な日時・来場条件は、決まり次第お知らせします。</p>
-    <a class="card-button" href="#contact">開催情報を受け取りたい</a>
-  </section>
+    <section class="contact-section" id="contact" aria-labelledby="contact-heading">
+      <div class="section-heading"><p class="section-kicker">人につなぐ</p><h2 id="contact-heading">お問い合わせ</h2></div>
+      <p>個別の事情や正式な相談は、このページに入力せず、人間の担当者へ直接ご連絡ください。</p>
+      <div class="contact-links">
+        <a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer">公式Instagramを開く</a>
+        <a href="../index.html#contact">公式サイトのお問い合わせ欄</a>
+      </div>
+      <p class="contact-phone">電話：070-5692-4173（公式サイト掲載番号）</p>
+    </section>
+  </main>
 
-  <section class="info-section kindness-section" aria-labelledby="kindness-heading">
-    <div class="section-heading">
-      <p class="section-kicker">やさしさの足あと</p>
-      <h2 id="kindness-heading">見えない気配りも、みんなで残す</h2>
-    </div>
-    <p>誰かにしてもらって嬉しかったことを、個人を特定しない形で残す仕組みを検討しています。</p>
-  </section>
-
-  <section class="info-section prep-section" id="alpaca-preview" aria-labelledby="prep-heading">
-    <div class="section-heading">
-      <p class="section-kicker">初めての参加で、少し不安な方へ</p>
-      <h2 id="prep-heading">当日のことを、先に少し練習できます</h2>
-    </div>
-    <p>アルパカすく〜るでは、会場案内、困っている人への気づき、人につなぐこと、場を整えること、休憩すること、助けを求めることをオンラインで予習できる「文芸フリマ運営編」を準備する予定です。</p>
-    <p class="status-note">この予習は参加の条件ではありません。希望する方のための準備です。教材は現在準備中です。</p>
-  </section>
-
-  <section class="detail-section" id="day-guide" aria-labelledby="day-guide-heading">
-    <div class="section-heading">
-      <p class="section-kicker">来場者向けの当日案内</p>
-      <h2 id="day-guide-heading">当日の案内は準備中です</h2>
-    </div>
-    <p class="status-note">正式な日程や募集内容は、決まり次第お知らせします。</p>
-    <div class="detail-grid">
-      <article class="detail-card">
-        <h3>日時・会場・入場料</h3>
-        <dl class="detail-facts">
-          <div><dt>開催候補日</dt><dd>2027年2月6日（土）または2月13日（土）です。田場自治会審議会の決定後に確定します。</dd></div>
-          <div><dt>会場と住所</dt><dd>田場公民館を予定しています。住所は正式な来場案内で確認して掲載します。</dd></div>
-          <div><dt>地図</dt><dd>住所と会場利用条件が確定した後、実在する公式地図リンクを掲載します。</dd></div>
-          <div><dt>入場料</dt><dd>未定です。正式な来場案内でお知らせします。</dd></div>
-        </dl>
-      </article>
-      <article class="detail-card">
-        <h3>アクセス</h3>
-        <dl class="detail-facts">
-          <div><dt>駐車場</dt><dd>台数、利用時間、搬入車両との区分を確認中です。決まり次第お知らせします。</dd></div>
-          <div><dt>公共交通</dt><dd>最寄りのバス停や徒歩経路は、開催日時と会場案内の確定後に掲載します。</dd></div>
-          <div><dt>バリアフリー情報</dt><dd>入口、段差、トイレ、休憩場所などを確認してから掲載します。</dd></div>
-        </dl>
-      </article>
-      <article class="detail-card">
-        <h3>当日の様子</h3>
-        <dl class="detail-facts">
-          <div><dt>会場内配置図</dt><dd>出展数や企画内容が決まり次第、受付、出展ブース、休憩場所などの配置図を掲載します。</dd></div>
-          <div><dt>飲食の可否</dt><dd>会場ルールと当日の企画内容を確認中です。飲食可能エリアがある場合は明記します。</dd></div>
-          <div><dt>混雑時間</dt><dd>開催時間と企画内容が決まり次第、混みやすい時間帯の目安を掲載します。</dd></div>
-        </dl>
-      </article>
-    </div>
-  </section>
-
-  <section class="event-info" aria-labelledby="event-heading">
-    <div class="section-heading">
-      <p class="section-kicker">開催企画中</p>
-      <h2 id="event-heading">沖縄文芸フリマ vol.3</h2>
-    </div>
-    <p>開催候補日は2027年2月6日（土）または2月13日（土）、会場は田場公民館を予定しています。正式な開催日、会場、募集内容、申込方法は、決まり次第このサイトとSNSでお知らせします。</p>
-  </section>
-
-  <section class="contact-method" id="contact" aria-labelledby="contact-heading">
-    <div class="section-heading">
-      <p class="section-kicker">問い合わせ先</p>
-      <h2 id="contact-heading">お問い合わせ</h2>
-    </div>
-    <p>お問い合わせの際は、最初に次のいずれかをご記入ください。</p>
-    <ul class="contact-topics">
-      <li>出展情報希望</li>
-      <li>子ども実行委員情報希望</li>
-      <li>開催情報希望</li>
-      <li>場を支える参加情報希望</li>
-      <li>その他の問い合わせ</li>
-    </ul>
-    <ul class="contact-list">
-      <li><a href="https://www.instagram.com/bungei.oki/" target="_blank" rel="noopener noreferrer">公式Instagram</a></li>
-      <li><a href="../index.html#contact">公式サイトのお問い合わせ欄</a></li>
-      <li>070-5692-4173（公式サイト掲載番号）</li>
-    </ul>
-  </section>
-
-  <section class="cta" aria-labelledby="cta-heading">
-    <h2 id="cta-heading">好きなことから、参加方法を選べます。</h2>
-    <p>できることを、できる範囲で。沖縄文芸フリマ vol.3を一緒につくりませんか。</p>
-    <div class="cta-links">
-      <a href="#exhibit-flow">作品を出す</a>
-      <a href="#children-flow">子ども実行委員</a>
-      <a href="#volunteer-flow">場を支える</a>
-      <a href="#visitor-info">遊びに行く・読みに行く</a>
-      <a href="../index.html">沖縄文芸フリマ公式サイトへ戻る</a>
-    </div>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <p>沖縄文芸フリマ vol.3 オンライン事務局 — 主催：琉球のタネ</p>
-</footer>
-
-<script src="app.js"></script>
+  <footer class="site-footer"><p>沖縄文芸フリマ 町の案内所 — 主催：琉球のタネ</p><p><a href="../index.html">公式サイトへ戻る</a></p></footer>
+  <noscript><p class="noscript-note">JavaScriptが無効でも、作品棚や公開ルールは読めます。立場別案内の切り替えにはJavaScriptが必要です。</p></noscript>
 </body>
 </html>
