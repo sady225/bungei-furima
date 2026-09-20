@@ -188,6 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const grid = document.getElementById('instagramGrid');
         if (!button || !grid) return;
 
+        let attemptId = 0;
+
         const postUrls = [
             'https://www.instagram.com/p/DOhd0iXEg9t/',
             'https://www.instagram.com/p/DO2DhFyEuU_/',
@@ -196,9 +198,41 @@ document.addEventListener('DOMContentLoaded', () => {
             'https://www.instagram.com/p/DOqbcVpEk-B/'
         ];
 
+        const resetAfterFailure = (script, currentAttempt) => {
+            if (currentAttempt !== attemptId) return;
+            button.disabled = false;
+            button.textContent = '読み込めませんでした。もう一度試す';
+            grid.replaceChildren();
+            script.remove();
+        };
+
+        const waitForRenderedEmbeds = (script, currentAttempt, checksRemaining) => {
+            if (currentAttempt !== attemptId) return;
+
+            const hasRenderedEmbed = Array.from(grid.querySelectorAll('iframe')).some(frame => {
+                return frame.getBoundingClientRect().height >= 100;
+            });
+
+            if (hasRenderedEmbed) {
+                button.textContent = 'Instagramの投稿を表示しました';
+                return;
+            }
+
+            if (checksRemaining > 0) {
+                window.setTimeout(() => {
+                    waitForRenderedEmbeds(script, currentAttempt, checksRemaining - 1);
+                }, 500);
+                return;
+            }
+
+            resetAfterFailure(script, currentAttempt);
+        };
+
         button.addEventListener('click', () => {
+            const currentAttempt = ++attemptId;
             button.disabled = true;
             button.textContent = 'Instagramに接続しています…';
+            grid.replaceChildren();
 
             postUrls.forEach(url => {
                 const embed = document.createElement('blockquote');
@@ -213,13 +247,13 @@ document.addEventListener('DOMContentLoaded', () => {
             script.src = 'https://www.instagram.com/embed.js';
             script.async = true;
             script.addEventListener('load', () => {
-                button.textContent = 'Instagramの投稿を表示しました';
+                if (window.instgrm && window.instgrm.Embeds) {
+                    window.instgrm.Embeds.process();
+                }
+                waitForRenderedEmbeds(script, currentAttempt, 20);
             });
             script.addEventListener('error', () => {
-                button.disabled = false;
-                button.textContent = '読み込めませんでした。もう一度試す';
-                grid.replaceChildren();
-                script.remove();
+                resetAfterFailure(script, currentAttempt);
             });
             document.body.appendChild(script);
         });
