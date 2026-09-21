@@ -11,7 +11,17 @@ mkdir -p ./_site/ai-editor/assets/audio ./_site/photo/251213
 cp ./index.html ./CNAME ./_site/
 cp ./ai-editor/index.html ./ai-editor/style.css ./ai-editor/app.js ./_site/ai-editor/
 cp ./ai-editor/assets/office-background.png ./_site/ai-editor/assets/
-cp ./ai-editor/assets/audio/*.mp3 ./_site/ai-editor/assets/audio/
+cp \
+  ./ai-editor/assets/audio/child.mp3 \
+  ./ai-editor/assets/audio/parent.mp3 \
+  ./ai-editor/assets/audio/school.mp3 \
+  ./ai-editor/assets/audio/highschool.mp3 \
+  ./ai-editor/assets/audio/welfare.mp3 \
+  ./ai-editor/assets/audio/government.mp3 \
+  ./ai-editor/assets/audio/resident.mp3 \
+  ./ai-editor/assets/audio/nature.mp3 \
+  ./ai-editor/assets/audio/unknown.mp3 \
+  ./_site/ai-editor/assets/audio/
 cp ./photo/250920-thanks.png ./photo/fukusima.png ./_site/photo/
 cp ./photo/251213/*.jpg ./_site/photo/251213/
 
@@ -24,7 +34,6 @@ while IFS= read -r file; do
     ./_site/index.html|./_site/CNAME|./_site/.nojekyll|\
     ./_site/ai-editor/index.html|./_site/ai-editor/style.css|./_site/ai-editor/app.js|\
     ./_site/ai-editor/assets/office-background.png|\
-    ./_site/ai-editor/assets/audio/welcome.mp3|\
     ./_site/ai-editor/assets/audio/child.mp3|\
     ./_site/ai-editor/assets/audio/parent.mp3|\
     ./_site/ai-editor/assets/audio/school.mp3|\
@@ -56,7 +65,6 @@ required=(
   ./_site/ai-editor/style.css
   ./_site/ai-editor/app.js
   ./_site/ai-editor/assets/office-background.png
-  ./_site/ai-editor/assets/audio/welcome.mp3
   ./_site/ai-editor/assets/audio/child.mp3
   ./_site/ai-editor/assets/audio/parent.mp3
   ./_site/ai-editor/assets/audio/school.mp3

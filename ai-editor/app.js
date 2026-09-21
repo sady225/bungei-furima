@@ -1,5 +1,5 @@
 /*
- * 沖縄文芸フリマ 町の案内所 / デジタル職員室 Phase 1-2
+ * 沖縄文芸フリマ案内所 Phase 1-2
  * 固定データだけを安全なDOM APIで表示する。通信・AI・ストレージは使わない。
  */
 (function () {
@@ -19,7 +19,7 @@
         "次の段階へ進まなくても、その日の参加を大切にします。"
       ],
       actions: [
-        { label: "参加の6段階を見る", href: "#participation-levels" },
+        { label: "いろいろな参加のしかたを見る", href: "#participation-levels" },
         { label: "作品棚を見る", href: "#works-shelf" }
       ]
     },
@@ -36,8 +36,8 @@
         "個別相談が必要な場合は、AIではなく人間の担当者へつなぎます。"
       ],
       actions: [
-        { label: "参加の6段階を見る", href: "#participation-levels" },
-        { label: "人への引継ぎ方針", href: "#human-handoff" }
+        { label: "いろいろな参加のしかたを見る", href: "#participation-levels" },
+        { label: "お問い合わせ", href: "#contact" }
       ]
     },
     school: {
@@ -71,7 +71,7 @@
       ],
       actions: [
         { label: "小さな役割を見る", href: "#participation-levels" },
-        { label: "やさしさの足あと", href: "#kindness-board" }
+        { label: "会場の『ありがとう』構想", href: "#kindness-board" }
       ]
     },
     welfare: {
@@ -104,7 +104,7 @@
         "共催・後援・契約・法的判断は、人間の担当者間で行います。"
       ],
       actions: [
-        { label: "やさしさの足あとを見る", href: "#kindness-board" },
+        { label: "会場の『ありがとう』構想", href: "#kindness-board" },
         { label: "正式な連携を相談", href: "#contact" }
       ]
     },
@@ -121,7 +121,7 @@
         "地域の話や写真は、公開範囲を確認して記録します。"
       ],
       actions: [
-        { label: "やさしさの足あとを見る", href: "#kindness-board" },
+        { label: "会場の『ありがとう』構想", href: "#kindness-board" },
         { label: "田場の記録を見る", href: "#taba-archive" }
       ]
     },
@@ -139,7 +139,7 @@
       ],
       actions: [
         { label: "作品棚を見る", href: "#works-shelf" },
-        { label: "田場マップ構想を見る", href: "#taba-archive" }
+        { label: "田場で集めたいものを見る", href: "#taba-archive" }
       ]
     },
     unknown: {
@@ -155,7 +155,7 @@
         "正式な申込みや個別相談だけ、人間の担当者へつなぎます。"
       ],
       actions: [
-        { label: "参加の6段階を見る", href: "#participation-levels" },
+        { label: "いろいろな参加のしかたを見る", href: "#participation-levels" },
         { label: "案内所の中を見る", href: "#works-shelf" }
       ]
     }
@@ -177,8 +177,8 @@
   var voiceStatus = document.getElementById("voice-status");
   var guideAudio = document.getElementById("guide-audio");
   var voiceEnabled = false;
-  var currentVoiceKey = "welcome";
-  var currentVoiceLabel = "最初の案内";
+  var currentVoiceKey = "unknown";
+  var currentVoiceLabel = "総合案内";
 
   if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus || !voiceToggle || !voiceReplay || !voiceStop || !voiceStatus || !guideAudio) return;
 
