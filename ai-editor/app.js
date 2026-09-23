@@ -177,8 +177,8 @@
   var voiceStatus = document.getElementById("voice-status");
   var guideAudio = document.getElementById("guide-audio");
   var voiceEnabled = false;
-  var currentVoiceKey = "welcome";
-  var currentVoiceLabel = "最初の案内";
+  var currentVoiceKey = "";
+  var currentVoiceLabel = "";
 
   if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus || !voiceToggle || !voiceReplay || !voiceStop || !voiceStatus || !guideAudio) return;
 
@@ -225,11 +225,15 @@
     voiceEnabled = enabled;
     voiceToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
     voiceToggle.textContent = enabled ? "音声案内をオフにする" : "音声案内をオンにする";
-    voiceReplay.disabled = !enabled;
-    voiceStop.disabled = !enabled;
+    voiceReplay.disabled = !enabled || !currentVoiceKey;
+    voiceStop.disabled = !enabled || !currentVoiceKey;
 
     if (enabled) {
-      playVoice(currentVoiceKey, currentVoiceLabel);
+      if (currentVoiceKey) {
+        playVoice(currentVoiceKey, currentVoiceLabel);
+      } else {
+        voiceStatus.textContent = "音声案内はオンです。入口を選ぶと、表示された吹き出しを読み上げます。";
+      }
       return;
     }
 
@@ -266,9 +270,13 @@
     activateStaff(guide.staff, guide.bubble);
     stageStatus.textContent = guide.staffName + "が案内しています。詳しい事情は入力せず、下の固定案内をご覧ください。";
     currentVoiceKey = roleKey;
-    currentVoiceLabel = guide.staffName + "の案内";
+    currentVoiceLabel = guide.staffName + "の吹き出し";
 
-    if (voiceEnabled) playVoice(currentVoiceKey, currentVoiceLabel);
+    if (voiceEnabled) {
+      voiceReplay.disabled = false;
+      voiceStop.disabled = false;
+      playVoice(currentVoiceKey, currentVoiceLabel);
+    }
 
     if (moveFocus) panel.focus({ preventScroll: true });
     panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -289,15 +297,15 @@
   });
 
   voiceStop.addEventListener("click", function () {
-    if (voiceEnabled) stopVoice("音声を停止しました。入口を選ぶと、新しい案内を再生します。");
+    if (voiceEnabled) stopVoice("音声を停止しました。吹き出しが切り替わると、新しい一言を読み上げます。");
   });
 
   guideAudio.addEventListener("play", function () {
-    voiceStatus.textContent = currentVoiceLabel + "を再生しています。";
+    voiceStatus.textContent = currentVoiceLabel + "をずんだもんが読み上げています。";
   });
 
   guideAudio.addEventListener("ended", function () {
-    voiceStatus.textContent = currentVoiceLabel + "の再生が終わりました。";
+    voiceStatus.textContent = currentVoiceLabel + "の読み上げが終わりました。";
   });
 
   guideAudio.addEventListener("error", function () {
