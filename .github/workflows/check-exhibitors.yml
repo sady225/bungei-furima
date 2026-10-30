@@ -13,6 +13,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Install safety-check prerequisite
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ripgrep
       - run: node --test integrations/exhibitors/tests/*.test.mjs
       - run: bash scripts/check-site-safety.sh
       - run: git diff --check
