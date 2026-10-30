@@ -1,5 +1,7 @@
 # furima.ryukyu-tane.com
 
+出店者の受付・承認公開連携は [実装・接続手順](integrations/exhibitors/README.md) を参照。承認待ちブランチでは本番稼働・公開を行わない。
+
 沖縄文芸フリマ公式サイトの公開用作業フォルダです。
 
 GitHub Actionsで公開専用ファイルだけを組み立て、GitHub Pagesへ公開します。`furima.ryukyu-tane.com` はCloudflare DNS経由でGitHub Pagesへ向けます。

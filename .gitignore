@@ -19,3 +19,12 @@ ftp_upload.sh
 
 # Generated GitHub Pages artifact.
 /_site/
+
+# Integration secrets, local credentials and private intake/image work.
+.dev.vars*
+.env.*
+.wrangler/
+.clasp.json
+private/
+approved-images/
+node_modules/
