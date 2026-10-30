@@ -8,6 +8,13 @@ cd "$repo_root"
 rm -rf ./_site
 mkdir -p ./_site/ai-editor/assets/audio ./_site/photo/251213
 
+node integrations/exhibitors/validate-public.mjs
+mkdir -p ./_site/exhibitors ./_site/data ./_site/assets/vendors
+cp ./exhibitors/index.html ./exhibitors/app.js ./exhibitors/style.css ./_site/exhibitors/
+cp ./data/exhibitors.json ./_site/data/
+# Copy only exact image paths referenced by the validated catalog.
+node integrations/exhibitors/copy-public-images.mjs
+
 cp ./index.html ./CNAME ./_site/
 cp ./ai-editor/index.html ./ai-editor/style.css ./ai-editor/app.js ./_site/ai-editor/
 cp ./ai-editor/assets/office-background.png ./_site/ai-editor/assets/
@@ -32,6 +39,8 @@ unexpected=0
 while IFS= read -r file; do
   case "$file" in
     ./_site/index.html|./_site/CNAME|./_site/.nojekyll|\
+    ./_site/exhibitors/index.html|./_site/exhibitors/app.js|./_site/exhibitors/style.css|\
+    ./_site/data/exhibitors.json|\
     ./_site/ai-editor/index.html|./_site/ai-editor/style.css|./_site/ai-editor/app.js|\
     ./_site/ai-editor/assets/office-background.png|\
     ./_site/ai-editor/assets/audio/child.mp3|\
@@ -45,6 +54,9 @@ while IFS= read -r file; do
     ./_site/ai-editor/assets/audio/unknown.mp3|\
     ./_site/photo/250920-thanks.png|./_site/photo/fukusima.png|\
     ./_site/photo/251213/[0-9][0-9][0-9].jpg)
+      ;;
+    ./_site/assets/vendors/*.webp)
+      # Exact paths and bytes were validated and copied by the catalog validator.
       ;;
     *)
       printf 'Unexpected public artifact: %s\n' "$file" >&2
@@ -85,7 +97,7 @@ for file in "${required[@]}"; do
   fi
 done
 
-if find ./_site -type f \( -name '*.json' -o -name '*.pdf' -o -name '*.key' -o -name '*.vrew' \) -print -quit | grep -q .; then
+if find ./_site -type f \( -name '*.json' ! -path './_site/data/exhibitors.json' -o -name '*.pdf' -o -name '*.key' -o -name '*.vrew' \) -print -quit | grep -q .; then
   printf 'Private document type found in public artifact.\n' >&2
   exit 1
 fi
