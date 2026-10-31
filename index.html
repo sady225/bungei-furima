@@ -442,11 +442,17 @@
         }
 
         .venue-layout__figure {
-            margin: 0;
+            width: 300px;
+            max-width: 100%;
+            margin: 0 auto;
         }
 
         .venue-layout__link {
             display: block;
+            width: 100%;
+            padding: 0;
+            border: 0;
+            background: transparent;
             border-radius: 12px;
             cursor: zoom-in;
         }
@@ -923,6 +929,12 @@
             animation: zoomIn 0.3s ease;
         }
 
+        .modal.venue-layout-modal .modal-content {
+            max-width: 94%;
+            max-height: 75vh;
+            object-fit: contain;
+        }
+
         .modal-close {
             position: absolute;
             top: 20px;
@@ -1115,7 +1127,7 @@
     </style>
 </head>
 
-<body>
+<body class="yamabuki">
     <header>
         <div class="container">
             <div class="header-content">
@@ -1128,10 +1140,10 @@
                 <!-- 色選択ボタン省略せず残します -->
                 <div class="color-selector" role="group" aria-labelledby="color-setting-label">
                     <span id="color-setting-label">色設定:</span>
-                    <button class="color-btn default-color active" data-theme="default" title="標準"
-                        aria-label="標準の色にする" aria-pressed="true"></button>
-                    <button class="color-btn yamabuki-color" data-theme="yamabuki" title="山吹色系"
-                        aria-label="山吹色系にする" aria-pressed="false"></button>
+                    <button class="color-btn default-color" data-theme="default" title="標準"
+                        aria-label="標準の色にする" aria-pressed="false"></button>
+                    <button class="color-btn yamabuki-color active" data-theme="yamabuki" title="オレンジ（山吹色系）"
+                        aria-label="オレンジ（山吹色系）にする" aria-pressed="true"></button>
                     <button class="color-btn mizuiro-color" data-theme="mizuiro" title="水色系"
                         aria-label="水色系にする" aria-pressed="false"></button>
                     <button class="color-btn uguisu-color" data-theme="uguisu" title="うぐいす色系"
@@ -1215,10 +1227,10 @@
                         <h2 class="section-title" id="venue-layout-heading">📍 会場レイアウト・案内図</h2>
                         <p class="venue-layout__description">会場内の出展スペース、受付、入口、トイレの位置をご案内します。出展者のテーブルはL字型を基本に配置し、会場中央には作品展示と読書のためのスペースを設ける予定です。ご来場の際は、案内図をご確認ください。</p>
                         <figure class="venue-layout__figure">
-                            <a class="venue-layout__link" href="photo/venue-layout-2027.jpg" target="_blank" rel="noopener noreferrer" aria-label="会場レイアウト・案内図を原寸で開く（新しいタブ）">
+                            <button type="button" class="venue-layout__link" aria-label="会場レイアウト・案内図を拡大表示" aria-haspopup="dialog" aria-controls="imageModal">
                                 <img class="venue-layout__image" src="photo/venue-layout-2027.jpg" alt="会場レイアウト・案内図。出展テーブルの配置と、右奥の入口、その手前の受付、右側の通路奥にあるトイレへの案内。" width="1447" height="1087" loading="lazy" decoding="async">
-                            </a>
-                            <figcaption class="venue-layout__caption">画像をタップ・クリックすると、原寸画像を新しいタブで開けます。</figcaption>
+                            </button>
+                            <figcaption class="venue-layout__caption">画像をタップ・クリックすると、拡大表示します。</figcaption>
                         </figure>
                     </div>
                 </div>
@@ -1968,19 +1980,12 @@
                     });
                 };
                 const savedTheme = localStorage.getItem(themeKey);
-                if (savedTheme) {
-                    body.classList.add(savedTheme);
-                    colorButtons.forEach(btn => btn.classList.remove('active'));
-                    const activeBtn = document.querySelector(`[data-theme="${savedTheme}"]`);
-                    if (activeBtn) {
-                        activeBtn.classList.add('active');
-                        updatePressedState(activeBtn);
-                    }
-                } else {
-                    const defaultButton = document.querySelector('[data-theme="default"]');
-                    defaultButton.classList.add('active');
-                    updatePressedState(defaultButton);
-                }
+                const initialTheme = ['default', ...themes].includes(savedTheme) ? savedTheme : 'yamabuki';
+                body.classList.remove(...themes);
+                if (initialTheme !== 'default') body.classList.add(initialTheme);
+                const activeButton = document.querySelector(`[data-theme="${initialTheme}"]`);
+                colorButtons.forEach(btn => btn.classList.toggle('active', btn === activeButton));
+                updatePressedState(activeButton);
                 colorButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         const theme = button.dataset.theme;
@@ -2000,11 +2005,15 @@
                 const modalImg = document.getElementById('modalImg');
                 const closeBtn = document.querySelector('.modal-close');
                 let openingImage = null;
+                let previousOverflow = '';
                 // class="gallery-item" 内の img を対象にする
                 const galleryImages = document.querySelectorAll('.gallery-item img');
 
-                const openModal = img => {
-                    openingImage = img;
+                const openModal = (img, trigger = img) => {
+                    openingImage = trigger;
+                    previousOverflow = document.body.style.overflow;
+                    document.body.style.overflow = 'hidden';
+                    modal.classList.toggle('venue-layout-modal', trigger.classList.contains('venue-layout__link'));
                     modal.classList.add('active');
                     modal.setAttribute('aria-hidden', 'false');
                     modalImg.src = img.src;
@@ -2018,6 +2027,8 @@
                 const closeModal = () => {
                     modal.classList.remove('active');
                     modal.setAttribute('aria-hidden', 'true');
+                    modal.classList.remove('venue-layout-modal');
+                    document.body.style.overflow = previousOverflow;
                     if (openingImage) openingImage.focus();
                 };
 
@@ -2045,6 +2056,13 @@
                     });
                 });
 
+                const venueButton = document.querySelector('.venue-layout__link');
+                if (venueButton) {
+                    venueButton.addEventListener('click', () => {
+                        openModal(venueButton.querySelector('img'), venueButton);
+                    });
+                }
+
                 // 閉じるボタン
                 closeBtn.addEventListener('click', () => {
                     closeModal();
@@ -2059,6 +2077,10 @@
 
                 // Escapeキーで閉じる
                 document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab' && modal.classList.contains('active')) {
+                        e.preventDefault();
+                        closeBtn.focus();
+                    }
                     if ((e.key === 'Escape' || e.key === 'Esc') && modal.classList.contains('active')) {
                         closeModal();
                     }
