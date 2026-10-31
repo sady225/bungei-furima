@@ -269,11 +269,16 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             align-items: center;
             gap: 40px;
+        }
+
+        .hero .hero__flyer {
+            max-width: 400px;
+            justify-self: center;
+            scroll-margin-top: 150px;
         }
 
         .hero h1 {
@@ -1128,6 +1133,10 @@
         }
 
         @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
             .feature-grid {
                 grid-template-columns: 1fr;
             }
@@ -1191,12 +1200,12 @@
                             <a href="./ai-editor/" class="cta-button cta-button--outline">参加方法を見る</a>
                         </div>
                     </div>
-                    <!-- ヒーロー右側：スライドショー -->
-                    <div class="flyer-card">
-                        <!-- <p class="flyer-card__title">ハイライト</p> -->
-                        <img id="heroSlideshowImage" class="slideshow-image" src="./photo/251213/001.jpg"
-                            alt="イベントの様子">
-                    </div>
+                        <figure class="venue-layout__figure hero__flyer" id="event-flyer">
+                            <button type="button" class="venue-layout__link" aria-label="沖縄文芸フリマ vol.3の開催チラシを拡大表示" aria-haspopup="dialog" aria-controls="imageModal">
+                                <img class="venue-layout__image" src="photo/event-flyer-2027.jpg" alt="沖縄文芸フリマ vol.3の開催チラシ。2027年2月6日土曜日、11時から16時まで。開催場所：うるま市田場822-1。入場無料。イラスト：nekozukitati。" width="433" height="608" fetchpriority="high" decoding="async">
+                            </button>
+                            <figcaption class="venue-layout__caption">画像をタップ・クリックすると、拡大表示します。</figcaption>
+                        </figure>
                 </div>
             </div>
         </section>
@@ -1237,21 +1246,6 @@
                     </div>
                 </div>
             </div>
-
-            <section class="venue-layout" id="event-flyer" aria-labelledby="event-flyer-heading">
-                <div class="container">
-                    <div class="venue-layout__content">
-                        <h2 class="section-title" id="event-flyer-heading">🎪 開催チラシ</h2>
-                        <p class="venue-layout__description">沖縄文芸フリマ vol.3のチラシが完成しました。2027年2月6日（土）11:00〜16:00、うるま市田場で開催。入場無料です。チラシをタップ・クリックすると拡大してご覧いただけます。</p>
-                        <figure class="venue-layout__figure">
-                            <button type="button" class="venue-layout__link" aria-label="沖縄文芸フリマ vol.3の開催チラシを拡大表示" aria-haspopup="dialog" aria-controls="imageModal">
-                                <img class="venue-layout__image" src="photo/event-flyer-2027.jpg" alt="沖縄文芸フリマ vol.3の開催チラシ。2027年2月6日土曜日、11時から16時まで。開催場所：うるま市田場822-1。入場無料。イラスト：nekozukitati。" width="433" height="608" loading="lazy" decoding="async">
-                            </button>
-                            <figcaption class="venue-layout__caption">画像をタップ・クリックすると、拡大表示します。</figcaption>
-                        </figure>
-                    </div>
-                </div>
-            </section>
 
             <section class="venue-layout" id="venue-layout" aria-labelledby="venue-layout-heading">
                 <div class="container">
@@ -1431,6 +1425,10 @@
 
                     <!-- ギャラリーグリッド -->
                     <h3 class="text-center" style="margin-top:40px; color:var(--color-primary);">📸 Photo Gallery</h3>
+                    <div class="flyer-card" style="margin: 0 auto 30px;">
+                        <img id="heroSlideshowImage" class="slideshow-image" src="./photo/251213/001.jpg"
+                            alt="イベントの様子">
+                    </div>
                     <div class="gallery-grid" id="galleryGrid">
                         <!-- JSで自動生成されます -->
                     </div>
