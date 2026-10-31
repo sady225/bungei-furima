@@ -422,6 +422,53 @@
             margin-bottom: 40px;
         }
 
+        .venue-layout {
+            scroll-margin-top: 150px;
+            padding-top: 40px;
+        }
+
+        .venue-layout__content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .venue-layout .section-title {
+            margin-bottom: 20px;
+        }
+
+        .venue-layout__description {
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .venue-layout__figure {
+            margin: 0;
+        }
+
+        .venue-layout__link {
+            display: block;
+            border-radius: 12px;
+            cursor: zoom-in;
+        }
+
+        .venue-layout__link:focus-visible {
+            outline: 3px solid #667eea;
+            outline-offset: 5px;
+        }
+
+        .venue-layout__image {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+
+        .venue-layout__caption {
+            margin-top: 12px;
+            text-align: center;
+            font-size: .9rem;
+        }
+
         .note-link {
             font-weight: bold;
         }
@@ -1161,6 +1208,21 @@
                     </div>
                 </div>
             </div>
+
+            <section class="venue-layout" id="venue-layout" aria-labelledby="venue-layout-heading">
+                <div class="container">
+                    <div class="venue-layout__content">
+                        <h2 class="section-title" id="venue-layout-heading">📍 会場レイアウト・案内図</h2>
+                        <p class="venue-layout__description">会場内の出展スペース、受付、入口、トイレの位置をご案内します。出展者のテーブルはL字型を基本に配置し、会場中央には作品展示と読書のためのスペースを設ける予定です。ご来場の際は、案内図をご確認ください。</p>
+                        <figure class="venue-layout__figure">
+                            <a class="venue-layout__link" href="photo/venue-layout-2027.jpg" target="_blank" rel="noopener noreferrer" aria-label="会場レイアウト・案内図を原寸で開く（新しいタブ）">
+                                <img class="venue-layout__image" src="photo/venue-layout-2027.jpg" alt="会場レイアウト・案内図。出展テーブルの配置と、右奥の入口、その手前の受付、右側の通路奥にあるトイレへの案内。" width="1447" height="1087" loading="lazy" decoding="async">
+                            </a>
+                            <figcaption class="venue-layout__caption">画像をタップ・クリックすると、原寸画像を新しいタブで開けます。</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </section>
         </section>
 
         <section class="section vol3-intro" id="vol3">

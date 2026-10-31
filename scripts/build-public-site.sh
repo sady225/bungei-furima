@@ -23,6 +23,7 @@ cp \
   ./ai-editor/assets/audio/unknown.mp3 \
   ./_site/ai-editor/assets/audio/
 cp ./photo/250920-thanks.png ./photo/fukusima.png ./_site/photo/
+cp ./photo/venue-layout-2027.jpg ./_site/photo/
 cp ./photo/251213/*.jpg ./_site/photo/251213/
 
 # Jekyll処理を使わないことを、生成物側でも明示する。
@@ -44,6 +45,7 @@ while IFS= read -r file; do
     ./_site/ai-editor/assets/audio/nature.mp3|\
     ./_site/ai-editor/assets/audio/unknown.mp3|\
     ./_site/photo/250920-thanks.png|./_site/photo/fukusima.png|\
+    ./_site/photo/venue-layout-2027.jpg|\
     ./_site/photo/251213/[0-9][0-9][0-9].jpg)
       ;;
     *)
@@ -76,6 +78,7 @@ required=(
   ./_site/ai-editor/assets/audio/unknown.mp3
   ./_site/photo/250920-thanks.png
   ./_site/photo/fukusima.png
+  ./_site/photo/venue-layout-2027.jpg
 )
 
 for file in "${required[@]}"; do
