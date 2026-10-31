@@ -1238,6 +1238,21 @@
                 </div>
             </div>
 
+            <section class="venue-layout" id="event-flyer" aria-labelledby="event-flyer-heading">
+                <div class="container">
+                    <div class="venue-layout__content">
+                        <h2 class="section-title" id="event-flyer-heading">🎪 開催チラシ</h2>
+                        <p class="venue-layout__description">沖縄文芸フリマ vol.3のチラシが完成しました。2027年2月6日（土）11:00〜16:00、うるま市田場で開催。入場無料です。チラシをタップ・クリックすると拡大してご覧いただけます。</p>
+                        <figure class="venue-layout__figure">
+                            <button type="button" class="venue-layout__link" aria-label="沖縄文芸フリマ vol.3の開催チラシを拡大表示" aria-haspopup="dialog" aria-controls="imageModal">
+                                <img class="venue-layout__image" src="photo/event-flyer-2027.jpg" alt="沖縄文芸フリマ vol.3の開催チラシ。2027年2月6日土曜日、11時から16時まで。開催場所：うるま市田場822-1。入場無料。イラスト：nekozukitati。" width="433" height="608" loading="lazy" decoding="async">
+                            </button>
+                            <figcaption class="venue-layout__caption">画像をタップ・クリックすると、拡大表示します。</figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </section>
+
             <section class="venue-layout" id="venue-layout" aria-labelledby="venue-layout-heading">
                 <div class="container">
                     <div class="venue-layout__content">
@@ -2073,12 +2088,11 @@
                     });
                 });
 
-                const venueButton = document.querySelector('.venue-layout__link');
-                if (venueButton) {
+                document.querySelectorAll('.venue-layout__link').forEach(venueButton => {
                     venueButton.addEventListener('click', () => {
                         openModal(venueButton.querySelector('img'), venueButton);
                     });
-                }
+                });
 
                 // 閉じるボタン
                 closeBtn.addEventListener('click', () => {
