@@ -1,0 +1,22 @@
+name = "furima-exhibitors-staging"
+main = "index.mjs"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+GITHUB_BRANCH = "staging/exhibitors-data"
+PRODUCTION_ENABLED = "false"
+# Add non-secret board/list IDs, exact CALLBACK_URL and BACKEND_URL after review.
+# Secrets via wrangler secret put: TRELLO_KEY, TRELLO_TOKEN,
+# TRELLO_APP_SECRET, BACKEND_SECRET, GITHUB_TOKEN.
+
+[[durable_objects.bindings]]
+name = "PUBLICATION"
+class_name = "PublicationCoordinator"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PublicationCoordinator"]
+
+[observability]
+enabled = false

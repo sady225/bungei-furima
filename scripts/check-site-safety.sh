@@ -9,6 +9,8 @@ fail() {
   exit 1
 }
 
+command -v rg >/dev/null 2>&1 || fail 'ripgrep (rg) is required'
+
 if rg -n --glob '*.html' --glob '*.js' \
   'innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(' .; then
   fail 'unsafe DOM or script execution sink found'
