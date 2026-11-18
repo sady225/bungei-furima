@@ -93,7 +93,7 @@
       <div class="voice-demo" aria-labelledby="voice-demo-title">
         <div class="voice-demo-copy">
           <p class="voice-demo-title" id="voice-demo-title">ずんだもん音声案内</p>
-          <p>音声をオンにして入口を選ぶと、表示されたスタッフの吹き出しと同じ文章を読み上げます。音声ファイルはこのサイト内から再生し、文章や個人情報を外部へ送りません。</p>
+          <p>音声をオンにすると、入口・参加方法・安心カードで担当になったスタッフの固定音声を再生します。音声ファイルはこのサイト内から再生し、文章や個人情報を外部へ送りません。</p>
         </div>
         <div class="voice-controls">
           <button type="button" class="voice-toggle" id="voice-toggle" aria-pressed="false">音声案内をオンにする</button>
@@ -105,6 +105,17 @@
         <audio id="guide-audio" preload="none"></audio>
       </div>
     </section>
+
+    <div class="staff-dock" id="staff-dock" role="status" aria-live="polite">
+      <div class="staff-dock-avatar" id="dock-staff-icon" aria-hidden="true">📋</div>
+      <div class="staff-dock-copy">
+        <small>いまの案内スタッフ</small>
+        <strong id="dock-staff-name">まどか</strong>
+        <span id="dock-message">入口を選ぶところから、一緒に探そう。</span>
+      </div>
+      <div class="staff-dock-next" id="dock-next">① 入口</div>
+      <div class="handoff-toast" id="handoff-toast" hidden></div>
+    </div>
 
     <section class="role-section" id="role-entrances" aria-labelledby="role-heading">
       <div class="section-heading">
@@ -129,17 +140,23 @@
         <div class="passport-track" aria-hidden="true"><div class="passport-progress" id="passport-progress"></div></div>
       </div>
 
-      <p class="quest-instruction"><span aria-hidden="true">①</span> 今の立場に近い入口をタップ</p>
-      <div class="role-grid" role="group" aria-label="案内する立場を選ぶ">
+      <p class="quest-instruction"><span aria-hidden="true">①</span> まずは近い入口を1つタップ</p>
+      <div class="role-grid role-grid-primary" role="group" aria-label="主な入口を選ぶ">
         <button type="button" class="role-card" data-role="child" aria-pressed="false"><span aria-hidden="true">🎈</span><strong>子ども</strong><small>好きなものから探す</small></button>
         <button type="button" class="role-card" data-role="parent" aria-pressed="false"><span aria-hidden="true">🏠</span><strong>保護者</strong><small>無理のない参加を知る</small></button>
-        <button type="button" class="role-card" data-role="school" aria-pressed="false"><span aria-hidden="true">🏫</span><strong>学校・SSW・<br>教育相談室</strong><small>選択肢として紹介する</small></button>
-        <button type="button" class="role-card" data-role="highschool" aria-pressed="false"><span aria-hidden="true">📷</span><strong>高校生・高校</strong><small>得意で伴走する</small></button>
-        <button type="button" class="role-card" data-role="welfare" aria-pressed="false"><span aria-hidden="true">🌱</span><strong>社協・福祉</strong><small>顔見知りを増やす</small></button>
-        <button type="button" class="role-card" data-role="government" aria-pressed="false"><span aria-hidden="true">🧭</span><strong>行政</strong><small>既存施策とつなぐ</small></button>
-        <button type="button" class="role-card" data-role="resident" aria-pressed="false"><span aria-hidden="true">🏘️</span><strong>田場区民・地域住民</strong><small>小さな関わりから</small></button>
-        <button type="button" class="role-card" data-role="nature" aria-pressed="false"><span aria-hidden="true">🐾</span><strong>いきもの好き</strong><small>地域の話へ広げる</small></button>
-        <button type="button" class="role-card role-card-wide" data-role="unknown" aria-pressed="false"><span aria-hidden="true">☕</span><strong>どれにも当てはまらない・よく分からない</strong><small>総合案内と一緒に探す</small></button>
+        <button type="button" class="role-card" data-role="school" aria-pressed="false"><span aria-hidden="true">🏫</span><strong>学校・支援</strong><small>SSW・教育相談室を含む</small></button>
+        <button type="button" class="role-card role-menu-card" id="more-roles-toggle" aria-expanded="false" aria-controls="more-roles-panel"><span aria-hidden="true">🏘️</span><strong>地域・その他</strong><small>高校・福祉・行政・地域など</small></button>
+      </div>
+      <div class="role-more" id="more-roles-panel" hidden>
+        <p>もう少し近い入口があれば、ここから選べます。</p>
+        <div class="role-grid role-grid-more" role="group" aria-label="地域・その他の入口を選ぶ">
+          <button type="button" class="role-card" data-role="highschool" aria-pressed="false"><span aria-hidden="true">📷</span><strong>高校生・高校</strong><small>得意で伴走する</small></button>
+          <button type="button" class="role-card" data-role="welfare" aria-pressed="false"><span aria-hidden="true">🌱</span><strong>社協・福祉</strong><small>顔見知りを増やす</small></button>
+          <button type="button" class="role-card" data-role="government" aria-pressed="false"><span aria-hidden="true">🧭</span><strong>行政</strong><small>既存施策とつなぐ</small></button>
+          <button type="button" class="role-card" data-role="resident" aria-pressed="false"><span aria-hidden="true">🏘️</span><strong>田場区民・地域住民</strong><small>小さな関わりから</small></button>
+          <button type="button" class="role-card" data-role="nature" aria-pressed="false"><span aria-hidden="true">🐾</span><strong>いきもの好き</strong><small>地域の話へ広げる</small></button>
+          <button type="button" class="role-card" data-role="unknown" aria-pressed="false"><span aria-hidden="true">☕</span><strong>まだよく分からない</strong><small>総合案内と一緒に探す</small></button>
+        </div>
       </div>
 
       <article class="guidance-panel" id="guidance-panel" aria-labelledby="guidance-title" tabindex="-1">
@@ -182,13 +199,14 @@
 
       <article class="passport-result" id="passport-result" hidden tabindex="-1" aria-labelledby="passport-result-title">
         <div class="passport-result-badge">🎉 案内パスポート完成</div>
-        <h3 id="passport-result-title">あなたの入口が見つかりました</h3>
+        <h3 id="passport-result-title">今日の案内カードができました</h3>
         <p id="passport-result-copy">参加方法は一つに決めなくて大丈夫です。</p>
         <div class="passport-result-summary">
           <span id="result-role">入口：未選択</span>
           <span id="result-route">参加：未選択</span>
           <span id="result-comfort">安心：未選択</span>
         </div>
+        <p class="passport-private-note">名前・学校名・相談内容は、このカードには入りません。</p>
         <div class="passport-team" aria-live="polite">
           <p>あなたの案内チーム</p>
           <div class="passport-team-list" id="passport-team-list"></div>
