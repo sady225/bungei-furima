@@ -108,10 +108,28 @@
 
     <section class="role-section" id="role-entrances" aria-labelledby="role-heading">
       <div class="section-heading">
-        <p class="section-kicker">立場別の入口</p>
-        <h2 id="role-heading">どんな立場で知りたいですか？</h2>
-        <p>名前や相談内容は入力しません。近い入口を一つ選ぶだけです。</p>
+        <p class="section-kicker">案内所クエスト</p>
+        <h2 id="role-heading">3つ選んで、案内パスポートを完成させよう</h2>
+        <p>正解を当てるゲームではありません。今の自分に近いものを選ぶだけ。途中で選び直しても大丈夫です。</p>
       </div>
+
+      <div class="passport-hud" id="passport-hud" aria-label="案内パスポートの進み具合">
+        <div class="passport-topline">
+          <div>
+            <span class="passport-label">PASSPORT</span>
+            <strong id="passport-count">0 / 3</strong>
+          </div>
+          <div class="passport-next" id="passport-next" role="status" aria-live="polite">① まず入口を選ぼう</div>
+        </div>
+        <div class="passport-stamps" aria-hidden="true">
+          <span class="passport-stamp" id="stamp-role">① 入口</span>
+          <span class="passport-stamp" id="stamp-route">② 参加</span>
+          <span class="passport-stamp" id="stamp-comfort">③ 安心</span>
+        </div>
+        <div class="passport-track" aria-hidden="true"><div class="passport-progress" id="passport-progress"></div></div>
+      </div>
+
+      <p class="quest-instruction"><span aria-hidden="true">①</span> 今の立場に近い入口をタップ</p>
       <div class="role-grid" role="group" aria-label="案内する立場を選ぶ">
         <button type="button" class="role-card" data-role="child" aria-pressed="false"><span aria-hidden="true">🎈</span><strong>子ども</strong><small>好きなものから探す</small></button>
         <button type="button" class="role-card" data-role="parent" aria-pressed="false"><span aria-hidden="true">🏠</span><strong>保護者</strong><small>無理のない参加を知る</small></button>
@@ -132,6 +150,49 @@
           <p id="guidance-summary">自由入力はありません。個人情報や詳しい事情を尋ねず、今ある参加方法だけをご案内します。</p>
           <ul id="guidance-points" class="guidance-points"></ul>
           <div id="guidance-actions" class="guidance-actions"></div>
+        </div>
+      </article>
+
+      <div class="quest-step quest-step-locked" id="route-quest" aria-labelledby="route-quest-title">
+        <div class="quest-step-heading">
+          <span class="quest-number" aria-hidden="true">②</span>
+          <div><p>次のスタンプ</p><h3 id="route-quest-title">どんな参加が気になる？</h3></div>
+        </div>
+        <p class="quest-help">入口を選ぶと開きます。どれを選んでも、あとから変えられます。</p>
+        <div class="quest-choice-grid" role="group" aria-label="気になる参加方法を選ぶ">
+          <button type="button" class="quest-choice" data-route-choice="create" disabled><span aria-hidden="true">🎨</span><strong>作品をつくる・出す</strong><small>本、絵、写真、ZINEなど</small></button>
+          <button type="button" class="quest-choice" data-route-choice="committee" disabled><span aria-hidden="true">🌱</span><strong>子ども実行委員</strong><small>企画や準備から一緒につくる</small></button>
+          <button type="button" class="quest-choice" data-route-choice="support" disabled><span aria-hidden="true">🤝</span><strong>場を支える</strong><small>受付、案内、準備、片付け</small></button>
+          <button type="button" class="quest-choice" data-route-choice="visit" disabled><span aria-hidden="true">👀</span><strong>遊びに行く・見る</strong><small>作品を見る、短い時間だけでも</small></button>
+        </div>
+      </div>
+
+      <div class="quest-step quest-step-locked" id="comfort-quest" aria-labelledby="comfort-quest-title">
+        <div class="quest-step-heading">
+          <span class="quest-number" aria-hidden="true">③</span>
+          <div><p>最後のスタンプ</p><h3 id="comfort-quest-title">困ったとき、どれがあると安心？</h3></div>
+        </div>
+        <p class="quest-help">全部大切な選択です。「我慢する」はクリア条件ではありません。</p>
+        <div class="comfort-choice-grid" role="group" aria-label="安心して参加する方法を選ぶ">
+          <button type="button" class="comfort-choice" data-comfort-choice="rest" disabled><span aria-hidden="true">🪑</span><strong>休む</strong><small>自分のタイミングでひと休み</small></button>
+          <button type="button" class="comfort-choice" data-comfort-choice="ask" disabled><span aria-hidden="true">🗺️</span><strong>聞く</strong><small>分からない場所や予定を確認</small></button>
+          <button type="button" class="comfort-choice" data-comfort-choice="help" disabled><span aria-hidden="true">🙋</span><strong>助けを求める</strong><small>困ったら担当者につないでもらう</small></button>
+        </div>
+      </div>
+
+      <article class="passport-result" id="passport-result" hidden tabindex="-1" aria-labelledby="passport-result-title">
+        <div class="passport-result-badge">🎉 案内パスポート完成</div>
+        <h3 id="passport-result-title">あなたの入口が見つかりました</h3>
+        <p id="passport-result-copy">参加方法は一つに決めなくて大丈夫です。</p>
+        <div class="passport-result-summary">
+          <span id="result-role">入口：未選択</span>
+          <span id="result-route">参加：未選択</span>
+          <span id="result-comfort">安心：未選択</span>
+        </div>
+        <div class="passport-result-actions">
+          <a href="#participation-levels">参加のしかたをもっと見る</a>
+          <a href="#works-shelf">会場をのぞいてみる</a>
+          <button type="button" id="passport-reset">もう一度えらぶ</button>
         </div>
       </article>
     </section>
