@@ -11,7 +11,10 @@ GitHub Actionsで公開専用ファイルだけを組み立て、GitHub Pagesへ
 - `ai-editor/style.css`
 - `ai-editor/app.js`
 - `ai-editor/assets/office-background.png`
-- `ai-editor/assets/audio/*.mp3`（VOICEVOX:ずんだもんの固定案内音声）\n- `play/index.html`\n- `play/style.css`\n- `play/app.js`
+- `ai-editor/assets/audio/*.mp3`（VOICEVOX:ずんだもんの固定案内音声）
+- `play/index.html`
+- `play/style.css`
+- `play/app.js`
 - `index.html` が実際に使用する開催写真
 - `CNAME`
 - `.nojekyll`
