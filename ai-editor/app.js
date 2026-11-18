@@ -312,6 +312,38 @@
   guideAudio.addEventListener("error", function () {
     voiceStatus.textContent = "音声ファイルを読み込めませんでした。画面の案内文はそのまま読めます。";
   });
+
+  function activateTeam(staffKeys, leadKey, bubbleText, statusText) {
+    staffCharacters.forEach(function (character) {
+      var key = character.dataset.staffKey;
+      var isTeam = staffKeys.indexOf(key) !== -1;
+      var isLead = key === leadKey;
+      character.classList.toggle("is-active", false);
+      character.classList.toggle("is-team", isTeam);
+      character.classList.toggle("is-team-lead", isLead);
+      character.classList.toggle("is-muted", !isTeam);
+      var bubble = character.querySelector(".staff-bubble");
+      if (bubble) bubble.textContent = isLead ? bubbleText : "";
+    });
+    if (statusText) stageStatus.textContent = statusText;
+  }
+
+  window.addEventListener("bungei:passport-staff", function (event) {
+    var detail = event.detail || {};
+    if (!detail.staff) return;
+    activateTeam([detail.staff], detail.staff, detail.bubble || "", detail.status || "");
+  });
+
+  window.addEventListener("bungei:passport-team", function (event) {
+    var detail = event.detail || {};
+    var staffKeys = Array.isArray(detail.staff) ? detail.staff : [];
+    if (!staffKeys.length) return;
+    activateTeam(staffKeys, detail.lead || staffKeys[0], detail.bubble || "このチームで案内するよ！", detail.status || "あなたの案内チームができました。");
+  });
+
+  window.addEventListener("bungei:passport-reset", function () {
+    activateTeam(["guide"], "guide", "また一緒に探そう。", "総合案内のまどかが待っています。");
+  });
 })();
 
 
@@ -342,6 +374,37 @@
     help: "助けを求める"
   };
 
+  var roleStaff = {
+    child: "works",
+    parent: "care",
+    school: "care",
+    highschool: "youth",
+    welfare: "community",
+    government: "community",
+    resident: "community",
+    nature: "nature",
+    unknown: "guide"
+  };
+  var routeStaff = {
+    create: { staff: "works", bubble: "作品のことなら、えんぴつと見てみよう。", status: "子ども・作品担当のえんぴつが、作品の参加方法をご案内します。" },
+    committee: { staff: "youth", bubble: "一緒につくる役割を探してみよう。", status: "若者・伴走担当のそらが、子ども実行委員の関わり方をご案内します。" },
+    support: { staff: "community", bubble: "目立たない役割も大事だよ。", status: "地域連携担当のゆいが、会場を支える役割をご案内します。" },
+    visit: { staff: "guide", bubble: "見るだけ、短い時間だけでも大丈夫。", status: "総合案内のまどかが、遊びに行く・見る参加をご案内します。" }
+  };
+  var comfortStaff = {
+    rest: { staff: "care", bubble: "休むのも大切な参加だよ。", status: "学校・保護者担当のなぎが、無理をしない参加を案内しています。" },
+    ask: { staff: "guide", bubble: "分からないことは聞いて大丈夫。", status: "総合案内のまどかが、分からない時の聞き方を案内しています。" },
+    help: { staff: "community", bubble: "困ったら、担当の人につなぐよ。", status: "地域連携担当のゆいが、助けを求める・人につなぐ方法を案内しています。" }
+  };
+  var staffNames = {
+    guide: "📋 まどか",
+    works: "🎨 えんぴつ",
+    care: "🌿 なぎ",
+    youth: "📷 そら",
+    community: "🤝 ゆい",
+    nature: "🐟 みなも"
+  };
+
   var selectedRole = "";
   var selectedRoute = "";
   var selectedComfort = "";
@@ -362,9 +425,10 @@
   var resultRole = document.getElementById("result-role");
   var resultRoute = document.getElementById("result-route");
   var resultComfort = document.getElementById("result-comfort");
+  var teamList = document.getElementById("passport-team-list");
   var reset = document.getElementById("passport-reset");
 
-  if (!roleButtons.length || !routeButtons.length || !comfortButtons.length || !routeQuest || !comfortQuest || !count || !next || !progress || !stampRole || !stampRoute || !stampComfort || !result || !resultCopy || !resultRole || !resultRoute || !resultComfort || !reset) return;
+  if (!roleButtons.length || !routeButtons.length || !comfortButtons.length || !routeQuest || !comfortQuest || !count || !next || !progress || !stampRole || !stampRoute || !stampComfort || !result || !resultCopy || !resultRole || !resultRoute || !resultComfort || !teamList || !reset) return;
 
   function setOpen(step, buttons, open) {
     step.classList.toggle("quest-step-locked", !open);
@@ -377,6 +441,21 @@
       button.classList.toggle("is-selected", button.dataset[dataName] === key);
       button.setAttribute("aria-pressed", button.dataset[dataName] === key ? "true" : "false");
     });
+  }
+
+  function buildTeam() {
+    var keys = [roleStaff[selectedRole], routeStaff[selectedRoute] && routeStaff[selectedRoute].staff, comfortStaff[selectedComfort] && comfortStaff[selectedComfort].staff].filter(Boolean);
+    return keys.filter(function (key, index) { return keys.indexOf(key) === index; });
+  }
+
+  function renderTeamChips(team) {
+    var chips = team.map(function (key) {
+      var chip = document.createElement("span");
+      chip.className = "passport-team-chip";
+      chip.textContent = staffNames[key] || key;
+      return chip;
+    });
+    teamList.replaceChildren.apply(teamList, chips);
   }
 
   function updatePassport() {
@@ -400,6 +479,16 @@
       resultRoute.textContent = "参加：" + routeLabels[selectedRoute];
       resultComfort.textContent = "安心：" + comfortLabels[selectedComfort];
       resultCopy.textContent = "これは診断ではありません。今日は「" + routeLabels[selectedRoute] + "」が気になっただけでも十分です。見るだけ、途中まで、別の参加へ変えることもできます。";
+      var team = buildTeam();
+      renderTeamChips(team);
+      window.dispatchEvent(new CustomEvent("bungei:passport-team", {
+        detail: {
+          staff: team,
+          lead: comfortStaff[selectedComfort].staff,
+          bubble: "このチームで案内するよ！",
+          status: "あなたの案内チームができました：" + team.map(function (key) { return staffNames[key].replace(/^[^ ]+ /, ""); }).join("・")
+        }
+      }));
       result.hidden = false;
       result.classList.remove("celebrate");
       void result.offsetWidth;
@@ -426,6 +515,8 @@
     button.addEventListener("click", function () {
       selectedRoute = button.dataset.routeChoice;
       markSelected(routeButtons, selectedRoute, "routeChoice");
+      var routeGuide = routeStaff[selectedRoute];
+      window.dispatchEvent(new CustomEvent("bungei:passport-staff", { detail: routeGuide }));
       updatePassport();
       if (comfortQuest) comfortQuest.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
@@ -436,6 +527,8 @@
     button.addEventListener("click", function () {
       selectedComfort = button.dataset.comfortChoice;
       markSelected(comfortButtons, selectedComfort, "comfortChoice");
+      var comfortGuide = comfortStaff[selectedComfort];
+      window.dispatchEvent(new CustomEvent("bungei:passport-staff", { detail: comfortGuide }));
       updatePassport();
     });
   });
@@ -450,6 +543,8 @@
     });
     markSelected(routeButtons, "", "routeChoice");
     markSelected(comfortButtons, "", "comfortChoice");
+    teamList.replaceChildren();
+    window.dispatchEvent(new CustomEvent("bungei:passport-reset"));
     updatePassport();
     document.getElementById("role-entrances").scrollIntoView({ behavior: "smooth", block: "start" });
   });
