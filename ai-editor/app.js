@@ -313,3 +313,147 @@
     voiceStatus.textContent = "音声ファイルを読み込めませんでした。画面の案内文はそのまま読めます。";
   });
 })();
+
+
+/* 案内パスポートゲーム。固定選択のみで、通信・保存は行わない。 */
+(function () {
+  "use strict";
+
+  var roleLabels = {
+    child: "子ども",
+    parent: "保護者",
+    school: "学校・SSW・教育相談室",
+    highschool: "高校生・高校",
+    welfare: "社協・福祉",
+    government: "行政",
+    resident: "田場区民・地域住民",
+    nature: "いきもの好き",
+    unknown: "まだ決めない"
+  };
+  var routeLabels = {
+    create: "作品をつくる・出す",
+    committee: "子ども実行委員",
+    support: "場を支える",
+    visit: "遊びに行く・見る"
+  };
+  var comfortLabels = {
+    rest: "休む",
+    ask: "聞く",
+    help: "助けを求める"
+  };
+
+  var selectedRole = "";
+  var selectedRoute = "";
+  var selectedComfort = "";
+
+  var roleButtons = Array.prototype.slice.call(document.querySelectorAll(".role-card[data-role]"));
+  var routeButtons = Array.prototype.slice.call(document.querySelectorAll("[data-route-choice]"));
+  var comfortButtons = Array.prototype.slice.call(document.querySelectorAll("[data-comfort-choice]"));
+  var routeQuest = document.getElementById("route-quest");
+  var comfortQuest = document.getElementById("comfort-quest");
+  var count = document.getElementById("passport-count");
+  var next = document.getElementById("passport-next");
+  var progress = document.getElementById("passport-progress");
+  var stampRole = document.getElementById("stamp-role");
+  var stampRoute = document.getElementById("stamp-route");
+  var stampComfort = document.getElementById("stamp-comfort");
+  var result = document.getElementById("passport-result");
+  var resultCopy = document.getElementById("passport-result-copy");
+  var resultRole = document.getElementById("result-role");
+  var resultRoute = document.getElementById("result-route");
+  var resultComfort = document.getElementById("result-comfort");
+  var reset = document.getElementById("passport-reset");
+
+  if (!roleButtons.length || !routeButtons.length || !comfortButtons.length || !routeQuest || !comfortQuest || !count || !next || !progress || !stampRole || !stampRoute || !stampComfort || !result || !resultCopy || !resultRole || !resultRoute || !resultComfort || !reset) return;
+
+  function setOpen(step, buttons, open) {
+    step.classList.toggle("quest-step-locked", !open);
+    step.classList.toggle("is-open", open);
+    buttons.forEach(function (button) { button.disabled = !open; });
+  }
+
+  function markSelected(buttons, key, dataName) {
+    buttons.forEach(function (button) {
+      button.classList.toggle("is-selected", button.dataset[dataName] === key);
+      button.setAttribute("aria-pressed", button.dataset[dataName] === key ? "true" : "false");
+    });
+  }
+
+  function updatePassport() {
+    var completed = (selectedRole ? 1 : 0) + (selectedRoute ? 1 : 0) + (selectedComfort ? 1 : 0);
+    count.textContent = completed + " / 3";
+    progress.style.width = Math.round((completed / 3) * 100) + "%";
+    stampRole.classList.toggle("is-done", !!selectedRole);
+    stampRoute.classList.toggle("is-done", !!selectedRoute);
+    stampComfort.classList.toggle("is-done", !!selectedComfort);
+
+    if (!selectedRole) next.textContent = "① まず入口を選ぼう";
+    else if (!selectedRoute) next.textContent = "② 気になる参加を選ぼう";
+    else if (!selectedComfort) next.textContent = "③ 安心カードを選ぼう";
+    else next.textContent = "🎉 パスポート完成！";
+
+    setOpen(routeQuest, routeButtons, !!selectedRole);
+    setOpen(comfortQuest, comfortButtons, !!selectedRoute);
+
+    if (completed === 3) {
+      resultRole.textContent = "入口：" + roleLabels[selectedRole];
+      resultRoute.textContent = "参加：" + routeLabels[selectedRoute];
+      resultComfort.textContent = "安心：" + comfortLabels[selectedComfort];
+      resultCopy.textContent = "これは診断ではありません。今日は「" + routeLabels[selectedRoute] + "」が気になっただけでも十分です。見るだけ、途中まで、別の参加へ変えることもできます。";
+      result.hidden = false;
+      result.classList.remove("celebrate");
+      void result.offsetWidth;
+      result.classList.add("celebrate");
+      result.focus({ preventScroll: true });
+      result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } else {
+      result.hidden = true;
+    }
+  }
+
+  roleButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      selectedRole = button.dataset.role;
+      roleButtons.forEach(function (item) {
+        item.classList.toggle("is-quest-done", item === button);
+      });
+      updatePassport();
+      if (routeQuest) routeQuest.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+
+  routeButtons.forEach(function (button) {
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener("click", function () {
+      selectedRoute = button.dataset.routeChoice;
+      markSelected(routeButtons, selectedRoute, "routeChoice");
+      updatePassport();
+      if (comfortQuest) comfortQuest.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+
+  comfortButtons.forEach(function (button) {
+    button.setAttribute("aria-pressed", "false");
+    button.addEventListener("click", function () {
+      selectedComfort = button.dataset.comfortChoice;
+      markSelected(comfortButtons, selectedComfort, "comfortChoice");
+      updatePassport();
+    });
+  });
+
+  reset.addEventListener("click", function () {
+    selectedRole = "";
+    selectedRoute = "";
+    selectedComfort = "";
+    roleButtons.forEach(function (button) {
+      button.classList.remove("is-quest-done");
+      button.setAttribute("aria-pressed", "false");
+    });
+    markSelected(routeButtons, "", "routeChoice");
+    markSelected(comfortButtons, "", "comfortChoice");
+    updatePassport();
+    document.getElementById("role-entrances").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  updatePassport();
+})();
