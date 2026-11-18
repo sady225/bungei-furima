@@ -840,6 +840,7 @@ main { padding-bottom: 42px; }
 
 
 /* 2026-11-18 UX改善：常駐スタッフ・入口整理・完成カード */
+#passport-hud { position: relative; top: auto; }
 .staff-dock {
   position: sticky;
   top: max(6px, env(safe-area-inset-top));
