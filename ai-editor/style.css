@@ -791,3 +791,49 @@ main { padding-bottom: 42px; }
   .passport-stamp { font-size: .66rem; }
   .passport-next { font-size: .7rem; }
 }
+
+
+/* 案内スタッフ連動 */
+.staff-character.is-team {
+  z-index: 8;
+  filter: saturate(1.08);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+.staff-character.is-team .staff-avatar {
+  animation: hello .8s ease-in-out 1;
+}
+.staff-character.is-team-lead .staff-bubble {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.passport-team {
+  margin-top: 13px;
+  padding: 12px;
+  border: 1px dashed #b89f72;
+  border-radius: 14px;
+  background: rgba(255,255,255,.72);
+}
+.passport-team > p {
+  margin: 0 0 7px;
+  color: var(--roof-deep);
+  font-size: .78rem;
+  font-weight: 900;
+}
+.passport-team-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+}
+.passport-team-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #d9c6a4;
+  color: var(--ink);
+  font-size: .75rem;
+  font-weight: 800;
+}
