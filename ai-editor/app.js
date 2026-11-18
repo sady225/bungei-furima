@@ -182,7 +182,9 @@
   var dockName = document.getElementById("dock-staff-name");
   var dockMessage = document.getElementById("dock-message");
   var dockNext = document.getElementById("dock-next");
+  var dockVoiceToggle = document.getElementById("dock-voice-toggle");
   var handoffToast = document.getElementById("handoff-toast");
+  var guideNext = document.getElementById("guide-next");
   var voiceEnabled = false;
   var currentVoiceKey = "";
   var currentVoiceLabel = "";
@@ -197,7 +199,7 @@
     nature: { name: "みなも", icon: "🐟" }
   };
 
-  if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus || !voiceToggle || !voiceReplay || !voiceStop || !voiceStatus || !guideAudio || !dock || !dockIcon || !dockName || !dockMessage || !dockNext || !handoffToast) return;
+  if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus || !voiceToggle || !voiceReplay || !voiceStop || !voiceStatus || !guideAudio || !dock || !dockIcon || !dockName || !dockMessage || !dockNext || !dockVoiceToggle || !handoffToast || !guideNext) return;
 
   function buildTextElement(tagName, className, text) {
     var element = document.createElement(tagName);
@@ -266,6 +268,9 @@
     voiceEnabled = enabled;
     voiceToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
     voiceToggle.textContent = enabled ? "音声案内をオフにする" : "音声案内をオンにする";
+    dockVoiceToggle.setAttribute("aria-pressed", enabled ? "true" : "false");
+    dockVoiceToggle.textContent = enabled ? "🔊 音声" : "🔇 音声";
+    dockVoiceToggle.setAttribute("aria-label", enabled ? "音声案内をオフにする" : "音声案内をオンにする");
     voiceReplay.disabled = !enabled || !currentVoiceKey;
     voiceStop.disabled = !enabled || !currentVoiceKey;
 
@@ -320,6 +325,7 @@
       playVoice(currentVoiceKey, currentVoiceLabel);
     }
 
+    guideNext.hidden = false;
     if (moveFocus) panel.focus({ preventScroll: true });
     panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
@@ -332,6 +338,15 @@
 
   voiceToggle.addEventListener("click", function () {
     setVoiceEnabled(!voiceEnabled);
+  });
+
+  dockVoiceToggle.addEventListener("click", function () {
+    setVoiceEnabled(!voiceEnabled);
+  });
+
+  guideNext.addEventListener("click", function () {
+    var target = document.getElementById("route-quest");
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   voiceReplay.addEventListener("click", function () {
@@ -398,6 +413,7 @@
     currentVoiceLabel = "";
     voiceReplay.disabled = true;
     voiceStop.disabled = true;
+    guideNext.hidden = true;
     updateDock("guide", "入口を選ぶところから、一緒に探そう。", "① 入口", false);
   });
 })();
@@ -422,12 +438,14 @@
     create: "作品をつくる・出す",
     committee: "子ども実行委員",
     support: "場を支える",
-    visit: "遊びに行く・見る"
+    visit: "遊びに行く・見る",
+    undecided: "まだ決めない"
   };
   var comfortLabels = {
     rest: "休む",
     ask: "聞く",
-    help: "助けを求める"
+    help: "助けを求める",
+    none: "まだ決めない"
   };
 
   var roleStaff = {
@@ -445,12 +463,14 @@
     create: { staff: "works", bubble: "見るだけでも大丈夫。作品の参加方法は確認中だよ。", status: "子ども・作品担当のえんぴつが、作品の参加方法をご案内します。", next: "③ 次は安心カード", voiceKey: "child", voiceLabel: "子ども・作品担当 えんぴつの吹き出し" },
     committee: { staff: "youth", bubble: "得意な一つだけでも、立派な役割です。", status: "若者・伴走担当のそらが、子ども実行委員の関わり方をご案内します。", next: "③ 次は安心カード", voiceKey: "highschool", voiceLabel: "若者・伴走担当 そらの吹き出し" },
     support: { staff: "community", bubble: "支えるだけでなく、役割を持てる場へ。", status: "地域連携担当のゆいが、会場を支える役割をご案内します。", next: "③ 次は安心カード", voiceKey: "welfare", voiceLabel: "地域連携担当 ゆいの吹き出し" },
-    visit: { staff: "guide", bubble: "分からないまま来ても、大丈夫です。", status: "総合案内のまどかが、遊びに行く・見る参加をご案内します。", next: "③ 次は安心カード", voiceKey: "unknown", voiceLabel: "総合案内担当 まどかの吹き出し" }
+    visit: { staff: "guide", bubble: "分からないまま来ても、大丈夫です。", status: "総合案内のまどかが、遊びに行く・見る参加をご案内します。", next: "③ 次は安心カード", voiceKey: "unknown", voiceLabel: "総合案内担当 まどかの吹き出し" },
+    undecided: { staff: "guide", bubble: "今日は決めなくても大丈夫です。", status: "総合案内のまどかが、決めずに見る参加をご案内します。", next: "③ 次は安心カード", voiceKey: "unknown", voiceLabel: "総合案内担当 まどかの吹き出し" }
   };
   var comfortStaff = {
     rest: { staff: "care", bubble: "無理に勧めず、本人のペースを守ります。", status: "学校・保護者担当のなぎが、無理をしない参加を案内しています。", next: "🎉 案内カード完成へ", voiceKey: "parent", voiceLabel: "学校・保護者担当 なぎの吹き出し" },
     ask: { staff: "guide", bubble: "分からないまま来ても、大丈夫です。", status: "総合案内のまどかが、分からない時の聞き方を案内しています。", next: "🎉 案内カード完成へ", voiceKey: "unknown", voiceLabel: "総合案内担当 まどかの吹き出し" },
-    help: { staff: "community", bubble: "支えるだけでなく、役割を持てる場へ。", status: "地域連携担当のゆいが、助けを求める・人につなぐ方法を案内しています。", next: "🎉 案内カード完成へ", voiceKey: "welfare", voiceLabel: "地域連携担当 ゆいの吹き出し" }
+    help: { staff: "community", bubble: "支えるだけでなく、役割を持てる場へ。", status: "地域連携担当のゆいが、助けを求める・人につなぐ方法を案内しています。", next: "🎉 案内カード完成へ", voiceKey: "welfare", voiceLabel: "地域連携担当 ゆいの吹き出し" },
+    none: { staff: "guide", bubble: "安心の方法も、今は決めなくて大丈夫です。", status: "総合案内のまどかが、決めずに進める方法をご案内します。", next: "🎉 案内カード完成へ", voiceKey: "unknown", voiceLabel: "総合案内担当 まどかの吹き出し" }
   };
   var staffNames = {
     guide: "📋 まどか",
@@ -481,12 +501,14 @@
   var resultRole = document.getElementById("result-role");
   var resultRoute = document.getElementById("result-route");
   var resultComfort = document.getElementById("result-comfort");
+  var resultTips = document.getElementById("result-tips");
   var teamList = document.getElementById("passport-team-list");
   var moreRolesToggle = document.getElementById("more-roles-toggle");
   var moreRolesPanel = document.getElementById("more-roles-panel");
+  var printButton = document.getElementById("passport-print");
   var reset = document.getElementById("passport-reset");
 
-  if (!roleButtons.length || !routeButtons.length || !comfortButtons.length || !routeQuest || !comfortQuest || !count || !next || !progress || !stampRole || !stampRoute || !stampComfort || !result || !resultCopy || !resultRole || !resultRoute || !resultComfort || !teamList || !moreRolesToggle || !moreRolesPanel || !reset) return;
+  if (!roleButtons.length || !routeButtons.length || !comfortButtons.length || !routeQuest || !comfortQuest || !count || !next || !progress || !stampRole || !stampRoute || !stampComfort || !result || !resultCopy || !resultRole || !resultRoute || !resultComfort || !resultTips || !teamList || !moreRolesToggle || !moreRolesPanel || !printButton || !reset) return;
 
   function setMoreRoles(open) {
     moreRolesPanel.hidden = !open;
@@ -526,6 +548,35 @@
     teamList.replaceChildren.apply(teamList, chips);
   }
 
+  function buildTips() {
+    var tips = ["見るだけ、短い時間だけでも参加です。"];
+    var routeTips = {
+      create: "作品の参加条件は確認中です。決まった範囲だけで参加できます。",
+      committee: "全部やらなくてOK。できる役割を一つ選べます。",
+      support: "人前に立たなくても、整える・案内する役割があります。",
+      visit: "作品を見るだけでも大丈夫です。",
+      undecided: "今日は決めずに会場を見るだけでも大丈夫です。"
+    };
+    var comfortTips = {
+      rest: "疲れたら、自分のタイミングで休んで大丈夫です。",
+      ask: "分からないことは、案内スタッフに聞いて大丈夫です。",
+      help: "困ったときは、担当者につないでもらえます。",
+      none: "安心の方法も、今決めなくて大丈夫です。"
+    };
+    if (routeTips[selectedRoute]) tips.push(routeTips[selectedRoute]);
+    if (comfortTips[selectedComfort]) tips.push(comfortTips[selectedComfort]);
+    return tips;
+  }
+
+  function renderTips() {
+    var nodes = buildTips().map(function (tip) {
+      var item = document.createElement("li");
+      item.textContent = tip;
+      return item;
+    });
+    resultTips.replaceChildren.apply(resultTips, nodes);
+  }
+
   function updatePassport() {
     var completed = (selectedRole ? 1 : 0) + (selectedRoute ? 1 : 0) + (selectedComfort ? 1 : 0);
     count.textContent = completed + " / 3";
@@ -548,6 +599,7 @@
       resultComfort.textContent = "安心：" + comfortLabels[selectedComfort];
       resultCopy.textContent = "これは診断ではありません。今日は「" + routeLabels[selectedRoute] + "」が気になっただけでも十分です。見るだけ、途中まで、別の参加へ変えることもできます。";
       var team = buildTeam();
+      renderTips();
       renderTeamChips(team);
       window.dispatchEvent(new CustomEvent("bungei:passport-team", {
         detail: {
@@ -602,6 +654,10 @@
     });
   });
 
+  printButton.addEventListener("click", function () {
+    window.print();
+  });
+
   reset.addEventListener("click", function () {
     selectedRole = "";
     selectedRoute = "";
@@ -612,6 +668,7 @@
     });
     markSelected(routeButtons, "", "routeChoice");
     markSelected(comfortButtons, "", "comfortChoice");
+    resultTips.replaceChildren();
     teamList.replaceChildren();
     setMoreRoles(false);
     window.dispatchEvent(new CustomEvent("bungei:passport-reset"));
