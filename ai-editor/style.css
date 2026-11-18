@@ -837,3 +837,165 @@ main { padding-bottom: 42px; }
   font-size: .75rem;
   font-weight: 800;
 }
+
+
+/* 2026-11-18 UX改善：常駐スタッフ・入口整理・完成カード */
+.staff-dock {
+  position: sticky;
+  top: max(6px, env(safe-area-inset-top));
+  z-index: 45;
+  width: min(100% - 22px, 920px);
+  margin: 14px auto 16px;
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  gap: 11px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 2px solid rgba(23,108,118,.28);
+  border-radius: 17px;
+  background: rgba(255,253,248,.97);
+  box-shadow: 0 10px 28px rgba(52,40,30,.14);
+  backdrop-filter: blur(12px);
+}
+.staff-dock-avatar {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 2px solid var(--sea);
+  border-radius: 50%;
+  background: #eff9f5;
+  font-size: 1.45rem;
+  transition: transform .25s ease, background .25s ease;
+}
+.staff-dock.is-handoff .staff-dock-avatar {
+  transform: translateY(-3px) rotate(-4deg) scale(1.08);
+  background: #fff1bd;
+}
+.staff-dock-copy {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+.staff-dock-copy small {
+  color: var(--muted);
+  font-size: .64rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+.staff-dock-copy strong {
+  color: var(--roof-deep);
+  font-size: .92rem;
+}
+.staff-dock-copy span {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: .77rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.staff-dock-next {
+  max-width: 190px;
+  padding: 7px 9px;
+  border-radius: 999px;
+  background: var(--sea-deep);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 900;
+  text-align: center;
+}
+.handoff-toast {
+  position: absolute;
+  right: 12px;
+  bottom: -31px;
+  max-width: calc(100% - 24px);
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--roof-deep);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 900;
+  box-shadow: 0 6px 16px rgba(52,40,30,.18);
+}
+.handoff-toast.is-showing { animation: handoff-pop .35s ease; }
+@keyframes handoff-pop {
+  0% { opacity: 0; transform: translateY(-6px) scale(.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.role-grid-primary { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.role-menu-card {
+  border-color: #b89f72;
+  background: linear-gradient(135deg,#fff8e4,#f3ead7);
+}
+.role-menu-card[aria-expanded="true"] {
+  border-color: var(--gold);
+  background: #fff2bd;
+  box-shadow: inset 0 0 0 2px rgba(208,155,48,.16);
+}
+.role-more {
+  margin-top: 11px;
+  padding: 14px;
+  border: 1px dashed #c6ad83;
+  border-radius: 15px;
+  background: #f8f0df;
+}
+.role-more > p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 800;
+}
+.role-grid-more { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.role-grid-more .role-card { min-height: 118px; }
+
+.passport-private-note {
+  margin: 10px auto 0 !important;
+  max-width: 560px;
+  color: var(--muted);
+  font-size: .72rem !important;
+}
+.passport-result {
+  position: relative;
+  overflow: hidden;
+}
+.passport-result::before {
+  content: "TODAY'S GUIDE CARD";
+  display: block;
+  margin-bottom: 7px;
+  color: #7b5d24;
+  font-size: .62rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+}
+
+@media (max-width: 900px) {
+  .role-grid-primary { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .role-grid-more { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 680px) {
+  .staff-dock {
+    width: min(100% - 14px, 920px);
+    grid-template-columns: auto minmax(0,1fr);
+    padding: 8px 9px;
+  }
+  .staff-dock-avatar { width: 40px; height: 40px; font-size: 1.2rem; }
+  .staff-dock-next {
+    grid-column: 1 / -1;
+    max-width: none;
+    padding: 5px 8px;
+  }
+  .staff-dock-copy span { font-size: .72rem; }
+  .handoff-toast { bottom: -28px; left: 8px; right: 8px; text-align: center; }
+  .role-grid-primary { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .role-grid-primary .role-card { min-height: 104px; padding: 12px 7px; }
+  .role-grid-primary .role-card > span { font-size: 1.55rem; }
+  .role-grid-primary .role-card strong { font-size: .9rem; }
+}
+@media (max-width: 420px) {
+  .role-grid-primary { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .role-grid-more { grid-template-columns: 1fr; }
+  .role-grid-primary .role-card { min-height: 98px; }
+  .role-grid-primary .role-card small { font-size: .67rem; }
+}
