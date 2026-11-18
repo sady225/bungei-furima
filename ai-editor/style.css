@@ -580,6 +580,7 @@ main { padding-bottom: 42px; }
   font-size: .84rem;
   font-weight: 900;
 }
+.role-card { position: relative; }
 .role-card.is-quest-done {
   border-color: var(--gold);
   background: #fff6cd;
