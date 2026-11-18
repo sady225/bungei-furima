@@ -6,10 +6,10 @@ cd "$repo_root"
 
 # GitHub Pagesへ渡すファイルは、ここで明示した公開用ファイルだけに限定する。
 rm -rf ./_site
-mkdir -p ./_site/ai-editor/assets/audio ./_site/photo/251213
+mkdir -p ./_site/ai-editor/assets/audio ./_site/photo/251213 ./_site/play
 
 cp ./index.html ./CNAME ./_site/
-cp ./ai-editor/index.html ./ai-editor/style.css ./ai-editor/app.js ./_site/ai-editor/
+cp ./ai-editor/index.html ./ai-editor/style.css ./ai-editor/app.js ./_site/ai-editor/\ncp ./play/index.html ./play/style.css ./play/app.js ./_site/play/
 cp ./ai-editor/assets/office-background.png ./_site/ai-editor/assets/
 cp \
   ./ai-editor/assets/audio/child.mp3 \
@@ -34,6 +34,7 @@ while IFS= read -r file; do
   case "$file" in
     ./_site/index.html|./_site/CNAME|./_site/.nojekyll|\
     ./_site/ai-editor/index.html|./_site/ai-editor/style.css|./_site/ai-editor/app.js|\
+    ./_site/play/index.html|./_site/play/style.css|./_site/play/app.js|\
     ./_site/ai-editor/assets/office-background.png|\
     ./_site/ai-editor/assets/audio/child.mp3|\
     ./_site/ai-editor/assets/audio/parent.mp3|\
