@@ -11,7 +11,7 @@ GitHub Actionsで公開専用ファイルだけを組み立て、GitHub Pagesへ
 - `ai-editor/style.css`
 - `ai-editor/app.js`
 - `ai-editor/assets/office-background.png`
-- `ai-editor/assets/audio/*.mp3`（VOICEVOX:ずんだもんの固定案内音声）
+- `ai-editor/assets/audio/*.mp3`（VOICEVOX:ずんだもんの固定案内音声）\n- `play/index.html`\n- `play/style.css`\n- `play/app.js`
 - `index.html` が実際に使用する開催写真
 - `CNAME`
 - `.nojekyll`
@@ -50,3 +50,14 @@ bash scripts/check-site-safety.sh
 ```bash
 bash scripts/generate-voicevox-audio.sh
 ```
+
+
+## 文芸フリマ探検ミニゲーム
+
+`play/` は、会場の6つの場所をタップして「つくる・伝える・支える・つながる・見つける」を体験する固定コンテンツです。
+
+- 3つ発見：文芸フリマ地図が完成
+- 6つ発見：`まちの編集者 MAX`
+- 自由入力、個人情報保存、AI API、外部通信なし
+- Web Audio API は利用者が音をオンにした後だけ開始
+- 学校・SSW・教育相談室向けに、個人名を使わない「作品からつながる」連携例を掲載
