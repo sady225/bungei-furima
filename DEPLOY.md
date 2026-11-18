@@ -13,7 +13,7 @@
 
 - `index.html`：トップページ
 - `ai-editor/index.html`、`style.css`、`app.js`：オンライン事務局
-- `ai-editor/assets/office-background.png`：オンライン事務局の背景
+- `ai-editor/assets/office-background.png`：オンライン事務局の背景\n- `play/index.html`、`style.css`、`app.js`：文芸フリマ探検ミニゲーム
 - `photo/251213/*.jpg`、`photo/250920-thanks.png`、`photo/fukusima.png`：現在のページが使用する写真
 - `CNAME`：GitHub Pagesのカスタムドメイン指定
 - `.nojekyll`：Jekyll変換を使わず、そのまま静的ファイルとして公開する指定
@@ -81,7 +81,7 @@ GitHub Pagesの反映には数十秒から数分かかることがあります�
 ## 5. 動作確認チェックリスト
 
 - [ ] `https://furima.ryukyu-tane.com/` がトップページを表示する
-- [ ] `https://furima.ryukyu-tane.com/ai-editor/` がオンライン事務局を表示する
+- [ ] `https://furima.ryukyu-tane.com/ai-editor/` がオンライン事務局を表示する\n- [ ] `https://furima.ryukyu-tane.com/play/` が文芸フリマ探検を表示する\n- [ ] 探検で3つ発見すると地図完成、6つ発見するとMAX表示になる\n- [ ] 探検ページに自由入力・外部通信・ブラウザ保存がない
 - [ ] ページ名が「オンライン事務局」になっている
 - [ ] 背景画像が表示される
 - [ ] 作品を出す参加ルートが読める
