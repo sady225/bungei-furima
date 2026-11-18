@@ -18,8 +18,8 @@ if rg -n '<script[^>]+https://www\.instagram\.com|<iframe' index.html ai-editor/
   fail 'external embed is present in the initial HTML'
 fi
 
-if rg -n 'fetch\(|XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|sendBeacon' ai-editor; then
-  fail 'Phase 1-2 office must not use network or browser storage APIs'
+if rg -n 'fetch\(|XMLHttpRequest|WebSocket|localStorage|sessionStorage|indexedDB|sendBeacon' ai-editor play; then
+  fail 'interactive public pages must not use network or browser storage APIs'
 fi
 
 for page in index.html ai-editor/index.html play/index.html; do
@@ -28,7 +28,8 @@ for page in index.html ai-editor/index.html play/index.html; do
   fi
 done
 
-node --check ai-editor/app.js\nnode --check play/app.js
+node --check ai-editor/app.js
+node --check play/app.js
 awk '/^[[:space:]]*<script>$/{flag=1;next}/^[[:space:]]*<\/script>/{if(flag){flag=0; exit}}flag' index.html > /tmp/bungei-furima-inline.js
 node --check /tmp/bungei-furima-inline.js
 rm -f /tmp/bungei-furima-inline.js
