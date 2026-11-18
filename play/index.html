@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; media-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-src 'none'; worker-src 'none'">
+  <title>文芸フリマ探検｜好きから見つける6つの参加</title>
+  <meta name="description" content="沖縄文芸フリマの会場をタップして、作品・役割・やさしさを見つける体験型ミニゲームです。">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <a class="skip-link" href="#game">ゲームへ移動</a>
+  <header class="site-header">
+    <a class="back-link" href="../" aria-label="沖縄文芸フリマ公式サイトへ戻る">← 公式サイト</a>
+    <div class="brand" aria-label="沖縄文芸フリマ vol.3">
+      <span class="brand-mark" aria-hidden="true">📚</span>
+      <span><strong>沖縄文芸フリマ</strong><small>vol.3 体験コーナー</small></span>
+    </div>
+    <button class="sound-button" id="sound-toggle" type="button" aria-pressed="false">🔈 音をオン</button>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="game-title">
+      <p class="eyebrow">5分であそべる</p>
+      <h1 id="game-title">文芸フリマ探検</h1>
+      <p class="lead">会場には、作品を出す以外にもいろんな参加があります。<br>気になる場所をタップして、<strong>3つの「できた！」</strong>を見つけよう。</p>
+      <div class="intro-actions">
+        <button class="start-button" id="start-button" type="button">探検をはじめる</button>
+        <a class="quiet-link" href="#for-adults">先生・SSW・教育相談の方へ</a>
+      </div>
+      <p class="sound-note" id="sound-note">音は自動で鳴りません。音をオンにすると、タップに合わせて小さな効果音が鳴ります。</p>
+    </section>
+
+    <section class="game-shell" id="game" aria-labelledby="game-heading">
+      <div class="hud" aria-label="進み具合">
+        <div class="hud-top">
+          <div>
+            <span class="hud-label">DISCOVERY</span>
+            <strong id="score-text">0 / 6</strong>
+          </div>
+          <div class="next-box" aria-live="polite">
+            <span class="hud-label">NEXT</span>
+            <strong id="next-text">✨ あと3つで地図完成</strong>
+          </div>
+        </div>
+        <div class="stamp-row" aria-label="見つけたポイント">
+          <span class="stamp" data-stamp="shelf" title="作品を置く">📚</span>
+          <span class="stamp" data-stamp="message" title="感想を渡す">💌</span>
+          <span class="stamp" data-stamp="chair" title="休める場所をつくる">🪑</span>
+          <span class="stamp" data-stamp="guide" title="案内する">🧭</span>
+          <span class="stamp" data-stamp="bridge" title="作品でつながる">📮</span>
+          <span class="stamp" data-stamp="nature" title="地域を見つける">🐾</span>
+        </div>
+        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
+      </div>
+
+      <div class="guide-line" role="status" aria-live="polite">
+        <span class="guide-face" id="guide-face" aria-hidden="true">•ﻌ•</span>
+        <p id="guide-message">まずは、気になる場所を1つタップしてみよう。</p>
+      </div>
+
+      <div class="venue" id="venue" aria-label="文芸フリマの会場。6つの場所をタップできます">
+        <div class="venue-title"><span>田場の小さな文芸フリマ会場</span><small>気になるものから、順番は自由</small></div>
+
+        <button class="spot spot-shelf" data-action="shelf" type="button" aria-describedby="spot-shelf-help">
+          <span class="spot-kicker">つくる</span>
+          <span class="spot-icon shelf-visual" aria-hidden="true">
+            <span class="book b1"></span><span class="book b2"></span><span class="book b3"></span><span class="book b4"></span>
+          </span>
+          <strong>作品棚</strong>
+          <small id="spot-shelf-help">作品を1冊置いてみる</small>
+        </button>
+
+        <button class="spot spot-message" data-action="message" type="button" aria-describedby="spot-message-help">
+          <span class="spot-kicker">伝える</span>
+          <span class="spot-icon note-visual" aria-hidden="true"><span>♡</span><span>✎</span><span>☆</span></span>
+          <strong>感想カード</strong>
+          <small id="spot-message-help">作品に一言を届ける</small>
+        </button>
+
+        <button class="spot spot-chair" data-action="chair" type="button" aria-describedby="spot-chair-help">
+          <span class="spot-kicker">整える</span>
+          <span class="spot-icon chair-visual" aria-hidden="true">🪑<span class="cushion">●</span></span>
+          <strong>休憩イス</strong>
+          <small id="spot-chair-help">ひと休みできる場所をつくる</small>
+        </button>
+
+        <button class="spot spot-guide" data-action="guide" type="button" aria-describedby="spot-guide-help">
+          <span class="spot-kicker">支える</span>
+          <span class="spot-icon guide-visual" aria-hidden="true"><span class="sign-arrow">→</span>🚪</span>
+          <strong>案内板</strong>
+          <small id="spot-guide-help">迷わないように道をひらく</small>
+        </button>
+
+        <button class="spot spot-bridge" data-action="bridge" type="button" aria-describedby="spot-bridge-help">
+          <span class="spot-kicker">つながる</span>
+          <span class="spot-icon bridge-visual" aria-hidden="true"><span class="env env-a">✉</span><span class="bridge-line"></span><span class="env env-b">✉</span></span>
+          <strong>作品ポスト</strong>
+          <small id="spot-bridge-help">会わなくても、作品から始める</small>
+        </button>
+
+        <button class="spot spot-nature" data-action="nature" type="button" aria-describedby="spot-nature-help">
+          <span class="spot-kicker">見つける</span>
+          <span class="spot-icon nature-visual" aria-hidden="true"><span class="paw p1">•</span><span class="paw p2">•</span><span class="paw p3">•</span>🌿</span>
+          <strong>いきものノート</strong>
+          <small id="spot-nature-help">地域の「好き」を記録する</small>
+        </button>
+
+        <div class="kindness-sparkles" id="sparkles" aria-hidden="true"></div>
+      </div>
+
+      <div class="discovery" id="discovery" tabindex="-1" aria-live="polite">
+        <p class="discovery-label">いま見つけたこと</p>
+        <h2 id="discovery-title">タップすると、ここに発見が出ます</h2>
+        <p id="discovery-text">正解を当てるゲームではありません。会場がどう変わるかを見てみよう。</p>
+      </div>
+
+      <section class="route-result" id="route-result" hidden aria-labelledby="route-title">
+        <div class="result-badge" id="result-badge">✨ 地図完成</div>
+        <h2 id="route-title">あなたが見つけた「参加のしかた」</h2>
+        <p id="route-copy"></p>
+        <div class="route-cards" id="route-cards"></div>
+        <div class="result-actions">
+          <a class="primary-link" href="../ai-editor/">オンライン案内所で詳しく見る</a>
+          <button class="reset-button" id="reset-button" type="button">もう一度あそぶ</button>
+        </div>
+      </section>
+    </section>
+
+    <section class="learning" aria-labelledby="learning-title">
+      <p class="eyebrow">ゲームのあとに</p>
+      <h2 id="learning-title">文芸フリマは「作品を売る人」だけの場所じゃない</h2>
+      <div class="learning-grid">
+        <article><span aria-hidden="true">🎨</span><h3>つくる</h3><p>本、絵、写真、ZINE、手仕事。自分の「好き」を置いてみる。</p></article>
+        <article><span aria-hidden="true">🤝</span><h3>支える</h3><p>受付、案内、通路を整える、休める場所をつくる。それも大切な参加。</p></article>
+        <article><span aria-hidden="true">👀</span><h3>見る</h3><p>作品を見に来る、感想を渡す、短い時間だけ過ごす。それだけでも参加。</p></article>
+        <article><span aria-hidden="true">🌱</span><h3>つながる</h3><p>すぐに会わなくても、作品や興味を間に置いて、ゆっくり関係をつくれる。</p></article>
+      </div>
+    </section>
+
+    <section class="adult-section" id="for-adults" aria-labelledby="adult-title">
+      <div class="adult-card">
+        <p class="eyebrow">先生・SSW・教育相談室の方へ</p>
+        <h2 id="adult-title">「本人を連れてくる」より先に、作品からつながる方法があります</h2>
+        <p>学校外で作品づくりや探究を続けている子どもと、学校や地域の中に似た関心を持つ人がいる場合、最初から対面交流を求めず、<strong>作品を介して「同じ関心がある人がいる」と知るところから始める</strong>方法を検討できます。</p>
+        <ol>
+          <li><strong>作品・関心を知る</strong> — 本人が公開してよい範囲だけ。</li>
+          <li><strong>存在を伝える</strong> — 「似たテーマに関心のある人がいるよ」と選択肢として紹介。</li>
+          <li><strong>感想から始める</strong> — 双方が望む場合だけ、先生や地域スタッフを介して感想や手紙を交換。</li>
+          <li><strong>対面はさらにその先</strong> — 双方が望む場合のみ。会うこと自体を成果にしない。</li>
+        </ol>
+        <div class="guardrails">
+          <span>学校復帰を成果にしない</span>
+          <span>交流・返信を義務にしない</span>
+          <span>別の生徒を「支援役」にしない</span>
+          <span>個別事情を公開しない</span>
+        </div>
+        <p class="adult-note">このページでは個別相談を入力・保存しません。具体的な学校連携や安全調整は、人間の担当者同士で行います。</p>
+        <a class="secondary-link" href="../ai-editor/">学校・SSW・教育相談室向けの案内を見る</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>沖縄文芸フリマ vol.3</strong></p>
+    <p>つくる・伝える・つながる。地域にひらく表現と社会参加の場。</p>
+    <p class="footer-small">このミニゲームは固定コンテンツです。入力内容の保存やAI通信は行いません。</p>
+  </footer>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
