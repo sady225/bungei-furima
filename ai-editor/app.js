@@ -177,17 +177,57 @@
   var voiceStop = document.getElementById("voice-stop");
   var voiceStatus = document.getElementById("voice-status");
   var guideAudio = document.getElementById("guide-audio");
+  var dock = document.getElementById("staff-dock");
+  var dockIcon = document.getElementById("dock-staff-icon");
+  var dockName = document.getElementById("dock-staff-name");
+  var dockMessage = document.getElementById("dock-message");
+  var dockNext = document.getElementById("dock-next");
+  var handoffToast = document.getElementById("handoff-toast");
   var voiceEnabled = false;
   var currentVoiceKey = "";
   var currentVoiceLabel = "";
+  var currentDockStaff = "guide";
+  var handoffTimer = 0;
+  var staffDisplay = {
+    guide: { name: "まどか", icon: "📋" },
+    works: { name: "えんぴつ", icon: "🎨" },
+    care: { name: "なぎ", icon: "🌿" },
+    youth: { name: "そら", icon: "📷" },
+    community: { name: "ゆい", icon: "🤝" },
+    nature: { name: "みなも", icon: "🐟" }
+  };
 
-  if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus || !voiceToggle || !voiceReplay || !voiceStop || !voiceStatus || !guideAudio) return;
+  if (!panel || !title || !label || !summary || !points || !actions || !icon || !stageStatus || !voiceToggle || !voiceReplay || !voiceStop || !voiceStatus || !guideAudio || !dock || !dockIcon || !dockName || !dockMessage || !dockNext || !handoffToast) return;
 
   function buildTextElement(tagName, className, text) {
     var element = document.createElement(tagName);
     if (className) element.className = className;
     element.textContent = text;
     return element;
+  }
+
+  function updateDock(staffKey, message, nextText, announceHandoff) {
+    var info = staffDisplay[staffKey] || staffDisplay.guide;
+    var previous = staffDisplay[currentDockStaff] || staffDisplay.guide;
+    if (announceHandoff && currentDockStaff && currentDockStaff !== staffKey) {
+      handoffToast.textContent = previous.name + " → " + info.name + " にバトンタッチ！";
+      handoffToast.hidden = false;
+      handoffToast.classList.remove("is-showing");
+      void handoffToast.offsetWidth;
+      handoffToast.classList.add("is-showing");
+      dock.classList.add("is-handoff");
+      if (handoffTimer) window.clearTimeout(handoffTimer);
+      handoffTimer = window.setTimeout(function () {
+        handoffToast.hidden = true;
+        handoffToast.classList.remove("is-showing");
+        dock.classList.remove("is-handoff");
+      }, 1700);
+    }
+    currentDockStaff = staffKey;
+    dockIcon.textContent = info.icon;
+    dockName.textContent = info.name;
+    dockMessage.textContent = message || "一緒に入口を探そう。";
+    dockNext.textContent = nextText || "案内中";
   }
 
   function activateStaff(staffKey, bubbleText) {
@@ -269,6 +309,7 @@
     actions.replaceChildren.apply(actions, actionNodes);
 
     activateStaff(guide.staff, guide.bubble);
+    updateDock(guide.staff, guide.bubble, "② 次は参加を選ぼう", true);
     stageStatus.textContent = guide.staffName + "が案内しています。詳しい事情は入力せず、下の固定案内をご覧ください。";
     currentVoiceKey = roleKey;
     currentVoiceLabel = guide.staffName + "の吹き出し";
@@ -332,17 +373,32 @@
     var detail = event.detail || {};
     if (!detail.staff) return;
     activateTeam([detail.staff], detail.staff, detail.bubble || "", detail.status || "");
+    updateDock(detail.staff, detail.bubble || "", detail.next || "案内中", true);
+    if (detail.voiceKey) {
+      currentVoiceKey = detail.voiceKey;
+      currentVoiceLabel = detail.voiceLabel || ((staffDisplay[detail.staff] || staffDisplay.guide).name + "の吹き出し");
+      voiceReplay.disabled = !voiceEnabled;
+      voiceStop.disabled = !voiceEnabled;
+      if (voiceEnabled) playVoice(currentVoiceKey, currentVoiceLabel);
+    }
   });
 
   window.addEventListener("bungei:passport-team", function (event) {
     var detail = event.detail || {};
     var staffKeys = Array.isArray(detail.staff) ? detail.staff : [];
     if (!staffKeys.length) return;
-    activateTeam(staffKeys, detail.lead || staffKeys[0], detail.bubble || "このチームで案内するよ！", detail.status || "あなたの案内チームができました。");
+    var lead = detail.lead || staffKeys[0];
+    activateTeam(staffKeys, lead, detail.bubble || "このチームで案内するよ！", detail.status || "あなたの案内チームができました。");
+    updateDock(lead, detail.bubble || "このチームで案内するよ！", "🎉 案内カード完成", false);
   });
 
   window.addEventListener("bungei:passport-reset", function () {
     activateTeam(["guide"], "guide", "また一緒に探そう。", "総合案内のまどかが待っています。");
+    currentVoiceKey = "";
+    currentVoiceLabel = "";
+    voiceReplay.disabled = true;
+    voiceStop.disabled = true;
+    updateDock("guide", "入口を選ぶところから、一緒に探そう。", "① 入口", false);
   });
 })();
 
@@ -386,15 +442,15 @@
     unknown: "guide"
   };
   var routeStaff = {
-    create: { staff: "works", bubble: "作品のことなら、えんぴつと見てみよう。", status: "子ども・作品担当のえんぴつが、作品の参加方法をご案内します。" },
-    committee: { staff: "youth", bubble: "一緒につくる役割を探してみよう。", status: "若者・伴走担当のそらが、子ども実行委員の関わり方をご案内します。" },
-    support: { staff: "community", bubble: "目立たない役割も大事だよ。", status: "地域連携担当のゆいが、会場を支える役割をご案内します。" },
-    visit: { staff: "guide", bubble: "見るだけ、短い時間だけでも大丈夫。", status: "総合案内のまどかが、遊びに行く・見る参加をご案内します。" }
+    create: { staff: "works", bubble: "見るだけでも大丈夫。作品の参加方法は確認中だよ。", status: "子ども・作品担当のえんぴつが、作品の参加方法をご案内します。", next: "③ 次は安心カード", voiceKey: "child", voiceLabel: "子ども・作品担当 えんぴつの吹き出し" },
+    committee: { staff: "youth", bubble: "得意な一つだけでも、立派な役割です。", status: "若者・伴走担当のそらが、子ども実行委員の関わり方をご案内します。", next: "③ 次は安心カード", voiceKey: "highschool", voiceLabel: "若者・伴走担当 そらの吹き出し" },
+    support: { staff: "community", bubble: "支えるだけでなく、役割を持てる場へ。", status: "地域連携担当のゆいが、会場を支える役割をご案内します。", next: "③ 次は安心カード", voiceKey: "welfare", voiceLabel: "地域連携担当 ゆいの吹き出し" },
+    visit: { staff: "guide", bubble: "分からないまま来ても、大丈夫です。", status: "総合案内のまどかが、遊びに行く・見る参加をご案内します。", next: "③ 次は安心カード", voiceKey: "unknown", voiceLabel: "総合案内担当 まどかの吹き出し" }
   };
   var comfortStaff = {
-    rest: { staff: "care", bubble: "休むのも大切な参加だよ。", status: "学校・保護者担当のなぎが、無理をしない参加を案内しています。" },
-    ask: { staff: "guide", bubble: "分からないことは聞いて大丈夫。", status: "総合案内のまどかが、分からない時の聞き方を案内しています。" },
-    help: { staff: "community", bubble: "困ったら、担当の人につなぐよ。", status: "地域連携担当のゆいが、助けを求める・人につなぐ方法を案内しています。" }
+    rest: { staff: "care", bubble: "無理に勧めず、本人のペースを守ります。", status: "学校・保護者担当のなぎが、無理をしない参加を案内しています。", next: "🎉 案内カード完成へ", voiceKey: "parent", voiceLabel: "学校・保護者担当 なぎの吹き出し" },
+    ask: { staff: "guide", bubble: "分からないまま来ても、大丈夫です。", status: "総合案内のまどかが、分からない時の聞き方を案内しています。", next: "🎉 案内カード完成へ", voiceKey: "unknown", voiceLabel: "総合案内担当 まどかの吹き出し" },
+    help: { staff: "community", bubble: "支えるだけでなく、役割を持てる場へ。", status: "地域連携担当のゆいが、助けを求める・人につなぐ方法を案内しています。", next: "🎉 案内カード完成へ", voiceKey: "welfare", voiceLabel: "地域連携担当 ゆいの吹き出し" }
   };
   var staffNames = {
     guide: "📋 まどか",
@@ -426,9 +482,21 @@
   var resultRoute = document.getElementById("result-route");
   var resultComfort = document.getElementById("result-comfort");
   var teamList = document.getElementById("passport-team-list");
+  var moreRolesToggle = document.getElementById("more-roles-toggle");
+  var moreRolesPanel = document.getElementById("more-roles-panel");
   var reset = document.getElementById("passport-reset");
 
-  if (!roleButtons.length || !routeButtons.length || !comfortButtons.length || !routeQuest || !comfortQuest || !count || !next || !progress || !stampRole || !stampRoute || !stampComfort || !result || !resultCopy || !resultRole || !resultRoute || !resultComfort || !teamList || !reset) return;
+  if (!roleButtons.length || !routeButtons.length || !comfortButtons.length || !routeQuest || !comfortQuest || !count || !next || !progress || !stampRole || !stampRoute || !stampComfort || !result || !resultCopy || !resultRole || !resultRoute || !resultComfort || !teamList || !moreRolesToggle || !moreRolesPanel || !reset) return;
+
+  function setMoreRoles(open) {
+    moreRolesPanel.hidden = !open;
+    moreRolesToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    moreRolesToggle.querySelector("small").textContent = open ? "閉じる" : "高校・福祉・行政・地域など";
+  }
+
+  moreRolesToggle.addEventListener("click", function () {
+    setMoreRoles(moreRolesToggle.getAttribute("aria-expanded") !== "true");
+  });
 
   function setOpen(step, buttons, open) {
     step.classList.toggle("quest-step-locked", !open);
@@ -506,6 +574,7 @@
       roleButtons.forEach(function (item) {
         item.classList.toggle("is-quest-done", item === button);
       });
+      if (!button.closest("#more-roles-panel")) setMoreRoles(false);
       updatePassport();
     });
   });
@@ -544,6 +613,7 @@
     markSelected(routeButtons, "", "routeChoice");
     markSelected(comfortButtons, "", "comfortChoice");
     teamList.replaceChildren();
+    setMoreRoles(false);
     window.dispatchEvent(new CustomEvent("bungei:passport-reset"));
     updatePassport();
     document.getElementById("role-entrances").scrollIntoView({ behavior: "smooth", block: "start" });
