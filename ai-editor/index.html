@@ -7,8 +7,8 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; frame-src 'none'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'self'; worker-src 'none'; upgrade-insecure-requests">
   <title>沖縄文芸フリマ案内所</title>
   <meta name="description" content="沖縄文芸フリマについて、子ども、保護者、学校、高校、福祉、行政、地域、いきもの好きなど、立場に合う参加方法を探せる案内所です。">
-  <link rel="stylesheet" href="style.css?v=20261003-2">
-  <script src="app.js?v=20261003-2" defer></script>
+  <link rel="stylesheet" href="style.css?v=20261118-3">
+  <script src="app.js?v=20261118-3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#role-entrances">立場別の入口へ移動</a>
@@ -21,7 +21,8 @@
       <p class="header-copy">見るだけ、短い時間だけでも参加です。作品のみの参加方法は現在、条件を確認中です。</p>
       <p class="event-brief"><strong>2027年2月6日（土）11:00〜16:00</strong>、田場公民館を中心に実施予定です。事前ワークショップや募集条件は、決まり次第お知らせします。</p>
       <div class="hero-actions">
-        <a class="primary-link" href="#role-entrances">自分に合う入口を探す</a>
+        <a class="primary-link" href="#role-entrances">🎮 案内してもらう</a>
+        <a class="browse-link" href="#shop-gallery">👀 自由に会場を見る</a>
         <a class="back-link" href="../index.html">公式サイトへ戻る</a>
       </div>
     </div>
@@ -113,6 +114,7 @@
         <strong id="dock-staff-name">まどか</strong>
         <span id="dock-message">入口を選ぶところから、一緒に探そう。</span>
       </div>
+      <button type="button" class="staff-dock-voice" id="dock-voice-toggle" aria-pressed="false" aria-label="音声案内をオンにする">🔇 音声</button>
       <div class="staff-dock-next" id="dock-next">① 入口</div>
       <div class="handoff-toast" id="handoff-toast" hidden></div>
     </div>
@@ -167,6 +169,7 @@
           <p id="guidance-summary">自由入力はありません。個人情報や詳しい事情を尋ねず、今ある参加方法だけをご案内します。</p>
           <ul id="guidance-points" class="guidance-points"></ul>
           <div id="guidance-actions" class="guidance-actions"></div>
+          <button type="button" class="guide-next" id="guide-next" hidden>② 参加方法を選ぶ →</button>
         </div>
       </article>
 
@@ -181,6 +184,7 @@
           <button type="button" class="quest-choice" data-route-choice="committee" disabled><span aria-hidden="true">🌱</span><strong>子ども実行委員</strong><small>企画や準備から一緒につくる</small></button>
           <button type="button" class="quest-choice" data-route-choice="support" disabled><span aria-hidden="true">🤝</span><strong>場を支える</strong><small>受付、案内、準備、片付け</small></button>
           <button type="button" class="quest-choice" data-route-choice="visit" disabled><span aria-hidden="true">👀</span><strong>遊びに行く・見る</strong><small>作品を見る、短い時間だけでも</small></button>
+          <button type="button" class="quest-choice quest-choice-soft" data-route-choice="undecided" disabled><span aria-hidden="true">☕</span><strong>まだ決めない</strong><small>今日は見るだけ・考えるだけでもOK</small></button>
         </div>
       </div>
 
@@ -194,6 +198,7 @@
           <button type="button" class="comfort-choice" data-comfort-choice="rest" disabled><span aria-hidden="true">🪑</span><strong>休む</strong><small>自分のタイミングでひと休み</small></button>
           <button type="button" class="comfort-choice" data-comfort-choice="ask" disabled><span aria-hidden="true">🗺️</span><strong>聞く</strong><small>分からない場所や予定を確認</small></button>
           <button type="button" class="comfort-choice" data-comfort-choice="help" disabled><span aria-hidden="true">🙋</span><strong>助けを求める</strong><small>困ったら担当者につないでもらう</small></button>
+          <button type="button" class="comfort-choice comfort-choice-soft" data-comfort-choice="none" disabled><span aria-hidden="true">☁️</span><strong>まだ決めない</strong><small>安心の方法も今は決めなくてOK</small></button>
         </div>
       </div>
 
@@ -206,6 +211,10 @@
           <span id="result-route">参加：未選択</span>
           <span id="result-comfort">安心：未選択</span>
         </div>
+        <div class="passport-tips">
+          <p>当日はこれだけ覚えておけばOK</p>
+          <ul id="result-tips"></ul>
+        </div>
         <p class="passport-private-note">名前・学校名・相談内容は、このカードには入りません。</p>
         <div class="passport-team" aria-live="polite">
           <p>あなたの案内チーム</p>
@@ -214,6 +223,7 @@
         <div class="passport-result-actions">
           <a href="#participation-levels">参加のしかたをもっと見る</a>
           <a href="#works-shelf">会場をのぞいてみる</a>
+          <button type="button" id="passport-print">🖨️ 印刷・PDF保存</button>
           <button type="button" id="passport-reset">もう一度えらぶ</button>
         </div>
       </article>
