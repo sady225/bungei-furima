@@ -1118,18 +1118,33 @@ main { padding-bottom: 42px; }
 }
 
 @media print {
-  body * { visibility: hidden !important; }
-  #passport-result,
-  #passport-result * { visibility: visible !important; }
+  .site-header,
+  .safety-banner,
+  .stage-section,
+  .staff-dock,
+  .participation-section,
+  .town-section,
+  .contact-section,
+  .site-footer,
+  .noscript-note {
+    display: none !important;
+  }
+  .role-section {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: #fff;
+  }
+  .role-section > *:not(#passport-result) {
+    display: none !important;
+  }
   #passport-result {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
+    display: block !important;
     margin: 0;
     box-shadow: none;
     border: 2px solid #777;
     background: #fff;
+    break-inside: avoid;
   }
   .passport-result-actions { display: none !important; }
 }
