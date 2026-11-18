@@ -68,6 +68,9 @@ required=(
   ./_site/ai-editor/index.html
   ./_site/ai-editor/style.css
   ./_site/ai-editor/app.js
+  ./_site/play/index.html
+  ./_site/play/style.css
+  ./_site/play/app.js
   ./_site/ai-editor/assets/office-background.png
   ./_site/ai-editor/assets/audio/child.mp3
   ./_site/ai-editor/assets/audio/parent.mp3
