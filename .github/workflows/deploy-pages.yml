@@ -26,6 +26,11 @@ jobs:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Install ripgrep for safety checks
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ripgrep
+
       - name: Run site safety checks and build allowlisted public artifact
         run: bash scripts/check-site-safety.sh
 
