@@ -26,8 +26,8 @@ jobs:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Build allowlisted public artifact
-        run: bash scripts/build-public-site.sh
+      - name: Run site safety checks and build allowlisted public artifact
+        run: bash scripts/check-site-safety.sh
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4
