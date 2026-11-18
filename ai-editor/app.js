@@ -418,7 +418,6 @@
         item.classList.toggle("is-quest-done", item === button);
       });
       updatePassport();
-      if (routeQuest) routeQuest.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   });
 
