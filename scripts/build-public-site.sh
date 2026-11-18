@@ -9,7 +9,8 @@ rm -rf ./_site
 mkdir -p ./_site/ai-editor/assets/audio ./_site/photo/251213 ./_site/play
 
 cp ./index.html ./CNAME ./_site/
-cp ./ai-editor/index.html ./ai-editor/style.css ./ai-editor/app.js ./_site/ai-editor/\ncp ./play/index.html ./play/style.css ./play/app.js ./_site/play/
+cp ./ai-editor/index.html ./ai-editor/style.css ./ai-editor/app.js ./_site/ai-editor/
+cp ./play/index.html ./play/style.css ./play/app.js ./_site/play/
 cp ./ai-editor/assets/office-background.png ./_site/ai-editor/assets/
 cp \
   ./ai-editor/assets/audio/child.mp3 \
