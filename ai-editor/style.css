@@ -401,6 +401,13 @@ main { padding-bottom: 42px; }
 .contact-links a { border: 2px solid var(--sea-deep); background: var(--sea); color: #fff; }
 .contact-phone { margin-top: 16px !important; font-weight: 800; }
 
+.faq-section { border-top-color: var(--sea); }
+.faq-list { display: grid; gap: 12px; max-width: 860px; margin: 24px auto 0; }
+.faq-list details { border: 1px solid var(--line); border-radius: 14px; background: var(--surface-bright); }
+.faq-list summary { padding: 17px 20px; color: var(--roof-deep); font-weight: 900; cursor: pointer; }
+.faq-list details p { margin: 0; padding: 0 20px 18px; line-height: 1.8; }
+.faq-list summary:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
 .site-footer { padding: 28px 16px 38px; color: var(--muted); text-align: center; }
 .site-footer p { margin: 3px; }
 .noscript-note { width: min(100% - 32px, 820px); margin: 0 auto 32px; padding: 14px; border: 2px solid var(--roof); border-radius: 12px; background: #fffaf0; text-align: center; }

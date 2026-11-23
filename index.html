@@ -7,7 +7,7 @@
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.instagram.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://pbs.twimg.com; frame-src https://www.instagram.com; connect-src https://www.instagram.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'none'; worker-src 'none'; upgrade-insecure-requests">
     <title>沖縄文芸フリマ vol.3｜2027年2月6日開催予定</title>
-    <meta name="description" content="沖縄文芸フリマ vol.3は、本・作品・いきもの・人との出会いを楽しみながら、好き・得意から地域とつながる文化イベントです。2027年2月6日に田場公民館を中心に開催予定です。">
+    <meta name="description" content="沖縄文芸フリマは、作品を通じた社会参加と地域とのつながりを育てる文化イベントです。学校や授業、外出への参加が難しい人も、本人が会場に来られない場合も、作品からつながる方法を一緒に考えます。vol.3は2027年2月6日に田場公民館を中心に開催予定です。">
     <style>
         :root {
             --color-primary: #2c3e50;
@@ -1050,9 +1050,17 @@
 
         .hero-description {
             max-width: 620px;
-            margin: 24px auto 0;
+            margin: 8px auto 0;
             font-size: clamp(1.05rem, 2.7vw, 1.25rem);
             line-height: 1.8;
+        }
+
+        .hero-social-message {
+            max-width: 680px;
+            margin: 24px auto 0;
+            font-size: clamp(1.45rem, 4vw, 2.1rem);
+            font-weight: 800;
+            line-height: 1.45;
         }
 
         .cta-button--outline {
@@ -1083,6 +1091,10 @@
             border-radius: 16px;
             background: var(--bg-light);
             box-shadow: var(--box-shadow);
+        }
+
+        .feature-card--wide {
+            grid-column: 1 / -1;
         }
 
         .feature-card h3 {
@@ -1142,6 +1154,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .feature-card--wide {
+                grid-column: auto;
+            }
+
             .hero {
                 padding: 56px 0;
             }
@@ -1194,7 +1210,8 @@
                         <p class="hero-tagline">― 好きからはじまる、やさしさの伝染 ―</p>
                         <p class="hero-status">2026年度プロジェクト｜2027年2月6日（土）11:00〜16:00</p>
                         <p class="hero-location">田場公民館を中心に実施予定</p>
-                        <p class="hero-description">つくる・伝える・つながる。<br>地域にひらく表現と社会参加の場。</p>
+                        <p class="hero-social-message">あなたの作品が、地域とつながる。</p>
+                        <p class="hero-description">つくる・伝える・つながる。<br>会場に来ることが難しいときも、作品から始められる社会参加の場です。</p>
 
                         <div class="hero-buttons">
                             <a href="#vol3" class="cta-button">第3回について知る</a>
@@ -1267,8 +1284,8 @@
 
         <section class="section vol3-intro" id="vol3">
             <div class="container">
-                <h2 class="section-title fade-in">沖縄文芸フリマ vol.3の4つの特徴</h2>
-                <p class="vol3-lead">本・作品・いきもの・人との出会いを楽しみながら、「好きだからやってみたい」を地域へひらく企画です。</p>
+                <h2 class="section-title fade-in">沖縄文芸フリマ vol.3の5つの特徴</h2>
+                <p class="vol3-lead">本・作品・いきもの・人との出会いを楽しみながら、「好きだからやってみたい」を地域へひらき、作品を通じた社会参加につなげる企画です。</p>
                 <div class="feature-grid">
                     <article class="feature-card fade-in">
                         <span class="feature-number" aria-hidden="true">1</span>
@@ -1292,6 +1309,12 @@
                         <h3>いきものから、地域を見る</h3>
                         <p>猫、犬、鳥、魚、昆虫、植物など、身近ないきものを入口に田場を歩き、見つけたこと・聞いたことを、写真、絵、文章、音声、ZINEなどの作品や地域の記録につなげます。</p>
                         <p class="cat-flow">地域を歩く → 見つける・聞く → つくる → 伝える → 地域へ返す</p>
+                    </article>
+                    <article class="feature-card feature-card--wide fade-in">
+                        <span class="feature-number" aria-hidden="true">5</span>
+                        <h3>会場に来なくても、作品からつながれる</h3>
+                        <p>学校や授業への参加が難しい子どもや、病気、障がい、体調などによって外出が難しい人も、作品を通して地域と出会い、社会とつながる方法を一緒に考えます。</p>
+                        <p class="feature-quote">本人が会場に来られない場合の展示や作品の受け渡しは、条件を確認しながら個別に相談します。代理出展や作品預かりをお約束するものではありません。</p>
                     </article>
                 </div>
             </div>
@@ -1511,11 +1534,11 @@
                         名前や相談内容を入力せず、立場に合う案内を選べます。
                     </span>
                 </a>
-                <h2 class="section-title fade-in">🌸 沖縄文芸フリマとは？</h2>
+                <h2 class="section-title fade-in">🌸 開催概要・開催目的</h2>
                 <div>
                     <p class="section-description text-center">
-                        人の想いや創造力がきらめく文化の場を、沖縄で育ててきました。<br>
-                        子どもから大人までが、それぞれの好きや得意を持ち寄れる場所です。
+                        沖縄文芸フリマは、人の想いや創造力がきらめく文化の場を沖縄で育て、作品を通じた社会参加の機会をつくる催しです。<br>
+                        学校や授業への参加が難しい子ども、病気や障がい、体調などで外出が難しい人も含め、子どもから大人までが、それぞれの好きや得意を持ち寄り、作品から地域とつながれることを目指します。
                     </p>
                     <div class="content-grid">
                         <div class="card">
@@ -1527,6 +1550,11 @@
                             <div class="card-icon">👥</div>
                             <h3>世代を超えて</h3>
                             <p>子どもから大人まで、誰もが主役になれる場所。年齢や立場を超えて、世代をつなぐ「お披露目の場」です。</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🫱🏼‍🫲🏽</div>
+                            <h3>作品を通じた社会参加</h3>
+                            <p>会場に来ることだけを参加の条件にせず、作品を見てもらうこと、感想を受け取ること、地域の誰かに存在や表現が届くことも、大切な社会参加として育てます。</p>
                         </div>
                     </div>
                 </div>
