@@ -20,7 +20,7 @@
         "次の段階へ進まなくても、その日の参加を大切にします。"
       ],
       actions: [
-        { label: "いろいろな参加のしかたを見る", href: "#participation-levels" },
+        { label: "出展申込フォームを開く", href: "https://docs.google.com/forms/d/e/1FAIpQLScG2XT76TWi-W7KDTXtnIv7pBGWRBLsEghyMyVrr3tNFgmXxg/viewform", external: true },
         { label: "作品棚を見る", href: "#works-shelf" }
       ]
     },
@@ -309,6 +309,10 @@
     var actionNodes = guide.actions.map(function (action) {
       var link = buildTextElement("a", "", action.label);
       link.href = action.href;
+      if (action.external) {
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
       return link;
     });
     actions.replaceChildren.apply(actions, actionNodes);
